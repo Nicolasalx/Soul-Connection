@@ -1,50 +1,9 @@
-import Image from "next/image";
-import Link from "next/link";
-
 export default function Home() {
   return (
-    <>
-      <div className="w-full h-20 bg-emerald-800 sticky top-0">
-        <div className="container mx-auto px-4 h-full">
-          <div className="flex justify-between items-center h-full">
-            <ul className="hidden md:flex gap-x-6 text-white">
-              <li>
-                <Link href="/account-management">
-                  <p>Account Management</p>
-                </Link>
-              </li>
-              <li>
-                <Link href="/my-customers">
-                  <p>All of my customers</p>
-                </Link>
-              </li>
-              <li>
-                <Link href="/client-profile">
-                  <p>Client Profile</p>
-                </Link>
-              </li>
-
-              <li>
-                <Link href="/statistics">
-                  <p>Statistics</p>
-                </Link>
-              </li>
-
-              <li>
-                <Link href="/advices">
-                  <p>Advices</p>
-                </Link>
-              </li>
-
-              <li>
-                <Link href="/events">
-                  <p>Events</p>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </>
+    <div>
+      <p>
+        Nostrud non qui id consequat occaecat fugiat commodo ut occaecat esse deserunt sit sit. Est pariatur veniam proident aliquip voluptate do. Commodo commodo proident laboris ut magna est sunt consectetur ut dolor elit qui. Qui officia ad commodo anim aliqua velit dolore dolor anim anim labore incididunt aliqua laborum. Id mollit ea eiusmod ex fugiat occaecat reprehenderit pariatur ullamco eiusmod. Velit incididunt minim qui eu ullamco duis nulla esse. Non occaecat commodo nisi ut.
+      </p>
+    </div>
   );
 }
