@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default function Advices() {
   return (
     <>
       <div className="w-full h-20 bg-emerald-800 sticky top-0">
