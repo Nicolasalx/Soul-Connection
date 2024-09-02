@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function AccountManagement() {
+export default function ClientProfile() {
   return (
     <>
       <div className="w-full h-20 bg-emerald-800 sticky top-0">
@@ -9,17 +9,17 @@ export default function AccountManagement() {
           <div className="flex justify-between items-center h-full">
             <ul className="hidden md:flex gap-x-6 text-white">
               <li>
-                <Link href="/accountManagement">
+                <Link href="/account-management">
                   <p>Account Management</p>
                 </Link>
               </li>
               <li>
-                <Link href="/myCustomers">
+                <Link href="/my-customers">
                   <p>All of my customers</p>
                 </Link>
               </li>
               <li>
-                <Link href="/clientProfile">
+                <Link href="/client-profile">
                   <p>Client Profile</p>
                 </Link>
               </li>
