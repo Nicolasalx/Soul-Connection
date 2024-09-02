@@ -18,16 +18,35 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply theme-gradient;
+}
+
+h1 {
+  @apply text-2xl font-bold;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.btn {
+  @apply font-bold py-2 px-4 rounded-full;
+}
+
+.btn-primary {
+  background: rgba(238,225,252,1);
+}
+
+.btn-primary:hover {
+  background: rgba(208,195,222,1);
+}
+
+.btn-primary:active {
+  background: rgba(178,165,192,1);
+}
+
+.theme-gradient {
+  background: linear-gradient(120deg, rgba(255,77,139,1) 0%, rgba(255,171,0,1) 100%);
 }
