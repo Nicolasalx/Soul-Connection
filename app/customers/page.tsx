@@ -130,7 +130,11 @@ export default function ClientProfile() {
       <Title style={{color: 'white', marginTop: 20, marginLeft: 20}}>Customers</Title>
       <Divider style={{ borderColor: '#ffffff' }}></Divider>
 
-        <div style={{...baseStyle, backgroundColor: '#1677ff', height: 100, marginLeft: 20, marginTop: 20}}><FontAwesomeIcon icon={faPerson} />OK</div>
+        <div style={{...baseStyle, backgroundColor: '#1677ff', height: 100, marginLeft: 20, marginTop: 20}}>
+          <FontAwesomeIcon icon={faPerson}/>
+          OK
+        </div>
+        
         <div style={{...baseStyle, backgroundColor: '#1677ffbf', height: 100, marginLeft: 20, marginTop: 20}}>DEF</div>
         <div style={{...baseStyle, backgroundColor: '#1677ff', height: 100, marginLeft: 20, marginTop: 20}}>GHI</div>
 
