@@ -1,4 +1,3 @@
-// employees.ts
 import { ObjectId } from "mongodb";
 
 export default class Employees
