@@ -34,7 +34,7 @@ function Login() {
             <h1 className='m-6'>Login</h1>
             <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="email" name="email" aria-label="email" placeholder="Email" required />
             <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="password" name="password" aria-label="password" placeholder="Password" required />
-            <button className='btn btn-primary m-6' type="submit">Login</button>
+            <button className='btn btn-primary text-white m-6' type="submit">Login</button>
         </form>
     </div>
   )
