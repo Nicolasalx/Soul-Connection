@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { FormEvent } from 'react'
 
-export default function Login() {
+function Login() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -39,3 +39,5 @@ export default function Login() {
     </div>
   )
 }
+
+export default Login
