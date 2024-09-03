@@ -3,7 +3,7 @@ function HomeDashboard() {
     <div className="p-6">
       <div className="bg-white border border-gray-300 p-6 rounded">
         <h1 className="text font-bold text-gray-900 text-center mb-4">
-          Welcome to your dashboarddededze1
+          Welcome to your dashboard
         </h1>
         <p className="text-gray-700 mb-4">Here you will find for now:</p>
         <div className="space-y-4">

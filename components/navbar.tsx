@@ -30,21 +30,16 @@ export default function NavBar() {
         <ul className="mt-10 space-y-6">
           <li>
             <Link href="/home-page">
-              <p className="pl-4">My Profile</p>
-            </Link>
-          </li>
-          <li>
-            <Link href="/account-management">
               <p className="pl-4">Home</p>
             </Link>
           </li>
           <li>
-            <Link href="/my-customers">
+            <Link href="/coaches">
               <p className="pl-4">Coaches</p>
             </Link>
           </li>
           <li>
-            <Link href="/client-profile">
+            <Link href="/customers">
               <p className="pl-4">Customers</p>
             </Link>
           </li>
@@ -54,7 +49,12 @@ export default function NavBar() {
             </Link>
           </li>
           <li>
-            <Link href="/advices">
+            <Link href="/tips">
+            <p className="pl-4">Tips</p>
+            </Link>
+          </li>
+          <li>
+            <Link href="/events">
             <p className="pl-4">Events</p>
             </Link>
           </li>
