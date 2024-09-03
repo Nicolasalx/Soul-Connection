@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from "react";
 import Link from "next/link";
+import {Button} from "@nextui-org/react";
 
 export default function NavBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -12,7 +13,7 @@ export default function NavBar() {
   return (
     <div className="w-full h-24 bg-white sticky top-0 px-4 flex justify-between items-center">
       <div className="cursor-pointer" onClick={toggleSidebar}>
-        <p>HOME+SOUL-CONNECTION-LOGO</p>
+        <p>HOME+SC-LOGO</p>
       </div>
 
       <div
@@ -29,22 +30,22 @@ export default function NavBar() {
         <ul className="mt-10 space-y-6">
           <li>
             <Link href="/home-page">
-              <p className="pl-4">Home</p>
+              <p className="pl-4">My Profile</p>
             </Link>
           </li>
           <li>
             <Link href="/account-management">
-              <p className="pl-4">Account Management</p>
+              <p className="pl-4">Home</p>
             </Link>
           </li>
           <li>
             <Link href="/my-customers">
-              <p className="pl-4">All of my customers</p>
+              <p className="pl-4">Coaches</p>
             </Link>
           </li>
           <li>
             <Link href="/client-profile">
-              <p className="pl-4">Client Profile</p>
+              <p className="pl-4">Customers</p>
             </Link>
           </li>
           <li>
@@ -54,15 +55,15 @@ export default function NavBar() {
           </li>
           <li>
             <Link href="/advices">
-              <p className="pl-4">Advices</p>
-            </Link>
-          </li>
-          <li>
-            <Link href="/events">
-              <p className="pl-4">Events</p>
+            <p className="pl-4">Events</p>
             </Link>
           </li>
         </ul>
+        <div className="absolute bottom-4 w-full flex justify-center">
+          <Button color="primary"> {/* onClick={logout} */}
+            Log Out
+          </Button>
+        </div>
       </div>
     </div>
   );
