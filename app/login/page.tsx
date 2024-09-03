@@ -12,19 +12,16 @@ export default function Login() {
     const password = formData.get('password')
 
     try {
-        const response = await fetch('https://soul-connection.fr/api/employees/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        const response = await fetch('/api/employees/login', {
+            method: 'POST',
+            body: JSON.stringify({ email, password }),
         })
 
-        if (response.ok) {
-            redirect('/dashboard')
-        } else {
-            alert(response.text)
+        if (!response.ok) {
+            console.error(`code ${response.status}: ${response.statusText}`)
         }
     } catch(err) {
-        alert(err)
+        console.error(err)
     }
   }
 
