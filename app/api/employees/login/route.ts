@@ -4,11 +4,16 @@ import { NextResponse } from "next/server"
 export async function POST(req: Request) {
     try {
         const { email, password } = await req.json()
+        const api_token = process.env.API_TOKEN
+        if (!api_token) {
+            console.error("Missing API token.")
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        }
         const result = await fetch('https://soul-connection.fr/api/employees/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-Group-Authorization': process.env.API_TOKEN,
+                'X-Group-Authorization': api_token,
             },
             body: JSON.stringify({
                 "email": email,
