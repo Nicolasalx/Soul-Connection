@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 
-export default class Employees
+export default class Customers
 {
     constructor(
         public id: number,
@@ -9,7 +9,9 @@ export default class Employees
         public surname: string,
         public birth_date: string,
         public gender: string,
-        public work: string,
+        public description: string,
+        public astrological_sign: string,
+        public coach_id: number,
         public _id?: ObjectId)
     {
     }
