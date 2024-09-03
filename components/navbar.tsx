@@ -60,7 +60,7 @@ export default function NavBar() {
           </li>
         </ul>
         <div className="absolute bottom-4 w-full flex justify-center">
-          <Button color="primary"> {/* onClick={logout} */}
+          <Button color="primary"> { onClick={logout} }
             Log Out
           </Button>
         </div>
