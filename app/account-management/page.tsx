@@ -1,5 +1,9 @@
-export default function AccountManagement() {
+function AccountManagement() {
+
   return (
-    <div></div>
+    <div>
+    </div>
   );
 }
+
+export default AccountManagement
