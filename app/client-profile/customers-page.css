@@ -1,0 +1,9 @@
+.tables-container {
+    display: flex;
+    margin-top: 5%;
+  }
+  
+  .table-payments, .table-meetings {
+    margin-left: 3%;
+    width: 45%;
+  }
