@@ -1,4 +1,3 @@
-// app/back/services/database.service.ts
 import { MongoClient, Db } from 'mongodb';
 
 let db: Db;
