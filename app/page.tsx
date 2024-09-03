@@ -2,7 +2,10 @@ import { redirect } from 'next/navigation';
 
 export default async function Home()
 {
-  const response = await fetch('http://localhost:3000/api/employees', { cache: 'no-store' });
+  const response = await fetch('http://localhost:3000/api/employees/index', {
+    method: 'GET',
+    cache: 'no-store'
+  });
 
   if (!response.ok) {
     console.log('db response nest pas OKKKKKKKKKKK ??!!');
