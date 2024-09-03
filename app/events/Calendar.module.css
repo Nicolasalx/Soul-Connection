@@ -1,0 +1,49 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  
+  .calendarContainer {
+    width: 78%;
+    border: 2px solid #1890ff;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .cardContainer {
+    width: 25%;
+    max-width: 400px;
+  }
+  
+  .notesMonth {
+    font-size: 12px;
+  }
+  
+  .events li {
+    font-size: 10px;
+  }
+  
+  .ant-picker-calendar {
+    font-size: 12px;
+  }
+  
+  .ant-picker-calendar-header {
+    padding: 8px 12px;
+  }
+  
+  .ant-picker-calendar-date-content {
+    padding: 4px;
+  }
+  
+  .ant-picker-cell {
+    height: 32px;
+    min-width: 32px;
+  }
+  
+  .ant-picker-calendar-mode-switch {
+    font-size: 12px;
+  }
+  
