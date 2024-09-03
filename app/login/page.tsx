@@ -1,6 +1,5 @@
 'use client'
 
-import { redirect } from 'next/navigation'
 import { FormEvent } from 'react'
 
 export default function Login() {
@@ -17,9 +16,12 @@ export default function Login() {
             body: JSON.stringify({ email, password }),
         })
 
-        if (!response.ok) {
+        if (response.ok) {
+            window.location.reload()
+        } else {
             console.error(`code ${response.status}: ${response.statusText}`)
         }
+
     } catch(err) {
         console.error(err)
     }

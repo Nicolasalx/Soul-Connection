@@ -25,7 +25,6 @@ export async function POST(req: Request) {
                 expires: expiresAt,
                 path: '/',
             })
-            return NextResponse.redirect(new URL('/dashboard', req.url), { status: 307 })
         }
         return NextResponse.json(result.statusText, { status: result.status })
     } catch(error) {

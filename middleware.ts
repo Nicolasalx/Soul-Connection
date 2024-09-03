@@ -6,7 +6,7 @@ const publicRoutes = ['/login', '/']
 export default async function middleware(req: NextRequest) {
     const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname)
     const token = cookies().get('token')?.value
-    console.log(`${req.url} -> ${req.nextUrl}`)
+
     if (!isPublicRoute && !token) {
         return NextResponse.redirect(new URL('/login', req.nextUrl))
     }
