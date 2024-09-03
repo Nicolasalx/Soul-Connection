@@ -2,8 +2,13 @@ import Link from "next/link";
 
 export default function NavBar() {
     return (
-      <div className="w-full h-20 bg-emerald-800 sticky top-0 container mx-auto px-4 flex justify-between items-center">
-        <ul className="hidden md:flex gap-x-6 text-white">
+      <div className="w-full h-24 bg-white sticky top-0 px-4 flex justify-between items-center">
+        <ul className="hidden md:flex gap-x-6 text-black items-center">
+        <li className="flex items-center pr-6 border-r-2 border-gray-300">
+            <Link href="/home-page">
+              <p>HOME+SOUL-CONNECTION-LOGO</p>
+            </Link>
+          </li>
           <li>
             <Link href="/account-management">
               <p>Account Management</p>
