@@ -1,6 +1,5 @@
 'use client'
 
-import { redirect } from 'next/navigation'
 import { FormEvent } from 'react'
 
 export default function Login() {
@@ -12,19 +11,19 @@ export default function Login() {
     const password = formData.get('password')
 
     try {
-        const response = await fetch('https://soul-connection.fr/api/employees/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        const response = await fetch('/api/employees/login', {
+            method: 'POST',
+            body: JSON.stringify({ email, password }),
         })
 
         if (response.ok) {
-            redirect('/dashboard')
+            window.location.reload()
         } else {
-            alert(response.text)
+            console.error(`code ${response.status}: ${response.statusText}`)
         }
+
     } catch(err) {
-        alert(err)
+        console.error(err)
     }
   }
 
@@ -34,7 +33,7 @@ export default function Login() {
             <h1 className='m-6'>Login</h1>
             <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="email" name="email" aria-label="email" placeholder="Email" required />
             <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="password" name="password" aria-label="password" placeholder="Password" required />
-            <button className='btn btn-primary m-6' type="submit">Login</button>
+            <button className='btn btn-primary text-white m-6' type="submit">Login</button>
         </form>
     </div>
   )

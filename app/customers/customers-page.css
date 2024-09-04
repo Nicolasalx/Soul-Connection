@@ -1,0 +1,24 @@
+.tables-container {
+    display: flex;
+    margin-top: 5%;
+  }
+  
+  .table-payments, .table-meetings {
+    margin-left: 3%;
+    width: 45%;
+}
+
+
+.profile-container {
+  display: flex;
+  align-items: flex-start;
+  margin: 20px;
+}
+
+.profile-info {
+  flex: 0.8;
+}
+
+.profile-image {
+  margin-left: 20px;
+}
