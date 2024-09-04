@@ -24,7 +24,6 @@ export async function callAPI(req: Request) {
             return Response.json({ error: 'API url not found.' }, { status: 500 })
         }
         const newUrl = new URL(url).origin + new URL(req.url).pathname
-        console.log(newUrl)
         req.headers.append('Content-Type', 'application/json')
         req.headers.append('Authorization', `Bearer ${token}`)
         req.headers.append('X-Group-Authorization', api_token)
