@@ -8,8 +8,11 @@
 export async function isManager() {
     try {
         const result = await fetch('/api/employees/me', { method: 'GET' })
+        if (!result.ok) {
+            return false;
+        }
         const { work } = await result.json()
-        if (work === 'Manager') {
+        if (work !== 'Coach') {
             return true
         }
         return false
@@ -23,10 +26,10 @@ export async function getSelfId()
 {
     try {
         const result = await fetch('/api/employees/me', { method: 'GET' })
+        if (!result.ok) {
+            return 0;
+        }
         const { id } = await result.json()
-
-        console.log(id);
-
         return id;
     } catch(err) {
         console.error(err)

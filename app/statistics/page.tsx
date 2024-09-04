@@ -1,12 +1,10 @@
 import React from "react";
-import NumberStat from "@/components/statistics-numbers"
-import {BarrChart} from "@/components/bar-charts"
-import {DotChart} from "@/components/dot-charts"
-import {AreaaChart} from "@/components/area-charts"
-import {PiieChart} from "@/components/pie-charts"
-import {AreaChart} from "lucide-react"
+import NumberStat from "@/components/statistics-numbers";
+import { BarrChart } from "@/components/bar-charts";
+import { DotChart } from "@/components/dot-charts";
+import { AreaaChart } from "@/components/area-charts";
+import { PiieChart } from "@/components/pie-charts";
 import { getCoachs, getEmployees } from "../lib/dbhelper/employees";
-import Employees from "../back/models/employees";
 
 const chartData01 = [
   { coach: "Coach01", value: 186 },
@@ -19,12 +17,12 @@ const chartData01 = [
 
 const chartData02 = [
   { month: "January", value: 186 },
-  { month: "February", value: 305, },
+  { month: "February", value: 305 },
   { month: "March", value: 237 },
   { month: "April", value: 73 },
   { month: "May", value: 209 },
   { month: "June", value: 214 },
-]
+];
 
 const chartData03 = [
   { month: "January", value: 186 },
@@ -33,7 +31,7 @@ const chartData03 = [
   { month: "April", value: 73 },
   { month: "May", value: 209 },
   { month: "June", value: 214 },
-]
+];
 
 const chartData04 = [
   { coach: "01", value: 275, fill: "var(--color-chrome)" },
@@ -41,16 +39,15 @@ const chartData04 = [
   { coach: "03", value: 187, fill: "var(--color-firefox)" },
   { coach: "04", value: 173, fill: "var(--color-edge)" },
   { coach: "05", value: 90, fill: "var(--color-other)" },
-]
+];
 
-
-  async function Statistics() {
-    const employees = await getEmployees();
-    const coaches = await getCoachs();
+async function Statistics() {
+  const employees = await getEmployees();
+  const coaches = await getCoachs();
 
   return (
     <div className="p-6">
-      <div className="bg-white border border-gray-300 p-6 rounded">
+      <div className="bg-white border border-gray-300 p-6 rounded w-3/4 ml-80 mt-28">
         <h1 className="text-xl font-bold text-gray-900 mb-4">
           Welcome to your statistics
         </h1>
@@ -80,9 +77,9 @@ const chartData04 = [
             description="[Example] Date, time"
           />
           <PiieChart
-          data={chartData04}
-          title="[Example] Infos"
-          description="[Example] Date, time"
+            data={chartData04}
+            title="[Example] Infos"
+            description="[Example] Date, time"
           />
         </div>
       </div>
@@ -91,5 +88,3 @@ const chartData04 = [
 }
 
 export default Statistics;
-
-

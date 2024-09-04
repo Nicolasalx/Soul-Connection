@@ -1,5 +1,4 @@
 import { cookies } from "next/headers"
-import { NextResponse } from "next/server"
 
 export async function POST(req: Request) {
     try {
@@ -7,7 +6,7 @@ export async function POST(req: Request) {
         const api_token = process.env.API_TOKEN
         if (!api_token) {
             console.error("Missing API token.")
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+            return Response.json({ error: 'Unauthorized' }, { status: 401 })
         }
         const result = await fetch('https://soul-connection.fr/api/employees/login', {
             method: 'POST',
@@ -31,8 +30,8 @@ export async function POST(req: Request) {
                 path: '/',
             })
         }
-        return NextResponse.json(result.statusText, { status: result.status })
+        return Response.json(result.statusText, { status: result.status })
     } catch(error) {
-        return NextResponse.json({ error: 'Unknown error.' }, { status: 500 })
+        return Response.json({ error: 'Unknown error.' }, { status: 500 })
     }
 }

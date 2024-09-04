@@ -7,47 +7,34 @@ import If from "./If";
 import { isConnected } from "@/app/lib/connection";
 
 export default function NavBar() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userConnected, setUserConnected] = useState(false);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const handleLogout = async () => {
+  const handleLogout = async() => {
     try {
       const res = await fetch('/api/employees/logout', { method: 'POST' });
       if (res.status === 307) {
         window.location.reload();
       }
     } catch(err) {
-      console.error(err)
+      console.error(err);
     }
   }
 
   useEffect(() => {
     isConnected().then((status) => {
-      setUserConnected(status)
-    })
+      setUserConnected(status);
+    });
   }, []);
 
   return (
-    <div className="w-full h-24 bg-white sticky top-0 px-4 flex justify-between items-center z-50">
-      <div className="cursor-pointer" onClick={toggleSidebar}>
-        <p>HOME+SC-LOGO</p>
+    <div>
+      <div className="w-full h-24 fixed top-0 left-0 px-4 bg-white flex justify-between items-center z-50">
+        <div className="cursor-pointer">
+          <p>HOME+SC-LOGO</p>
+        </div>
       </div>
 
-      <div
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-800 text-white transform ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out z-50`}
-      >
-        <button
-          className="p-4 text-white focus:outline-none"
-          onClick={toggleSidebar}
-        >
-          x Close
-        </button>
+      <div className="fixed top-24 left-0 h-[calc(100%-6rem)] w-64 bg-gray-800 text-white z-50">
         <ul className="mt-10 space-y-6">
           <li>
             <Link href="/home">
@@ -71,12 +58,12 @@ export default function NavBar() {
           </li>
           <li>
             <Link href="/tips">
-            <p className="pl-4">Tips</p>
+              <p className="pl-4">Tips</p>
             </Link>
           </li>
           <li>
             <Link href="/events">
-            <p className="pl-4">Events</p>
+              <p className="pl-4">Events</p>
             </Link>
           </li>
         </ul>
