@@ -34,7 +34,7 @@ export default function NavBar() {
         </div>
       </div>
 
-      <div className="fixed top-24 left-0 h-[calc(100%-6rem)] w-64 bg-gray-800 text-white z-50">
+      <div className="fixed top-24 left-0 h-[calc(100%-6rem)] w-64 bg-gray-800 text-white z-50 sm:fixed top-24 left-0 h-[calc(100%-6rem)] sm:w-64 w-32 bg-gray-800 text-white z-50">
         <ul className="mt-10 space-y-6">
           <li>
             <Link href="/home">

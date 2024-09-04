@@ -1,10 +1,10 @@
-import React from "react";
-import NumberStat from "@/components/statistics-numbers";
-import { BarrChart } from "@/components/bar-charts";
-import { DotChart } from "@/components/dot-charts";
-import { AreaaChart } from "@/components/area-charts";
-import { PiieChart } from "@/components/pie-charts";
-import { getCoachs, getEmployees } from "../lib/dbhelper/employees";
+import React from "react"
+import NumberStat from "@/components/statistics-numbers"
+import { BarrChart } from "@/components/bar-charts"
+import { DotChart } from "@/components/dot-charts"
+import { AreaaChart } from "@/components/area-charts"
+import { PiieChart } from "@/components/pie-charts"
+import { getCoachs, getEmployees } from "../lib/dbhelper/employees"
 
 const chartData01 = [
   { coach: "Coach01", value: 186 },
@@ -48,21 +48,25 @@ async function Statistics() {
   return (
     <div className="p-6">
       <div className="bg-white border border-gray-300 p-6 rounded w-3/4 ml-80 mt-28">
-        <h1 className="text-xl font-bold text-gray-900 mb-4">
+        <div className="space-x-4">
+        <h1 className="text-xl font-bold text-gray-400 mb-4">
           Welcome to your statistics
         </h1>
-        <div className="space-x-4">
-          <div className="bg-grey-200 p-4 border border-gray-300 rounded">
+          <div className="bg-grey-200 p-4 border border-gray-300 flex justify-center rounded">
             <NumberStat title="Current Employees Count" value={employees.length} />
             <NumberStat title="Current Coaches Count" value={coaches.length} />
             <NumberStat title="Total Encounters Count" value={0} />
             <NumberStat title="Add one" value={0} />
           </div>
         </div>
-
-        <div className="mt-8 flex space-x-4">
+        <div className="mt-8 space-x-4">
           <BarrChart
             data={chartData01}
+            title="[Example] Infos"
+            description="[Example] Date, time"
+          />
+          <PiieChart
+            data={chartData04}
             title="[Example] Infos"
             description="[Example] Date, time"
           />
@@ -73,11 +77,6 @@ async function Statistics() {
           />
           <AreaaChart
             data={chartData03}
-            title="[Example] Infos"
-            description="[Example] Date, time"
-          />
-          <PiieChart
-            data={chartData04}
             title="[Example] Infos"
             description="[Example] Date, time"
           />
