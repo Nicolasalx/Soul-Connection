@@ -19,11 +19,13 @@ export async function isManager() {
     }
 }
 
-export async function getSelfId(): Promise<number>
+export async function getSelfId()
 {
     try {
         const result = await fetch('/api/employees/me', { method: 'GET' })
         const { id } = await result.json()
+
+        console.log(id);
 
         return id;
     } catch(err) {
