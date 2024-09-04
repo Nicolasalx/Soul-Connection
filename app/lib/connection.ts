@@ -5,7 +5,6 @@
 ** connection related functions
 */
 
-import { verifyToken } from './dal'
 import { deleteToken } from './token'
 
 export async function logout() {
@@ -13,7 +12,16 @@ export async function logout() {
 }
 
 export async function isConnected() {
-    const token = await verifyToken()
+    try {
+        const result = await fetch('/api/employees/status', { method: 'GET' })
+        let token: string | null = null;
 
-    return token ? true : false
+        if (result.ok) {
+            token = await result.json()
+        }
+        return token ? true : false
+    } catch(err) {
+        console.error(err);
+        return false
+    }
 }

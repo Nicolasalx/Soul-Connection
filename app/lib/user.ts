@@ -6,10 +6,15 @@
 */
 
 export async function isManager() {
-    const result = await fetch('/api/employees/me', { method: 'GET' })
-    const { work } = await result.json()
-    if (work === 'Coach') {
+    try {
+        const result = await fetch('/api/employees/me', { method: 'GET' })
+        const { work } = await result.json()
+        if (work === 'Manager') {
+            return true
+        }
+        return false
+    } catch(err) {
+        console.error(err);
         return false
     }
-    return true
 }

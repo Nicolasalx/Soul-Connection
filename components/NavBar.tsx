@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
 import If from "./If";
@@ -8,17 +8,28 @@ import { isConnected } from "@/app/lib/connection";
 
 export default function NavBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [userConnected, setUserConnected] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   const handleLogout = async () => {
-    const res = await fetch('/api/employees/logout', { method: 'POST' });
-    if (res.status === 307) {
-      window.location.reload();
+    try {
+      const res = await fetch('/api/employees/logout', { method: 'POST' });
+      if (res.status === 307) {
+        window.location.reload();
+      }
+    } catch(err) {
+      console.error(err)
     }
   }
+
+  useEffect(() => {
+    isConnected().then((status) => {
+      setUserConnected(status)
+    })
+  }, []);
 
   return (
     <div className="w-full h-24 bg-white sticky top-0 px-4 flex justify-between items-center z-50">
@@ -69,7 +80,7 @@ export default function NavBar() {
             </Link>
           </li>
         </ul>
-        <If conditionAsync={isConnected}>
+        <If condition={userConnected}>
           <div className="absolute bottom-4 w-full flex justify-center">
             <Button color="primary" onClick={handleLogout}>
               Log Out
