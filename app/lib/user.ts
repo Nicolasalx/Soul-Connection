@@ -12,7 +12,7 @@ export async function isManager() {
             return false;
         }
         const { work } = await result.json()
-        if (work === 'Manager') {
+        if (work !== 'Coach') {
             return true
         }
         return false
