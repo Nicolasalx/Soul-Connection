@@ -11,6 +11,8 @@ export default class Customers
         public gender: string,
         public description: string,
         public astrological_sign: string,
+        public phone_number: string,
+        public address: string,
         public coach_id: number,
         public _id?: ObjectId)
     {

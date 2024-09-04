@@ -1,4 +1,9 @@
 import Customers from "@/app/back/models/customers";
+import Encounters from "@/app/back/models/encounters";
+import { fork } from "child_process";
+import { getEncounters } from "./encounters";
+import Payments from "@/app/back/models/payments";
+import { getPayments } from "./payments";
 
 export async function getCustomers(): Promise<Customers[]>
 {
@@ -63,4 +68,25 @@ export async function deleteCustomer(_id: string): Promise<void>
   if (!response.ok) {
     throw new Error('Failed to delete customer');
   }
+}
+
+export async function getCoachCustomers(coach_id: number): Promise<Customers[]>
+{
+  const customers = await getCustomers();
+
+  return customers.filter(customer => customer.coach_id == coach_id);
+}
+
+export async function getCustomerEncounters(customer_id: number): Promise<Encounters[]>
+{
+  const encounters = await getEncounters();
+
+  return encounters.filter(encounter => encounter.customer_id == customer_id);
+}
+
+export async function getCustomerPayments(customer_id: number): Promise<Payments[]>
+{
+  const payments = await getPayments();
+
+  return payments.filter(payment => payment.customer_id == customer_id);
 }
