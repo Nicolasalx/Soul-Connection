@@ -2,7 +2,7 @@
 
 import { FormEvent } from 'react'
 
-function Login() {
+export default function Login() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -38,5 +38,3 @@ function Login() {
     </div>
   )
 }
-
-export default Login

@@ -64,3 +64,10 @@ export async function deleteEmployee(_id: string): Promise<void>
     throw new Error('Failed to delete employee');
   }
 }
+
+export async function getCoachs(): Promise<Employees[]>
+{
+  const employees = await getEmployees();
+
+  return employees.filter(employee => employee.work == 'coach');
+}

@@ -1,17 +1,38 @@
 'use client'
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import {Button} from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
+import If from "./If";
+import { isConnected } from "@/app/lib/connection";
 
 export default function NavBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [userConnected, setUserConnected] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const handleLogout = async () => {
+    try {
+      const res = await fetch('/api/employees/logout', { method: 'POST' });
+      if (res.status === 307) {
+        window.location.reload();
+      }
+    } catch(err) {
+      console.error(err)
+    }
+  }
+
+  useEffect(() => {
+    isConnected().then((status) => {
+      setUserConnected(status)
+    })
+  }, []);
+
   return (
-    <div className="w-full h-24 bg-white sticky top-0 px-4 flex justify-between items-center">
+    <div className="w-full h-24 bg-white sticky top-0 px-4 flex justify-between items-center z-50">
       <div className="cursor-pointer" onClick={toggleSidebar}>
         <p>HOME+SC-LOGO</p>
       </div>
@@ -59,11 +80,13 @@ export default function NavBar() {
             </Link>
           </li>
         </ul>
-        {/* <div className="absolute bottom-4 w-full flex justify-center">
-          <Button color="primary"> { onClick={logout} }
-            Log Out
-          </Button>
-        </div> */}
+        <If condition={userConnected}>
+          <div className="absolute bottom-4 w-full flex justify-center">
+            <Button color="primary" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </div>
+        </If>
       </div>
     </div>
   );

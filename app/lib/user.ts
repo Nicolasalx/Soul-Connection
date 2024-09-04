@@ -5,20 +5,29 @@
 ** connected user related functions
 */
 
-export async function isManager()
-{
-    const result = await fetch('/api/employees/me', { method: 'GET' })
-    const { work } = await result.json()
-    if (work === 'Coach') {
+export async function isManager() {
+    try {
+        const result = await fetch('/api/employees/me', { method: 'GET' })
+        const { work } = await result.json()
+        if (work === 'Manager') {
+            return true
+        }
+        return false
+    } catch(err) {
+        console.error(err);
         return false
     }
-    return true
 }
 
 export async function getSelfId(): Promise<number>
 {
-    const result = await fetch('/api/employees/me', { method: 'GET' })
-    const { id } = await result.json()
+    try {
+        const result = await fetch('/api/employees/me', { method: 'GET' })
+        const { id } = await result.json()
 
-    return id;
+        return id;
+    } catch(err) {
+        console.error(err)
+        return 0;
+    }
 }
