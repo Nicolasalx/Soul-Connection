@@ -8,6 +8,8 @@ import { Typography } from 'antd';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPerson, faLocationDot, faCakeCandles, faPhone, faComment } from '@fortawesome/free-solid-svg-icons';
+import { getSelfId } from '../lib/user';
+import { useEffect, useState } from 'react';
 
 const baseStyle: React.CSSProperties = {
   width: '75%',
@@ -136,7 +138,21 @@ const options: SelectProps['options'] = [
   { value: 'lea', label: 'Léa' },
 ];
 
-export default function ClientProfile() {
+async function ClientProfile() {
+
+  const [coachId, setCoachId] = useState<string | null>(null);
+
+  // ! Reprendre ici
+  // useEffect(() => {
+  //   async function fetchCoachId() {
+  //     const id = await getSelfId();
+  //     setCoachId(id.toString());
+  //     console.log(`COACH ID: ${id}`);
+  //   }
+// 
+  //   fetchCoachId();
+  // }, []);
+
   return (
     <>
       <Title style={{ color: 'white', marginTop: 20, marginLeft: 20 }}>Customers</Title>
@@ -187,3 +203,5 @@ export default function ClientProfile() {
     </>
   );
 }
+
+export default ClientProfile
