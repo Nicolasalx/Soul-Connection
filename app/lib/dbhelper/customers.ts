@@ -1,6 +1,5 @@
 import Customers from "@/app/back/models/customers";
 import Encounters from "@/app/back/models/encounters";
-import { fork } from "child_process";
 import { getEncounters } from "./encounters";
 import Payments from "@/app/back/models/payments";
 import { getPayments } from "./payments";
