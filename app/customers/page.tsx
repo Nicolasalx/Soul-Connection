@@ -7,10 +7,10 @@ import './customers-page.css';
 import { Typography } from 'antd';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPerson, faLocationDot, faCakeCandles } from '@fortawesome/free-solid-svg-icons';
+import { faPerson, faLocationDot, faCakeCandles, faPhone, faComment } from '@fortawesome/free-solid-svg-icons';
 
 const baseStyle: React.CSSProperties = {
-  width: '50%',
+  width: '75%',
   height: 54,
 };
 
@@ -23,6 +23,8 @@ const { Title } = Typography;
 const customerName = "Louis Delanata";
 const customerBirthdate = "09/06/1996";
 const customerLocation = "3 Rue de la Tour 34000 Montpellier, France";
+const customerPhone = "07 29 32 45 10";
+const customerDescription = "Je cherche du sérieux";
 
 /*     PAYMENTS       */
 
@@ -153,10 +155,16 @@ export default function ClientProfile() {
             <Title style={{color: "white"}}><FontAwesomeIcon icon={faPerson} />  {customerName}</Title>
           </div>
           <div style={{...baseStyle, height: 100}}>
-            <Title style={{color: "white"}}><FontAwesomeIcon icon={faLocationDot} />  {customerBirthdate}</Title>
+            <Title style={{color: "white"}}><FontAwesomeIcon icon={faCakeCandles} />  {customerBirthdate}</Title>
           </div>
           <div style={{...baseStyle, height: 100}}>
-            <Title style={{color: "white"}}><FontAwesomeIcon icon={faCakeCandles} />  {customerLocation}</Title>
+            <Title style={{color: "white"}}><FontAwesomeIcon icon={faLocationDot} />  {customerLocation}</Title>
+          </div>
+          <div style={{...baseStyle, height: 100}}>
+            <Title style={{color: "white"}}><FontAwesomeIcon icon={faPhone} />  {customerPhone}</Title>
+          </div>
+          <div style={{...baseStyle, height: 100}}>
+            <Title style={{color: "white"}}><FontAwesomeIcon icon={faComment} />  {customerDescription}</Title>
           </div>
         </div>
         <div className='profile-image'>
