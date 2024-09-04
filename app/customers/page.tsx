@@ -12,6 +12,7 @@ import { getCoachCustomers, getCustomerEncounters, getCustomerPayments } from '.
 import Customers from "@/app/back/models/customers";
 import Payments from "@/app/back/models/payments";
 import Encounters from "@/app/back/models/encounters";
+import { getSelfId } from '../lib/user';
 
 const baseStyle: React.CSSProperties = {
   width: '75%',
@@ -82,6 +83,8 @@ function ClientProfile() {
   useEffect(() => {
     async function fetchCustomerData() {
       try {
+        const selfIdCoach = await getSelfId();
+        // ! const response = await getCoachCustomers(selfIdCoach); Replace with this line when information will be migrate on our database
         const response = await getCoachCustomers(1);
         setCustomerData(response);
         const formattedOptions = response.map((customer: Customers) => ({
@@ -141,7 +144,8 @@ function ClientProfile() {
 
   return (
     <>
-      <Title style={{ color: 'white', marginTop: 20, marginLeft: 20 }}>Customers</Title>
+    <div style={{marginLeft: 220}}>
+      <Title style={{ color: 'white', marginTop: 120, marginLeft: 70 }}>Customers</Title>
       <Divider style={{ borderColor: '#ffffff' }}></Divider>
 
       <div className='profile-container'>
@@ -186,6 +190,7 @@ function ClientProfile() {
         <div className='table-meetings'>
           <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large" pagination={false}/>
         </div>
+      </div>
       </div>
     </>
   );
