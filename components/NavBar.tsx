@@ -50,7 +50,7 @@ export default function NavBar() {
         </button>
         <ul className="mt-10 space-y-6">
           <li>
-            <Link href="/home-page">
+            <Link href="/home">
               <p className="pl-4">Home</p>
             </Link>
           </li>
