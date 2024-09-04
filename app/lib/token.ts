@@ -5,9 +5,9 @@
 ** token related functions
 */
 
-import 'server-only'
+'use server'
 import { cookies } from "next/headers";
 
-export function deleteToken() {
+export async function deleteToken() {
     cookies().delete('token')
 }
