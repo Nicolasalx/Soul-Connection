@@ -1,17 +1,16 @@
 'use client';
 
 import { Image } from 'antd';
-import { Divider, Table } from 'antd';
-import type { TableColumnsType } from 'antd';
+import { Divider, Table, Select } from 'antd';
+import type { TableColumnsType, SelectProps } from 'antd';
 import './customers-page.css';
 import { Typography } from 'antd';
-import { Flex, Radio } from 'antd';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPerson } from '@fortawesome/free-solid-svg-icons';
+import { faPerson, faLocationDot, faCakeCandles } from '@fortawesome/free-solid-svg-icons';
 
 const baseStyle: React.CSSProperties = {
-  width: '25%',
+  width: '50%',
   height: 54,
 };
 
@@ -123,33 +122,58 @@ const dataMeetings: DataTypeMeetings[] = [
   }
 ];
 
-export default function ClientProfile() {
 
+const handleChange = (value: string | string[]) => {
+  console.log(`Selected: ${value}`);
+};
+
+
+const options: SelectProps['options'] = [
+  { value: 'tom', label: 'Tom' },
+  { value: 'nana', label: 'Nana' },
+  { value: 'lea', label: 'Léa' },
+];
+
+export default function ClientProfile() {
   return (
     <>
-      <Title style={{color: 'white', marginTop: 20, marginLeft: 20}}>Customers</Title>
+      <Title style={{ color: 'white', marginTop: 20, marginLeft: 20 }}>Customers</Title>
       <Divider style={{ borderColor: '#ffffff' }}></Divider>
 
-        <div style={{...baseStyle, backgroundColor: '#1677ff', height: 100, marginLeft: 20, marginTop: 20}}>
-          <FontAwesomeIcon icon={faPerson}/>
-          OK
-        </div>
-        
-        <div style={{...baseStyle, backgroundColor: '#1677ffbf', height: 100, marginLeft: 20, marginTop: 20}}>DEF</div>
-        <div style={{...baseStyle, backgroundColor: '#1677ff', height: 100, marginLeft: 20, marginTop: 20}}>GHI</div>
-
-        <Image
-          width={200}
-          src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+      <div className='profile-container'>
+        <div className='profile-info' style={{marginLeft: 50}}>
+        <Select
+          size="large"
+          defaultValue="Select a customer"
+          onChange={handleChange}
+          style={{ width: 200 }}
+          options={options}
         />
+          <div style={{...baseStyle, height: 100}}>
+            <Title style={{color: "white"}}><FontAwesomeIcon icon={faPerson} />  {customerName}</Title>
+          </div>
+          <div style={{...baseStyle, height: 100}}>
+            <Title style={{color: "white"}}><FontAwesomeIcon icon={faLocationDot} />  {customerBirthdate}</Title>
+          </div>
+          <div style={{...baseStyle, height: 100}}>
+            <Title style={{color: "white"}}><FontAwesomeIcon icon={faCakeCandles} />  {customerLocation}</Title>
+          </div>
+        </div>
+        <div className='profile-image'>
+          <Image
+            width={350}
+            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+          />
+        </div>
+      </div>
 
       <Divider style={{ borderColor: '#ffffff' }}></Divider>
       <div className='tables-container'>
         <div className='table-payments'>
-          <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={dataPayments} size="large" />
+          <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={dataPayments} size="large" pagination={false}/>
         </div>
         <div className='table-meetings'>
-          <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsMeetings} dataSource={dataMeetings} size="large" />
+          <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsMeetings} dataSource={dataMeetings} size="large" pagination={false}/>
         </div>
       </div>
     </>
