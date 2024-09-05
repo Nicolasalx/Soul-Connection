@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import EmployeeForm from './employeeForm';
 import type { SelectProps, TableColumnsType } from 'antd';
 import { getEmployees } from '../lib/dbhelper/employees';
+import { getCustomers } from '../lib/dbhelper/customers';
 
 /*     TABLE COACHES      */
 
@@ -13,51 +14,25 @@ interface DataTypeCoaches {
   id: string;
   name: string;
   birthDate: string;
-  customers: string;
+  customers: string[];
   lastConnection: string;
 }
 
-const columns: TableColumnsType<DataTypeCoaches> = [
-  {
-    title: '#',
-    dataIndex: 'id',
-  },
-  {
-    title: 'Name',
-    dataIndex: 'name',
-  },
-  {
-    title: 'Birth Date',
-    dataIndex: 'birthDate',
-  },
-  {
-    title: 'Customers',
-    dataIndex: 'customers',
-  },
-  {
-    title: 'Last Connection',
-    dataIndex: 'lastConnection',
-  }
-];
-
-/*      SELECTION OF CUSTOMERS     */
-
-const options: SelectProps['options'] = [];
-
-for (let i = 10; i < 36; i++) {
-  options.push({
-    label: i.toString(36) + i,
-    value: i.toString(36) + i,
-  });
+interface CustomerType {
+  id: number;
+  name: string;
+  surname: string;
+  coach_id?: number;
 }
 
-const handleChange = (value: string[]) => {
-  console.log(`selected ${value}`);
+const handleCustomerChange = (value: string[], record: DataTypeCoaches) => {
+  console.log(`Selected customers for ${record.name}:`, value);
 };
 
 function Coaches() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState<DataTypeCoaches[]>([]);
+  const [customerOptions, setCustomerOptions] = useState<SelectProps['options']>([]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -79,39 +54,75 @@ function Coaches() {
         id: employee.id,
         name: `${employee.name} ${employee.surname}`,
         birthDate: employee.birth_date || 'N/A',
-        customers: employee.work || 'N/A',
+        customers: employee.customers || [],
         lastConnection: 'N/A',
       }));
       setData(formattedData);
     }
 
+    async function fetchCustomersData() {
+      const dataCustomers = await getCustomers();
+      const formattedCustomers = dataCustomers
+        .filter((customer: CustomerType) => !customer.coach_id)
+        .map((customer: CustomerType) => ({
+          label: `${customer.name} ${customer.surname}`,
+          value: customer.id.toString(),
+        }));
+      setCustomerOptions(formattedCustomers);
+    }
+
     fetchEmployeesData();
+    fetchCustomersData();
   }, []);
 
-  return (
-    <>
-      <div style={{ marginLeft: 300, marginTop: 500 }}>
-        <Table columns={columns} dataSource={data} size="middle" pagination={false} />
+  const columns: TableColumnsType<DataTypeCoaches> = [
+    {
+      title: '#',
+      dataIndex: 'id',
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+    },
+    {
+      title: 'Birth Date',
+      dataIndex: 'birthDate',
+    },
+    {
+      title: 'Customers',
+        dataIndex: 'customers',
+        render: (_, record) => (
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: '100%' }}
+            placeholder="Select customers"
+            defaultValue={record.customers}
+            onChange={(value) => handleCustomerChange(value, record)}
+            options={customerOptions}
+          />
+        ),
+      },
+      {
+        title: 'Last Connection',
+        dataIndex: 'lastConnection',
+      },
+    ];
+  
+    return (
+      <>
+        <div style={{ marginLeft: 300, marginTop: 150 }}>
+          <Table columns={columns} dataSource={data} size="middle" pagination={false} />
+  
+          <Button type="primary" onClick={showModal}>
+            Create New Employee
+          </Button>
+          <Modal title="Employee Creation" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <EmployeeForm />
+          </Modal>
+        </div>
+      </>
+    );
+  }
 
-        <Select
-          mode="multiple"
-          allowClear
-          style={{ width: '100%' }}
-          placeholder="Please select"
-          defaultValue={['a10', 'c12']}
-          onChange={handleChange}
-          options={options}
-        />
-
-        <Button type="primary" onClick={showModal}>
-          Create New Employee
-        </Button>
-        <Modal title="Employee Creation" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-          <EmployeeForm />
-        </Modal>
-      </div>
-    </>
-  );
-}
-
-export default Coaches;
+  export default Coaches;
