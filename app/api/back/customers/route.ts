@@ -20,6 +20,7 @@ export async function GET(request: NextRequest)
       gender: fromUTF8Array(customer.gender),
       description: fromUTF8Array(customer.description),
       astrological_sign: fromUTF8Array(customer.astrological_sign),
+      phone_number: fromUTF8Array(customer.phone_number),
       address: fromUTF8Array(customer.address)
     }));
 
@@ -47,6 +48,7 @@ export async function POST(request: NextRequest)
       gender: toUTF8Array(body.gender),
       description: toUTF8Array(body.description),
       astrological_sign: toUTF8Array(body.astrological_sign),
+      phone_number: toUTF8Array(body.phone_number),
       address: toUTF8Array(body.address)
     };
     

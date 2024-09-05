@@ -3,6 +3,7 @@ import Encounters from "@/app/back/models/encounters";
 import { getEncounters } from "./encounters";
 import Payments from "@/app/back/models/payments";
 import { getPayments } from "./payments";
+import { ObjectId } from "mongodb";
 
 export async function getCustomers(): Promise<Customers[]>
 {
@@ -88,4 +89,13 @@ export async function getCustomerPayments(customer_id: number): Promise<Payments
   const payments = await getPayments();
 
   return payments.filter(payment => payment.customer_id == customer_id);
+}
+
+export async function assignCoachToCustomer(coach_id: number, customer_mongo_id: ObjectId): Promise<void>
+{
+  const newCustomerData: Partial<Customers> = {
+    coach_id: coach_id,
+  };
+
+  await updateCustomer(customer_mongo_id.toString(), newCustomerData);
 }
