@@ -1,5 +1,14 @@
 import { ObjectId } from "mongodb";
 
+export class Clothes
+{
+    constructor(
+        public id: number,
+        public type: string)
+    {
+    }
+}
+
 export default class Customers
 {
     constructor(
@@ -13,6 +22,7 @@ export default class Customers
         public astrological_sign: string,
         public phone_number: string,
         public address: string,
+        public clothes: Clothes[] = [],
         public coach_id: number = 0,
         public _id?: ObjectId)
     {

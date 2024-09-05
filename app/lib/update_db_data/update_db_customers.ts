@@ -17,17 +17,17 @@ export async function update_db_customers()
     try {
         const res = await fetch('/api/customers', { method: 'GET' });
         const data: Partial<Customers>[] = await res.json();
-        
+
         const existingCustomers = await getCustomers();
         const existingCustomerMap = new Map(existingCustomers.map(cust => [cust.email, cust]));
-        
+
         const fetchFullDataPromises = data.map(async (customer) => {
             const fullRes = await fetch(`/api/customers/${customer.id}`, { method: 'GET' });
             return await fullRes.json();
         });
-        
+
         const fullCustomers = await Promise.all(fetchFullDataPromises);
-        
+
         for (const fullData of fullCustomers) {
             try {
                 const fullCustomer = new Customers(
@@ -43,6 +43,8 @@ export async function update_db_customers()
                     fullData.address
                 );
 
+                fullCustomer.clothes = await (await fetch(`/api/customers/${fullCustomer.id}/clothes`, { method: 'GET' })).json();
+
                 const existingCustomer = existingCustomerMap.get(fullCustomer.email);
 
                 if (existingCustomer) {
@@ -56,7 +58,8 @@ export async function update_db_customers()
                         existingCustomer.description !== fullCustomer.description ||
                         existingCustomer.astrological_sign !== fullCustomer.astrological_sign ||
                         existingCustomer.phone_number !== fullCustomer.phone_number ||
-                        existingCustomer.address !== fullCustomer.address;
+                        existingCustomer.address !== fullCustomer.address ||
+                        existingCustomer.clothes !== fullCustomer.clothes;
 
                         if (needsUpdate) {
                             await updateCustomer(existingCustomer._id.toString(), fullCustomer);
