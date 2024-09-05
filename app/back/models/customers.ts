@@ -13,7 +13,7 @@ export default class Customers
         public astrological_sign: string,
         public phone_number: string,
         public address: string,
-        public coach_id: number,
+        public coach_id: number = 0,
         public _id?: ObjectId)
     {
     }

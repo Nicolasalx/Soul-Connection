@@ -2,7 +2,6 @@
 import React from 'react';
 import {Col, Row, Statistic} from 'antd';
 import CountUp from 'react-countup';
-import { LikeOutlined } from '@ant-design/icons';
 import { valueType } from 'antd/es/statistic/utils';
 
 interface NumberStatProps {
@@ -15,7 +14,7 @@ function NumberStat({ title, value }: NumberStatProps) {
     if (typeof value === 'number') {
       return <CountUp end={value} separator="," />;
     }
-    return value; // Return the value as is if it's not a number
+    return value;
   };
 
   return (

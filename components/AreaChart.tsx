@@ -27,19 +27,17 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function AreaaChart({data, title, description}: any) {
+export function AreaaChart({ data, title, description, dataKey, xAxisKey }: { 
+  data: any, title: string, description: string, dataKey: string, xAxisKey: string}) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>title</CardTitle>
-        <CardDescription>
-            description
-        </CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="px-5">
         <ChartContainer config={chartConfig}>
           <AreaChart
-            accessibilityLayer
             data={data}
             margin={{
               left: 12,
@@ -48,18 +46,18 @@ export function AreaaChart({data, title, description}: any) {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="coach"
+              dataKey={xAxisKey}
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value.toString().slice(0, 3)}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
             <Area
-              dataKey="value"
+              dataKey={dataKey}
               type="natural"
               fill="var(--color-desktop)"
               fillOpacity={0.4}
@@ -81,5 +79,5 @@ export function AreaaChart({data, title, description}: any) {
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }
