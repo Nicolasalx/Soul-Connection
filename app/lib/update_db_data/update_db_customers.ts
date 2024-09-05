@@ -41,8 +41,7 @@ export async function update_db_customers()
                     fullData.description,
                     fullData.astrological_sign,
                     fullData.phone_number,
-                    fullData.address,
-                    fullData.coach_id
+                    fullData.address
                 );
 
                 const existingCustomer = existingCustomerMap.get(fullCustomer.email);
@@ -50,7 +49,6 @@ export async function update_db_customers()
                 if (existingCustomer) {
                     if (existingCustomer._id) {
                         const needsUpdate =
-
                         existingCustomer.email !== fullCustomer.email ||
                         existingCustomer.name !== fullCustomer.name ||
                         existingCustomer.surname !== fullCustomer.surname ||
@@ -59,8 +57,7 @@ export async function update_db_customers()
                         existingCustomer.description !== fullCustomer.description ||
                         existingCustomer.astrological_sign !== fullCustomer.astrological_sign ||
                         existingCustomer.phone_number !== fullCustomer.phone_number ||
-                        existingCustomer.address !== fullCustomer.address ||
-                        existingCustomer.coach_id !== fullCustomer.coach_id;
+                        existingCustomer.address !== fullCustomer.address;
 
                         if (needsUpdate) {
                             await updateCustomer(existingCustomer._id.toString(), fullCustomer);
