@@ -1,44 +1,43 @@
 'use client';
 
-import { Button, Modal, Select } from 'antd';
-import React, { useState } from 'react';
+import { Button, Modal, Select, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
 import EmployeeForm from './employeeForm';
-import type { SelectProps } from 'antd';
+import type { SelectProps, TableColumnsType } from 'antd';
+import { getEmployees } from '../lib/dbhelper/employees';
 
 /*     TABLE COACHES      */
 
-interface CoachesData {
+interface DataTypeCoaches {
   key: React.Key;
+  id: string;
   name: string;
   birthDate: string;
+  customers: string;
   lastConnection: string;
 }
 
-const dataCoaches: CoachesData[] = [
+const columns: TableColumnsType<DataTypeCoaches> = [
   {
-    key: 1,
-    name: 'Date',
-    birthDate: 'date',
-    lastConnection: '18-07-2024'
+    title: '#',
+    dataIndex: 'id',
   },
   {
-    key: 2,
-    name: 'Date',
-    birthDate: 'date',
-    lastConnection: '18-07-2024'
+    title: 'Name',
+    dataIndex: 'name',
   },
   {
-    key: 3,
-    name: 'Date',
-    birthDate: 'date',
-    lastConnection: '18-07-2024'
+    title: 'Birth Date',
+    dataIndex: 'birthDate',
   },
   {
-    key: 4,
-    name: 'Date',
-    birthDate: 'date',
-    lastConnection: '18-07-2024'
+    title: 'Customers',
+    dataIndex: 'customers',
   },
+  {
+    title: 'Last Connection',
+    dataIndex: 'lastConnection',
+  }
 ];
 
 /*      SELECTION OF CUSTOMERS     */
@@ -58,6 +57,7 @@ const handleChange = (value: string[]) => {
 
 function Coaches() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = useState<DataTypeCoaches[]>([]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -71,9 +71,28 @@ function Coaches() {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    async function fetchEmployeesData() {
+      const dataEmployees = await getEmployees();
+      const formattedData = dataEmployees.map((employee: any) => ({
+        key: employee.id,
+        id: employee.id,
+        name: `${employee.name} ${employee.surname}`,
+        birthDate: employee.birth_date || 'N/A',
+        customers: employee.work || 'N/A',
+        lastConnection: 'N/A',
+      }));
+      setData(formattedData);
+    }
+
+    fetchEmployeesData();
+  }, []);
+
   return (
     <>
       <div style={{ marginLeft: 300, marginTop: 500 }}>
+        <Table columns={columns} dataSource={data} size="middle" pagination={false} />
+
         <Select
           mode="multiple"
           allowClear
