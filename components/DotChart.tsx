@@ -30,12 +30,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function DotChart({data, title, description}: any) {
+export function DotChart({data, title, description, xAxisKey, lineKey, observation, details}: { 
+  data: any, title: string, description: string, xAxisKey: string, lineKey: string, observation: string, details: string}) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>[Example] Line Chart - Dots</CardTitle>
-        <CardDescription>[Example] January - June 2024</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="px-5">
         <ChartContainer config={chartConfig}>
@@ -49,18 +50,18 @@ export function DotChart({data, title, description}: any) {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey={xAxisKey}
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={(value) => value.toString().slice(0, 3)}
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
             <Line
-              dataKey="value"
+              dataKey={lineKey}
               type="natural"
               stroke="var(--color-desktop)"
               strokeWidth={2}
@@ -76,10 +77,10 @@ export function DotChart({data, title, description}: any) {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          [Example Observation] <TrendingUp className="h-4 w-4" />
+          {observation} <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          [Example]
+          {details}
         </div>
       </CardFooter>
     </Card>
