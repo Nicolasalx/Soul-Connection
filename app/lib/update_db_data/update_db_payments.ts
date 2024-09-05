@@ -20,7 +20,14 @@ export async function update_db_payments()
         let fullPayments: Payments[] = [];
 
         for (const currentCustomer of customer) {
-            fullPayments = fullPayments.concat(await (await fetch(`/api/customers/${currentCustomer.id}/payments_history`, { method: 'GET' })).json());
+            const response = await fetch(`/api/customers/${currentCustomer.id}/payments_history`, { method: 'GET' });
+            const payments: Payments[] = await response.json();
+
+            for (const i of payments) {
+                i.customer_id = currentCustomer.id;
+            }
+
+            fullPayments = fullPayments.concat(payments);
         }
 
         const existingPayments = await getPayments();
