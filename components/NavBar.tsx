@@ -12,32 +12,37 @@ const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>,
       <ul className="mt-10 space-y-6">
         <li>
           <Link href="/home">
-            <p className="pl-4">Home</p>
+            <p className="px-4">Home</p>
           </Link>
         </li>
         <li>
           <Link href="/coaches">
-            <p className="pl-4">Coaches</p>
+            <p className="px-4">Coaches</p>
           </Link>
         </li>
         <li>
           <Link href="/customers">
-            <p className="pl-4">Customers</p>
+            <p className="px-4">Customers</p>
           </Link>
         </li>
         <li>
           <Link href="/statistics">
-            <p className="pl-4">Statistics</p>
+            <p className="px-4">Statistics</p>
           </Link>
         </li>
         <li>
           <Link href="/tips">
-            <p className="pl-4">Tips</p>
+            <p className="px-4">Tips</p>
           </Link>
         </li>
         <li>
           <Link href="/events">
-            <p className="pl-4">Events</p>
+            <p className="px-4">Events</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/astro-compatibility">
+            <p className="px-4">Astrology Compatibility</p>
           </Link>
         </li>
       </ul>
@@ -90,7 +95,7 @@ export default function NavBar() {
       <Button className="p-4 text-white focus:outline-none md:hidden" onClick={toggleSidebar}>
         x Close
       </Button>
-      <div className={`fixed top-24 left-0 h-[calc(100%-6rem)] w-64 bg-gray-800 text-white transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-50 md:transform-none md:-translate-x-full`}>
+      <div className={`fixed top-24 left-0 h-[calc(100%-6rem)] w-[40%] md:w-[20%] bg-gray-800/85 backdrop-blur-sm text-white transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-50 md:transform-none md:-translate-x-full`}>
         { SideBarItems(userConnected, handleLogout) }
       </div>
     </div>
