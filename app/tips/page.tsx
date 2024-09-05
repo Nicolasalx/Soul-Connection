@@ -12,7 +12,6 @@ export default function Advices() {
     const fetchTips = async () => {
       try {
         const tips: Tips[] = await getTips();
-        console.log(tips);
         setAllTips(tips);
       } catch (error) {
         console.error('Error fetching tips:', error);
@@ -22,7 +21,7 @@ export default function Advices() {
   }, []);
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginLeft: 170, marginTop: 30 }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '60px', marginLeft: 300, marginTop: 120, marginBottom: 50 }}>
       {allTips.length > 0 ? (
         allTips.map((tip) => (
           <Card
