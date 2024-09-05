@@ -22,7 +22,7 @@ export async function isManager() {
     }
 }
 
-export async function getSelfId(): Promise<number>
+export async function getSelfId()
 {
     try {
         const result = await fetch('/api/employees/me', { method: 'GET' })
