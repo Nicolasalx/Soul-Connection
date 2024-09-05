@@ -99,3 +99,12 @@ export async function assignCoachToCustomer(coach_id: number, customer_mongo_id:
 
   await updateCustomer(customer_mongo_id.toString(), newCustomerData);
 }
+
+export async function unassignCoachToCustomer(customer_mongo_id: ObjectId): Promise<void>
+{
+  const newCustomerData: Partial<Customers> = {
+    coach_id: 0,
+  };
+
+  await updateCustomer(customer_mongo_id.toString(), newCustomerData);
+}
