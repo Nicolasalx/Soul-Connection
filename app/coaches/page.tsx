@@ -1,89 +1,38 @@
 'use client';
 
-import type { FormProps } from 'antd';
-import { Button, Form, Input, Modal } from 'antd';
-import React, { useState } from 'react';
-import { createEmployee } from '../lib/dbhelper/employees';
-import Employees from "@/app/back/models/employees";
-
-/*     COACH CREATION     */
-
-type FieldType = {
-  email: string;
-  name: string;
-  surname: string;
-  birthDate: string;
-  gender: string;
-  work: string;
-};
-
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-  const uuid = Math.floor(Math.random() * 10 ** 15);
-
-  const employee = new Employees(
-    uuid,
-    values.email,
-    values.name,
-    values.surname,
-    values.birthDate,
-    values.gender,
-    values.work
-  );
-
-  createEmployee(employee);
-
-  console.log(employee);
-  console.log('Success:', values);
-};
-
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
+import { Button, Modal, Select, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
+import EmployeeForm from './employeeForm';
+import type { SelectProps, TableColumnsType } from 'antd';
+import { getEmployees } from '../lib/dbhelper/employees';
+import { getCustomers } from '../lib/dbhelper/customers';
 
 /*     TABLE COACHES      */
 
-interface CoachesData {
+interface DataTypeCoaches {
   key: React.Key;
+  id: string;
   name: string;
   birthDate: string;
-  // customers: string[]; // Modify after
+  customers: string[];
   lastConnection: string;
 }
 
-const dataCoaches: CoachesData[] = [
-  {
-    key: 1,
-    name: 'Date',
-    birthDate: 'date',
-    // customers: ['John', 'Max'],
-    lastConnection: '18-07-2024'
-  },
-  {
-    key: 2,
-    name: 'Date',
-    birthDate: 'date',
-    // customers: ['John', 'Max'],
-    lastConnection: '18-07-2024'
-  },
-  {
-    key: 3,
-    name: 'Date',
-    birthDate: 'date',
-    // customers: ['John', 'Max'],
-    lastConnection: '18-07-2024'
-  },
-  {
-    key: 4,
-    name: 'Date',
-    birthDate: 'date',
-    // customers: ['John', 'Max'],
-    lastConnection: '18-07-2024'
-  },
-];
+interface CustomerType {
+  id: number;
+  name: string;
+  surname: string;
+  coach_id?: number;
+}
+
+const handleCustomerChange = (value: string[], record: DataTypeCoaches) => {
+  console.log(`Selected customers for ${record.name}:`, value);
+};
 
 function Coaches() {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = useState<DataTypeCoaches[]>([]);
+  const [customerOptions, setCustomerOptions] = useState<SelectProps['options']>([]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -97,81 +46,83 @@ function Coaches() {
     setIsModalOpen(false);
   };
 
-  return (
-    <>
-      <Button type="primary" onClick={showModal} style={{marginLeft: 200, marginTop: 200}}>
-        Create New Employee
-      </Button>
-      <Modal title="Employee Creation" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <Form
-          name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
+  useEffect(() => {
+    async function fetchEmployeesData() {
+      const dataEmployees = await getEmployees();
+      const formattedData = dataEmployees.map((employee: any) => ({
+        key: employee.id,
+        id: employee.id,
+        name: `${employee.name} ${employee.surname}`,
+        birthDate: employee.birth_date || 'N/A',
+        customers: employee.customers || [],
+        lastConnection: 'N/A',
+      }));
+      setData(formattedData);
+    }
 
-        <Form.Item<FieldType>
-          label="E-mail"
-          name="email"
-          rules={[{ required: true, message: 'Please input your e-mail' }]}
-        >
-          <Input />
-        </Form.Item>
+    async function fetchCustomersData() {
+      const dataCustomers = await getCustomers();
+      const formattedCustomers = dataCustomers
+        .filter((customer: CustomerType) => !customer.coach_id)
+        .map((customer: CustomerType) => ({
+          label: `${customer.name} ${customer.surname}`,
+          value: customer.id.toString(),
+        }));
+      setCustomerOptions(formattedCustomers);
+    }
 
-        <Form.Item<FieldType>
-          label="Name"
-          name="name"
-          rules={[{ required: true, message: 'Please input your name' }]}
-        >
-          <Input />
-        </Form.Item>
+    fetchEmployeesData();
+    fetchCustomersData();
+  }, []);
 
-        <Form.Item<FieldType>
-          label="Surname"
-          name="surname"
-          rules={[{ required: true, message: 'Please input your surname' }]}
-        >
-          <Input />
-        </Form.Item>
+  const columns: TableColumnsType<DataTypeCoaches> = [
+    {
+      title: '#',
+      dataIndex: 'id',
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+    },
+    {
+      title: 'Birth Date',
+      dataIndex: 'birthDate',
+    },
+    {
+      title: 'Customers',
+        dataIndex: 'customers',
+        render: (_, record) => (
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: '100%' }}
+            placeholder="Select customers"
+            defaultValue={record.customers}
+            onChange={(value) => handleCustomerChange(value, record)}
+            options={customerOptions}
+          />
+        ),
+      },
+      {
+        title: 'Last Connection',
+        dataIndex: 'lastConnection',
+      },
+    ];
+  
+    return (
+      <>
+        <div style={{ marginLeft: 300, marginTop: 150 }}>
+          <Table columns={columns} dataSource={data} size="middle" pagination={false} />
+  
+          <Button type="primary" onClick={showModal}>
+            Create New Employee
+          </Button>
+          <Modal title="Employee Creation" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <EmployeeForm />
+          </Modal>
+        </div>
+      </>
+    );
+  }
 
-        <Form.Item<FieldType>
-          label="Birth Date"
-          name="birthDate"
-          rules={[{ required: true, message: 'Please input your birth date' }]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item<FieldType>
-          label="Gender"
-          name="gender"
-          rules={[{ required: true, message: 'Please input your gender' }]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item<FieldType>
-          label="Work"
-          name="work"
-          rules={[{ required: true, message: 'Please input your work' }]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
-
-      </Modal>
-    </>
-  );
-}
-
-export default Coaches
+  export default Coaches;
