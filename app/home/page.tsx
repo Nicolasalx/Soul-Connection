@@ -2,6 +2,7 @@
 
 import { delete_db_customers, update_db_customers } from "../lib/update_db_data/update_db_customers";
 import { delete_db_employees, update_db_employees } from "../lib/update_db_data/update_db_employees";
+import { delete_db_events, update_db_events } from "../lib/update_db_data/update_db_events";
 import { delete_db_tips, update_db_tips } from "../lib/update_db_data/update_db_tips";
 
 function HomeDashboard()
@@ -9,9 +10,10 @@ function HomeDashboard()
   // ! strt test api to db
   const handleUpdateClick = async () => {
     try {
-//      await update_db_tips();
-//      await update_db_employees();
-//      await update_db_customers();
+      await update_db_tips();
+      await update_db_employees();
+      await update_db_customers();
+      await update_db_events();
       alert('Database updated successfully');
     } catch (error) {
       console.error('Failed to update employees:', error);
@@ -21,9 +23,10 @@ function HomeDashboard()
 
   const handleDeleteClick = async () => {
     try {
-//      await delete_db_tips();
-//      await delete_db_employees();
-//      await delete_db_customers();
+      await delete_db_tips();
+      await delete_db_employees();
+      await delete_db_customers();
+      await delete_db_events();
       alert('Database deleted successfully');
     } catch (error) {
       console.error('Failed to deleted employees:', error);

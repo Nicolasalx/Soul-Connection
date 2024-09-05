@@ -7,7 +7,6 @@ export async function delete_db_employees()
 
     for (const employee of existingEmployees) {
         if (employee._id) {
-            console.log(employee);
             deleteEmployee(employee._id.toString());
         }
     }
@@ -53,15 +52,7 @@ export async function update_db_employees()
                         existingEmployee.work !== fullEmployee.work;
                         
                         if (needsUpdate) {
-                            await updateEmployee(existingEmployee._id.toString(), {
-                                id: fullEmployee.id,
-                                email: fullEmployee.email,
-                                name: fullEmployee.name,
-                                surname: fullEmployee.surname,
-                                birth_date: fullEmployee.birth_date,
-                                gender: fullEmployee.gender,
-                                work: fullEmployee.work,
-                            });
+                            await updateEmployee(existingEmployee._id.toString(), fullEmployee);
                         }
                     }
                 } else {

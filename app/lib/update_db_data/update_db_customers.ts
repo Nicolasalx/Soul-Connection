@@ -7,7 +7,6 @@ export async function delete_db_customers()
 
     for (const customer of existingCustomers) {
         if (customer._id) {
-            console.log(customer);
             deleteCustomer(customer._id.toString());
         }
     }
