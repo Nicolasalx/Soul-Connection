@@ -7,9 +7,7 @@ export async function delete_db_employees()
 
     for (const employee of existingEmployees) {
         if (employee._id) {
-
             console.log(employee);
-            console.log(employee.email);
             deleteEmployee(employee._id.toString());
         }
     }
