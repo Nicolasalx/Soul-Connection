@@ -1,66 +1,44 @@
 import Tips from "@/app/back/models/tips";
+import { sc_db_api } from "./db_api_instance";
 
-export async function getTips(): Promise<Tips[]>
-{
-  const response = await fetch('http://localhost:3000/api/back/tips', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
+export async function getTips(): Promise<Tips[]> {
+  try {
+    const response = await sc_db_api.get('/tips');
+    return response.data;
+  } catch (error) {
     throw new Error('Failed to fetch tips');
   }
-
-  return await response.json();
 }
 
-export async function createTip(tip: Tips): Promise<Tips>
-{
-  const response = await fetch('http://localhost:3000/api/back/tips', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(tip),
-  });
-
-  if (!response.ok) {
+export async function createTip(tip: Tips): Promise<Tips> {
+  try {
+    const response = await sc_db_api.post('/tips', tip);
+    return response.data;
+  } catch (error) {
     throw new Error('Failed to create tip');
   }
-
-  return await response.json();
 }
 
-export async function updateTip(_id: string, tip: Partial<Tips>): Promise<void>
-{
-  const response = await fetch('http://localhost:3000/api/back/tips', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ _id, ...tip }),
-  });
-
-  const responseData = await response.json();
-
-  if (!response.ok) {
-    console.error('API response:', responseData);
+export async function updateTip(_id: string, tip: Partial<Tips>): Promise<void> {
+  try {
+    const response = await sc_db_api.put('/tips', { _id, ...tip });
+    if (response.status !== 200) {
+      throw new Error('Failed to update tip');
+    }
+  } catch (error) {
     throw new Error('Failed to update tip');
   }
 }
 
-export async function deleteTip(_id: string): Promise<void>
-{
-  const response = await fetch(`${'http://localhost:3000/api/back/tips'}?deleteId=${_id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
+export async function deleteTip(_id: string): Promise<void> {
+  try {
+    const response = await sc_db_api.delete('/tips', {
+      params: { deleteId: _id }
+    });
+    if (response.status !== 200) {
+      throw new Error('Failed to delete tip');
+    }
+  } catch (error) {
     throw new Error('Failed to delete tip');
   }
 }

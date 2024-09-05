@@ -1,66 +1,44 @@
 import Employees from '@/app/back/models/employees';
+import { sc_db_api } from "./db_api_instance";
 
-export async function getEmployees(): Promise<Employees[]>
-{
-  const response = await fetch('http://localhost:3000/api/back/employees', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
+export async function getEmployees(): Promise<Employees[]> {
+  try {
+    const response = await sc_db_api.get('/employees');
+    return response.data;
+  } catch (error) {
     throw new Error('Failed to fetch employees');
   }
-
-  return await response.json();
 }
 
-export async function createEmployee(employee: Employees): Promise<Employees>
-{
-  const response = await fetch('http://localhost:3000/api/back/employees', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(employee),
-  });
-
-  if (!response.ok) {
+export async function createEmployee(employee: Employees): Promise<Employees> {
+  try {
+    const response = await sc_db_api.post('/employees', employee);
+    return response.data;
+  } catch (error) {
     throw new Error('Failed to create employee');
   }
-
-  return await response.json();
 }
 
-export async function updateEmployee(_id: string, employee: Partial<Employees>): Promise<void>
-{
-  const response = await fetch('http://localhost:3000/api/back/employees', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ _id, ...employee }),
-  });
-
-  const responseData = await response.json();
-
-  if (!response.ok) {
-    console.error('API response:', responseData);
+export async function updateEmployee(_id: string, employee: Partial<Employees>): Promise<void> {
+  try {
+    const response = await sc_db_api.put('/employees', { _id, ...employee });
+    if (response.status !== 200) {
+      throw new Error('Failed to update employee');
+    }
+  } catch (error) {
     throw new Error('Failed to update employee');
   }
 }
 
-export async function deleteEmployee(_id: string): Promise<void>
-{
-  const response = await fetch(`${'http://localhost:3000/api/back/employees'}?deleteId=${_id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
+export async function deleteEmployee(_id: string): Promise<void> {
+  try {
+    const response = await sc_db_api.delete('/employees', {
+      params: { deleteId: _id }
+    });
+    if (response.status !== 200) {
+      throw new Error('Failed to delete employee');
+    }
+  } catch (error) {
     throw new Error('Failed to delete employee');
   }
 }

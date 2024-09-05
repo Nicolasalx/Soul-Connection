@@ -4,68 +4,46 @@ import { getEncounters } from "./encounters";
 import Payments from "@/app/back/models/payments";
 import { getPayments } from "./payments";
 import { ObjectId } from "mongodb";
+import { sc_db_api } from "./db_api_instance";
 
-export async function getCustomers(): Promise<Customers[]>
-{
-  const response = await fetch('http://localhost:3000/api/back/customers', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
+export async function getCustomers(): Promise<Customers[]> {
+  try {
+    const response = await sc_db_api.get('/customers');
+    return response.data;
+  } catch (error) {
     throw new Error('Failed to fetch customers');
   }
-
-  return await response.json();
 }
 
-export async function createCustomer(customer: Customers): Promise<Customers>
-{
-  const response = await fetch('http://localhost:3000/api/back/customers', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(customer),
-  });
-
-  if (!response.ok) {
+export async function createCustomer(customer: Customers): Promise<Customers> {
+  try {
+    const response = await sc_db_api.post('/customers', customer);
+    return response.data;
+  } catch (error) {
     throw new Error('Failed to create customer');
   }
-
-  return await response.json();
 }
 
-export async function updateCustomer(_id: string, customer: Partial<Customers>): Promise<void>
-{
-  const response = await fetch('http://localhost:3000/api/back/customers', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ _id, ...customer }),
-  });
-
-  const responseData = await response.json();
-
-  if (!response.ok) {
-    console.error('API response:', responseData);
+export async function updateCustomer(_id: string, customer: Partial<Customers>): Promise<void> {
+  try {
+    const response = await sc_db_api.put('/customers', { _id, ...customer });
+    if (response.status !== 200) {
+      throw new Error('Failed to update customer');
+    }
+  } catch (error) {
     throw new Error('Failed to update customer');
   }
 }
 
-export async function deleteCustomer(_id: string): Promise<void>
-{
-  const response = await fetch(`${'http://localhost:3000/api/back/customers'}?deleteId=${_id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
+export async function deleteCustomer(_id: string): Promise<void> {
+  try {
+    const response = await sc_db_api.delete('/customers', {
+      params: { deleteId: _id }
+    });
+    if (response.status !== 200) {
+      throw new Error('Failed to delete customer');
+    }
+  } catch (error) {
     throw new Error('Failed to delete customer');
   }
 }
