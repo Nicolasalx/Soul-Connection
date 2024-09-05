@@ -7,6 +7,7 @@ import type { SelectProps, TableColumnsType } from 'antd';
 import { getEmployees } from '../lib/dbhelper/employees';
 import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '../lib/dbhelper/customers';
 import { ObjectId } from 'mongodb';
+import Customers from "@/app/back/models/customers";
 
 var mongoose = require('mongoose');
 
@@ -159,17 +160,38 @@ function Coaches() {
 
   return (
     <>
-      <div style={{ marginLeft: 300, marginTop: 150 }}>
-        <Table columns={columns} dataSource={data} size="middle" style={{width: 1800}}/>
-        <Button type="primary" onClick={showModal}>
-          Create New Employee
-        </Button>
-        <Modal title="Employee Creation" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+      <div style={{ marginTop: 150 }}>
+        <Table columns={columns} dataSource={data} size="large" style={{ width: 1800 }} />
+        
+        {/* Centering the Button */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+          <Button
+            type="primary"
+            size='large'
+            onClick={showModal}
+            style={{ backgroundColor: '#FFFFFF', borderColor: '#FFFFFF', color: '#000000' }}
+          >
+            Create New Employee
+          </Button>
+        </div>
+  
+        <Modal
+          title="Employee Creation"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={[
+            <Button key="ok" type="primary" onClick={handleOk}>
+              OK
+            </Button>,
+          ]}
+        >
           <EmployeeForm />
         </Modal>
       </div>
     </>
   );
+  
 }
 
 export default Coaches;

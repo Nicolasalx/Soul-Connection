@@ -17,7 +17,6 @@ const CustomerSelect: React.FC = () => {
   const [tops, setTops] = useState<any[]>([]);
   const [bottoms, setBottoms] = useState<any[]>([]);
 
-  // New states for current index
   const [currentHatIndex, setCurrentHatIndex] = useState<number>(0);
   const [currentTopIndex, setCurrentTopIndex] = useState<number>(0);
   const [currentBottomIndex, setCurrentBottomIndex] = useState<number>(0);
