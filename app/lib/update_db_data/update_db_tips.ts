@@ -32,11 +32,7 @@ export async function update_db_tips()
                         existingTip.title !== currentTip.title;
                         
                         if (needsUpdate) {
-                            await updateTip(existingTip._id.toString(), {
-                                id: currentTip.id,
-                                tip: currentTip.tip,
-                                title: currentTip.title
-                            });
+                            await updateTip(existingTip._id.toString(), currentTip);
                         }
                     }
                 } else {

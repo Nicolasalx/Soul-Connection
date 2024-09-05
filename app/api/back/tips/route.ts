@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/back/services/database.service';
 import { ObjectId } from 'mongodb';
+import { fromUTF8Array, toUTF8Array } from '../employees/route';
 
 export async function GET(request: NextRequest)
 {
@@ -8,7 +9,14 @@ export async function GET(request: NextRequest)
     const db = await connectToDatabase();
     const tipsCollection = db.collection('tips');
     const tips = await tipsCollection.find({}).toArray();
-    return NextResponse.json(tips, { status: 200 });
+
+    const convertedTips = tips.map(tip => ({
+      ...tip,
+      title: fromUTF8Array(tip.title),
+      tip: fromUTF8Array(tip.tip)
+    }));
+
+    return NextResponse.json(convertedTips, { status: 200 });
   } catch (error) {
     console.error('Error fetching tips:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
@@ -22,7 +30,14 @@ export async function POST(request: NextRequest)
     const tipsCollection = db.collection('tips');
 
     const body = await request.json();
-    const result = await tipsCollection.insertOne(body);
+
+    const newTips = {
+      ...body,
+      title: toUTF8Array(body.title),
+      tip: toUTF8Array(body.tip),
+    };
+
+    const result = await tipsCollection.insertOne(newTips);
     return NextResponse.json(result, { status: 201 });
   } catch (error) {
     console.error('Error creating tip:', error);
