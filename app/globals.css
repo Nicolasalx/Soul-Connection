@@ -16,8 +16,12 @@
   }
 }
 
+html {
+  @apply theme-gradient bg-no-repeat h-full;
+}
+
 body {
-  @apply theme-gradient;
+  @apply bg-transparent;
 }
 
 h1 {
