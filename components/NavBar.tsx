@@ -45,6 +45,11 @@ const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>,
             <p className="px-4">Astrology Compatibility</p>
           </Link>
         </li>
+        <li>
+          <Link href="/clothing">
+            <p className="px-4">Clothing</p>
+          </Link>
+        </li>
       </ul>
       <If condition={userConnected}>
         <div className="absolute bottom-4 w-full flex justify-center">
@@ -95,7 +100,7 @@ export default function NavBar() {
       <Button className="p-4 text-white focus:outline-none md:hidden" onClick={toggleSidebar}>
         x Close
       </Button>
-      <div className={`fixed top-24 left-0 h-[calc(100%-6rem)] w-[40%] md:w-[20%] bg-gray-800/85 backdrop-blur-sm text-white transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-50 md:transform-none md:-translate-x-full`}>
+      <div className={`fixed top-24 left-0 h-[calc(100%-6rem)] w-[40%] md:w-[20%] bg-gray-800/85 backdrop-blur-sm text-white transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-50 md:transform-none md:-translate-x-full text-3xl`}>
         { SideBarItems(userConnected, handleLogout) }
       </div>
     </div>
