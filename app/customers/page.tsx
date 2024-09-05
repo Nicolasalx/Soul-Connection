@@ -16,7 +16,7 @@ import { getSelfId } from '../lib/user';
 
 const baseStyle: React.CSSProperties = {
   width: '75%',
-  height: 54,
+  height: 54
 };
 
 const { Title } = Typography;
@@ -84,8 +84,7 @@ function ClientProfile() {
     async function fetchCustomerData() {
       try {
         const selfIdCoach = await getSelfId();
-        // ! const response = await getCoachCustomers(selfIdCoach); Replace with this line when information will be migrate on our database
-        const response = await getCoachCustomers(1);
+        const response = await getCoachCustomers(selfIdCoach);
         setCustomerData(response);
         const formattedOptions = response.map((customer: Customers) => ({
           value: customer.id.toString(),
@@ -158,19 +157,19 @@ function ClientProfile() {
             options={options}
             value={selectedCustomer}
           />
-          <div style={{...baseStyle, height: 100}}>
+          <div style={{...baseStyle, height: 65, marginTop: 20}}>
             <Title style={{color: "white"}}><FontAwesomeIcon icon={faPerson} />  {customerDetails.name || "No name"}</Title>
           </div>
-          <div style={{...baseStyle, height: 100}}>
+          <div style={{...baseStyle, height: 65}}>
             <Title style={{color: "white"}}><FontAwesomeIcon icon={faCakeCandles} />  {customerDetails.birth_date || "No birth date"}</Title>
           </div>
-          <div style={{...baseStyle, height: 100}}>
+          <div style={{...baseStyle, height: 65}}>
             <Title style={{color: "white"}}><FontAwesomeIcon icon={faLocationDot} />  {customerDetails.address || "No address"}</Title>
           </div>
-          <div style={{...baseStyle, height: 100}}>
+          <div style={{...baseStyle, height: 65}}>
             <Title style={{color: "white"}}><FontAwesomeIcon icon={faPhone} />  {customerDetails.phone_number || "No phone number"}</Title>
           </div>
-          <div style={{...baseStyle, height: 100}}>
+          <div style={{...baseStyle, height: 65}}>
             <Title style={{color: "white"}}><FontAwesomeIcon icon={faComment} />  {customerDetails.description || "No description"}</Title>
           </div>
         </div>
@@ -178,6 +177,7 @@ function ClientProfile() {
           <Image
             width={350}
             src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+            style={{marginLeft: 250}}
           />
         </div>
       </div>
@@ -185,10 +185,10 @@ function ClientProfile() {
       <Divider style={{ borderColor: '#ffffff' }}></Divider>
       <div className='tables-container'>
         <div className='table-payments'>
-          <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large" pagination={false}/>
+          <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large"/>
         </div>
         <div className='table-meetings'>
-          <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large" pagination={false}/>
+          <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large"/>
         </div>
       </div>
       </div>
