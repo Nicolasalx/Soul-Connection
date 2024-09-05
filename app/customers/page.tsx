@@ -15,7 +15,7 @@ import Encounters from "@/app/back/models/encounters";
 import { getSelfId } from '../lib/user';
 
 const baseStyle: React.CSSProperties = {
-  width: '75%',
+  width: '100%',
   height: 54
 };
 
@@ -79,6 +79,7 @@ function ClientProfile() {
   const [customerDetails, setCustomerDetails] = useState<Partial<Customers>>({});
   const [paymentsDetails, setPaymentsDetails] = useState<DataTypePayments[]>([]);
   const [encountersDetails, setEncountersDetails] = useState<DataTypeEncounters[]>([]);
+  const [customerId, setCustomerId] = useState<number | null>(null);
 
   useEffect(() => {
     async function fetchCustomerData() {
@@ -102,13 +103,14 @@ function ClientProfile() {
     if (selectedCustomer) {
       const customer = customerData.find(cust => cust.id.toString() === selectedCustomer);
       setCustomerDetails(customer || {});
+      setCustomerId(customer?.id ?? null);
 
-      if (customer?.id || customer?.id == 0) {
+      console.log("CUSTOMER ID: ", customerId);
 
+      if (customer?.id !== undefined) {
         /*     PAYMENTS     */
         const customerPayments = getCustomerPayments(customer.id);
         customerPayments.then(payments => {
-
           const formattedPayments = payments.map((payment: Payments) => ({
             key: payment.id.toString(),
             date: payment.date,
@@ -116,22 +118,23 @@ function ClientProfile() {
             comment: payment.comment,
           }));
           setPaymentsDetails(formattedPayments);
+        }).catch(error => {
+          console.error('Failed to fetch customer payments:', error);
+        });
 
         /*     ENCOUNTERS     */
         const customerEncounters = getCustomerEncounters(customer.id);
         customerEncounters.then(encounters => {
-          const formattedEncounters = encounters.map((encounters: Encounters) => ({
-            key: encounters.id.toString(),
-            date: encounters.date,
-            rating: encounters.rating,
-            report: encounters.comment,
-            source: encounters.source
-          }))
+          const formattedEncounters = encounters.map((encounter: Encounters) => ({
+            key: encounter.id.toString(),
+            date: encounter.date,
+            rating: encounter.rating,
+            report: encounter.comment,
+            source: encounter.source
+          }));
           setEncountersDetails(formattedEncounters);
-        })
-
         }).catch(error => {
-          console.error('Failed to fetch customer payments:', error);
+          console.error('Failed to fetch customer encounters:', error);
         });
       }
     }
@@ -143,54 +146,56 @@ function ClientProfile() {
 
   return (
     <>
-    <div style={{marginLeft: 220}}>
-      <Title style={{ color: 'white', marginTop: 120, marginLeft: 70 }}>Customers</Title>
-      <Divider style={{ borderColor: '#ffffff' }}></Divider>
+      <div style={{ marginLeft: 220 }}>
+        <Title style={{ color: 'white', marginTop: 120, marginLeft: 70 }}>Customers</Title>
+        <Divider style={{ borderColor: '#ffffff' }}></Divider>
 
-      <div className='profile-container'>
-        <div className='profile-info' style={{marginLeft: 50}}>
-          <Select
-            size="large"
-            placeholder="Select a customer"
-            onChange={handleChange}
-            style={{ width: 200 }}
-            options={options}
-            value={selectedCustomer}
-          />
-          <div style={{...baseStyle, height: 65, marginTop: 20}}>
-            <Title style={{color: "white"}}><FontAwesomeIcon icon={faPerson} />  {customerDetails.name || "No name"}</Title>
+        <div className='profile-container'>
+          <div className='profile-info' style={{ marginLeft: 50 }}>
+            <Select
+              size="large"
+              placeholder="Select a customer"
+              onChange={handleChange}
+              style={{ width: 200 }}
+              options={options}
+              value={selectedCustomer}
+            />
+            <div style={{ ...baseStyle, height: 65, marginTop: 20 }}>
+              <Title style={{ color: "white" }}><FontAwesomeIcon icon={faPerson} />  {customerDetails.name || "No name"}</Title>
+            </div>
+            <div style={{ ...baseStyle, height: 65 }}>
+              <Title style={{ color: "white" }}><FontAwesomeIcon icon={faCakeCandles} />  {customerDetails.birth_date || "No birth date"}</Title>
+            </div>
+            <div style={{ ...baseStyle, height: 65 }}>
+              <Title style={{ color: "white" }}><FontAwesomeIcon icon={faLocationDot} />  {customerDetails.address || "No address"}</Title>
+            </div>
+            <div style={{ ...baseStyle, height: 65 }}>
+              <Title style={{ color: "white" }}><FontAwesomeIcon icon={faPhone} />  {customerDetails.phone_number || "No phone number"}</Title>
+            </div>
+            <div style={{ ...baseStyle, height: 65 }}>
+              <Title style={{ color: "white" }}><FontAwesomeIcon icon={faComment} />  {customerDetails.description || "No description"}</Title>
+            </div>
           </div>
-          <div style={{...baseStyle, height: 65}}>
-            <Title style={{color: "white"}}><FontAwesomeIcon icon={faCakeCandles} />  {customerDetails.birth_date || "No birth date"}</Title>
-          </div>
-          <div style={{...baseStyle, height: 65}}>
-            <Title style={{color: "white"}}><FontAwesomeIcon icon={faLocationDot} />  {customerDetails.address || "No address"}</Title>
-          </div>
-          <div style={{...baseStyle, height: 65}}>
-            <Title style={{color: "white"}}><FontAwesomeIcon icon={faPhone} />  {customerDetails.phone_number || "No phone number"}</Title>
-          </div>
-          <div style={{...baseStyle, height: 65}}>
-            <Title style={{color: "white"}}><FontAwesomeIcon icon={faComment} />  {customerDetails.description || "No description"}</Title>
+          <div className='profile-image'>
+            <img
+                src={`/api/customers/${customerId}/image`}
+                alt="Customer Image"
+                width={400}
+                height={300}
+                style={{ margin: '0 20px' }}
+              />
           </div>
         </div>
-        <div className='profile-image'>
-          <Image
-            width={350}
-            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-            style={{marginLeft: 250}}
-          />
-        </div>
-      </div>
 
-      <Divider style={{ borderColor: '#ffffff' }}></Divider>
-      <div className='tables-container'>
-        <div className='table-payments'>
-          <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large"/>
+        <Divider style={{ borderColor: '#ffffff' }}></Divider>
+        <div className='tables-container'>
+          <div className='table-payments'>
+            <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large" />
+          </div>
+          <div className='table-meetings'>
+            <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large" />
+          </div>
         </div>
-        <div className='table-meetings'>
-          <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large"/>
-        </div>
-      </div>
       </div>
     </>
   );
