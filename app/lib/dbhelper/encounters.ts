@@ -1,66 +1,44 @@
 import Encounters from "@/app/back/models/encounters";
+import { sc_db_api } from "./db_api_instance";
 
-export async function getEncounters(): Promise<Encounters[]>
-{
-  const response = await fetch('http://localhost:3000/api/back/encounters', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
+export async function getEncounters(): Promise<Encounters[]> {
+  try {
+    const response = await sc_db_api.get('/encounters');
+    return response.data;
+  } catch (error) {
     throw new Error('Failed to fetch encounters');
   }
-
-  return await response.json();
 }
 
-export async function createEncounter(encounter: Encounters): Promise<Encounters>
-{
-  const response = await fetch('http://localhost:3000/api/back/encounters', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(encounter),
-  });
-
-  if (!response.ok) {
+export async function createEncounter(encounter: Encounters): Promise<Encounters> {
+  try {
+    const response = await sc_db_api.post('/encounters', encounter);
+    return response.data;
+  } catch (error) {
     throw new Error('Failed to create encounter');
   }
-
-  return await response.json();
 }
 
-export async function updateEncounter(_id: string, encounter: Partial<Encounters>): Promise<void>
-{
-  const response = await fetch('http://localhost:3000/api/back/encounters', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ _id, ...encounter }),
-  });
-
-  const responseData = await response.json();
-
-  if (!response.ok) {
-    console.error('API response:', responseData);
+export async function updateEncounter(_id: string, encounter: Partial<Encounters>): Promise<void> {
+  try {
+    const response = await sc_db_api.put('/encounters', { _id, ...encounter });
+    if (response.status !== 200) {
+      throw new Error('Failed to update encounter');
+    }
+  } catch (error) {
     throw new Error('Failed to update encounter');
   }
 }
 
-export async function deleteEncounter(_id: string): Promise<void>
-{
-  const response = await fetch(`${'http://localhost:3000/api/back/encounters'}?deleteId=${_id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
+export async function deleteEncounter(_id: string): Promise<void> {
+  try {
+    const response = await sc_db_api.delete('/encounters', {
+      params: { deleteId: _id }
+    });
+    if (response.status !== 200) {
+      throw new Error('Failed to delete encounter');
+    }
+  } catch (error) {
     throw new Error('Failed to delete encounter');
   }
 }
