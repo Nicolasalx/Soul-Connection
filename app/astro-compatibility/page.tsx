@@ -76,7 +76,6 @@ async function getClientInfos(client: number | null) {
 
 async function calcCompatibility(sign1: string, sign2: string) {
   const key = (sign1 + sign2).toLowerCase()
-  console.log(key)
   if (!Object.keys(astroComps).includes(key)) {
     return 0
   }
