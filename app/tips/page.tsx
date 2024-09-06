@@ -20,7 +20,7 @@ export default function Advices() {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen p-6 mt-48">
+    <div className="flex flex-col h-screen w-screen p-6">
       <div className="bg-white border border-gray-300 p-12 rounded-lg">
         <h1 className="font-bold text-gray-600 mb-20 mt-10 text-2xl" style={{ fontSize: "4rem" }}>
           Tips

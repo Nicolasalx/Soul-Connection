@@ -59,25 +59,34 @@ const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>)
 }
 
 export default function NavBar() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userConnected, setUserConnected] = useState(false);
   const pathname = usePathname();
+  const mobileSidebarClass = `transform ${
+    isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+    } transition-transform duration-300 ease-in-out z-50`
 
-  const handleLogout = async () => {
-    try {
-      const res = await fetch('/api/employees/logout', { method: 'POST' });
-      if (res.status === 307) {
-        window.location.reload();
+    const handleLogout = async() => {
+      try {
+        const res = await fetch('/api/employees/logout', { method: 'POST' });
+        if (res.status === 307) {
+          window.location.reload();
+        }
+      } catch(err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
     }
-  }
+  
+    const toggleSidebar = () => {
+      setIsSidebarOpen(!isSidebarOpen)
+    }
 
   useEffect(() => {
     isConnected().then((status) => {
       setUserConnected(status);
     });
   }, []);
+
 
   if (pathname === '/login') {
     return null;
@@ -86,8 +95,13 @@ export default function NavBar() {
   return (
     <div>
       <div className="fixed left-0 h-full w-[40%] md:w-[20%] bg-black text-white border-r-8 border-pink-500 z-50">
+        <div className="cursor-pointer md:cursor-auto" onClick={toggleSidebar}>
         { SideBarItems(userConnected, handleLogout) }
+      </div>
       </div>
     </div>
   );
 }
+
+
+//-------------------------------------------------

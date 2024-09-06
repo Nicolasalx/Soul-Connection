@@ -10,6 +10,11 @@ import Payments from "@/app/back/models/payments";
 import Encounters from "@/app/back/models/encounters";
 import { getSelfId } from '../lib/user';
 
+const baseStyle: React.CSSProperties = {
+  width: '100%',
+  height: 54
+};
+
 const { Title } = Typography;
 
 interface DataTypePayments {
@@ -68,6 +73,7 @@ function ClientProfile() {
   const [customerDetails, setCustomerDetails] = useState<Partial<Customers>>({});
   const [paymentsDetails, setPaymentsDetails] = useState<DataTypePayments[]>([]);
   const [encountersDetails, setEncountersDetails] = useState<DataTypeEncounters[]>([]);
+  const [customerId, setCustomerId] = useState<number | null>(null);
 
   useEffect(() => {
     async function fetchCustomerData() {
@@ -91,6 +97,7 @@ function ClientProfile() {
     if (selectedCustomer) {
       const customer = customerData.find(cust => cust.id.toString() === selectedCustomer);
       setCustomerDetails(customer || {});
+      setCustomerId(customer?.id ?? null);
 
       if (customer?.id || customer?.id === 0) {
         const customerPayments = getCustomerPayments(customer.id);
@@ -102,20 +109,23 @@ function ClientProfile() {
             comment: payment.comment,
           }));
           setPaymentsDetails(formattedPayments);
-
-          const customerEncounters = getCustomerEncounters(customer.id);
-          customerEncounters.then(encounters => {
-            const formattedEncounters = encounters.map((encounters: Encounters) => ({
-              key: encounters.id.toString(),
-              date: encounters.date,
-              rating: encounters.rating,
-              report: encounters.comment,
-              source: encounters.source
-            }))
-            setEncountersDetails(formattedEncounters);
-          })
         }).catch(error => {
           console.error('Failed to fetch customer payments:', error);
+        });
+
+        /*     ENCOUNTERS     */
+        const customerEncounters = getCustomerEncounters(customer.id);
+        customerEncounters.then(encounters => {
+          const formattedEncounters = encounters.map((encounter: Encounters) => ({
+            key: encounter.id.toString(),
+            date: encounter.date,
+            rating: encounter.rating,
+            report: encounter.comment,
+            source: encounter.source
+          }));
+          setEncountersDetails(formattedEncounters);
+        }).catch(error => {
+          console.error('Failed to fetch customer encounters:', error);
         });
       }
     }
@@ -126,7 +136,7 @@ function ClientProfile() {
   };
 
   return (
-    <div className="flex flex-col h-screen p-6">
+    <div className="flex flex-col h-screen w-screen p-6">
       <div className="bg-white border border-gray-300 p-12 rounded-lg">
         <h1 className="font-bold text-gray-600 mb-10 mt-10 text-2xl" style={{ fontSize: "4rem" }}>
           Customers

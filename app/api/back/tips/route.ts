@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/back/services/database.service';
 import { ObjectId } from 'mongodb';
-import { fromUTF8Array, toUTF8Array } from '../employees/route';
+import { fromUTF8Array, toUTF8Array } from '@/app/lib/dbhelper/utf_encoder';
 
 export async function GET(request: NextRequest)
 {
