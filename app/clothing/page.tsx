@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Select } from 'antd';
+import { Select, Empty } from 'antd';
 import { getCustomers } from '../lib/dbhelper/customers';
-import { ObjectId } from 'mongodb';
 import Customers from "@/app/back/models/customers";
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import type { SelectProps } from 'antd/es/select';
+import If from '@/components/If';
 
 type Direction = 'Left' | 'Right';
 
@@ -71,10 +71,7 @@ const CustomerSelect: React.FC = () => {
     setHats(hatList);
     setTops(topList);
     setBottoms(bottomList);
-    
-    console.log("ALL HAT", hatList);
-    console.log("ALL TOP", topList);
-    console.log("ALL BOTTOM", bottomList);
+
   };
 
   useEffect(() => {
@@ -115,6 +112,8 @@ const CustomerSelect: React.FC = () => {
         options={customerOptions}
         onChange={handleChange}
       />
+
+      {/* <If condition={selectedCustomer}> */}
 
       <div style={{
         display: 'flex',
@@ -179,6 +178,8 @@ const CustomerSelect: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* </If> */}
     </div>
   );
 };
