@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { BadgeProps, CalendarProps } from 'antd';
-import { Badge, Calendar, Card, Button } from 'antd';
+import { Badge, Calendar, Card, Button, Divider } from 'antd';
 import type { Dayjs } from 'dayjs';
 import styles from './Calendar.module.css';
 
@@ -82,38 +82,46 @@ export default function Events() {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.calendarContainer}>
-        <Calendar cellRender={cellRender} onSelect={onSelect} />
-      </div>
-
-      <div className={styles.cardContainer}>
-        {selectedDate && events.length > 0 && (
-          <div className={styles.selectedDateText}>
-            <Card title={`Events on ${selectedDate.format('YYYY-MM-DD')}`} bordered={false} style={{ width: 300 }}>
-              <ul>
-                {events.map((event, index) => (
-                  <li key={index}>
-                    <div style={{ marginTop: '5px' }} className={styles.test}>
-
-                      <Button>
-                        <Badge status={event.type as BadgeProps['status']} text={event.content} />
-                      </Button>
-                    </div>
-
-                  </li>
-                ))}
-              </ul>
-            </Card>
+    <div className="flex flex-col h-screen w-screen p-6">
+      <div className="bg-white border border-gray-300 p-12 rounded-lg">
+        <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
+          Events
+          <Divider style={{ borderColor: '#d3d3d3' }} />
+        </h1>
+        <div className={styles.container}>
+          <div className={styles.calendarContainer}>
+            <Calendar cellRender={cellRender} onSelect={onSelect} />
           </div>
-        )}
 
-        {selectedDate && events.length === 0 && (
-          <div className={styles.selectedDateText}>
-            <Card title={`No events on ${selectedDate.format('YYYY-MM-DD')}`} bordered={false} style={{ width: 300 }}>
-            </Card>
+          <div className={styles.cardContainer}>
+            {selectedDate && events.length > 0 && (
+              <div className={styles.selectedDateText}>
+                <Card title={`Events on ${selectedDate.format('YYYY-MM-DD')}`} bordered={false} style={{ width: 300 }}>
+                  <ul>
+                    {events.map((event, index) => (
+                      <li key={index}>
+                        <div style={{ marginTop: '5px' }} className={styles.test}>
+
+                          <Button>
+                            <Badge status={event.type as BadgeProps['status']} text={event.content} />
+                          </Button>
+                        </div>
+
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              </div>
+            )}
+
+            {selectedDate && events.length === 0 && (
+              <div className={styles.selectedDateText}>
+                <Card title={`No events on ${selectedDate.format('YYYY-MM-DD')}`} bordered={false} style={{ width: 300 }}>
+                </Card>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
