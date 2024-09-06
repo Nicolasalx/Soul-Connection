@@ -1,74 +1,75 @@
-'use client';
+'use client'
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Divider } from 'antd';
 import { BarrChart } from "@/components/BarChart";
 import { DotChart } from "@/components/DotChart";
 import { PiieChart } from "@/components/PieChart";
-import { getCoachs, getEmployees } from "../lib/dbhelper/employees";
 import { fillCoachStatistic } from "../lib/dbhelper/statistics_data";
 
-const chartDataCoachNbEncounters = [
-  { coach: "Coach01", value: 2 },
-  { coach: "Coach02", value: 12 },
-  { coach: "Coach03", value: 7 },
-  { coach: "Coach04", value: 9 },
-  { coach: "Coach05", value: 23 },
-  { coach: "Coach06", value: 15 },
-];
+function Statistics() {
+  const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);
+  const [nbGainByCoach, setNbGainByCoach] = useState<{ coach: string; value: number }[]>([]);
+  const [nbEncountersByCoach, setNbEncountersByCoach] = useState<{ coach: string; value: number }[]>([]);
+  const [nbEventsByCoach, setNbEventsByCoach] = useState<{ coach: string; value: number }[]>([]);
+  const [averageRatingByCoach, setAverageRatingByCoach] = useState<{ coach: string; value: number }[]>([]);
 
-const chartDataCoachesAverageDateRating = [
-  { coach: "Coach01", grade: 10 },
-  { coach: "Coach02", grade: 5 },
-  { coach: "Coach03", grade: 2 },
-  { coach: "Coach04", grade: 8 },
-  { coach: "Coach05", grade: 7 },
-  { coach: "Coach06", grade: 3 },
-];
+useEffect(() => {
+  const makeStatistics = async () => {
+    const coachsStatistics = await fillCoachStatistic();
 
-const chartConfigAge = {
-  "18-25": {
-    label: "18-25",
-    color: "hsl(187, 68%, 83%)",
-  },
-  "26-35": {
-    label: "26-35",
-    color: "hsl(0, 0%, 50%)",
-  },
-  "35-65": {
-    label: "35-65",
-    color: "hsl(323, 100%, 88%)",
-  },
-  "65-80": {
-    label: "65-80",
-    color: "hsl(38, 100%, 67%)",
-  },
-};
+    console.log(coachsStatistics);
 
-const chartDataAgeProportion = [
-  { age: "18-25", value: 186 },
-  { age: "26-35", value: 305 },
-  { age: "35-65", value: 237 },
-  { age: "65-80", value: 73 },
-];
+    const nbCustomerData = coachsStatistics.coach_list
+      .map((coach, index) => ({
+        coach,
+        value: coachsStatistics.coach_nb_client[index],
+      }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 5);
+    setNbCustomersByCoach(nbCustomerData);
 
-const chartDataSalesEv = [
-  { month: "January", amount: 186 },
-  { month: "February", amount: 305 },
-  { month: "March", amount: 237 },
-  { month: "April", amount: 73 },
-  { month: "May", amount: 209 },
-  { month: "June", amount: 214 },
-];
+    const nbGainData = coachsStatistics.coach_list
+      .map((coach, index) => ({
+        coach,
+        value: coachsStatistics.coach_gain[index],
+      }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 5);
+      console.log("HERE: ", nbGainData);
+    setNbGainByCoach(nbGainData);
+    console.log("HERE2: ", nbGainByCoach);
 
-async function Statistics() {
+    const nbEncounters = coachsStatistics.coach_list
+      .map((coach, index) => ({
+        coach,
+        value: coachsStatistics.coach_encounter[index],
+      }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 5);
+    setNbEncountersByCoach(nbEncounters);
 
-  useEffect(() => {
-    // Fill 
-    const coachsStatistics = fillCoachStatistic();
+    const nbEvents = coachsStatistics.coach_list
+      .map((coach, index) => ({
+        coach,
+        value: coachsStatistics.coach_nb_event[index],
+      }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 5);
+    setNbEventsByCoach(nbEvents);
 
+    const averageRating = coachsStatistics.coach_list
+      .map((coach, index) => ({
+        coach,
+        value: coachsStatistics.coach_average_rating[index],
+      }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 5);
+    setAverageRatingByCoach(averageRating);
+  };
+  makeStatistics();
+}, []);
 
-  }, [])
 
   return (
     <div className="flex flex-col h-screen w-screen p-6">
@@ -80,32 +81,46 @@ async function Statistics() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="col-span-1">
             <BarrChart
-              data={chartDataCoachNbEncounters}
-              title="Coaches Total Performances"
+              data={nbCustomersByCoach}
+              title="Number of customers by coach"
+              yAxisKey="coach"
+              barKey="value"
+            />
+          </div>
+
+          <div className="col-span-1">
+            <BarrChart
+              data={nbGainByCoach}
+              title="Earnings by coach"
               yAxisKey="coach"
               barKey="value"
             />
           </div>
           <div className="col-span-1">
             <BarrChart
-              data={chartDataCoachesAverageDateRating}
-              title="Coaches Average Dates Rating"
+              data={nbEncountersByCoach}
+              title="Number of encounters by coach"
               yAxisKey="coach"
-              barKey="grade"
+              barKey="value"
             />
           </div>
           <div className="col-span-1">
-            <PiieChart
-              data={chartDataAgeProportion}
-              title="Age Ranges Present on SC"
-              description="Distribution of Age Ranges"
-              dataKey="value"
-              nameKey="age"
-              config={chartConfigAge}
-              observation="None"
+            <BarrChart
+              data={nbEventsByCoach}
+              title="Number of events by coach"
+              yAxisKey="coach"
+              barKey="value"
             />
           </div>
           <div className="col-span-1">
+            <BarrChart
+              data={averageRatingByCoach}
+              title="Average rating by coach"
+              yAxisKey="coach"
+              barKey="value"
+            />
+          </div>
+          {/* <div className="col-span-1">
             <PiieChart
               data={chartDataAgeProportion}
               title="Age Ranges Present on SC"
@@ -125,17 +140,7 @@ async function Statistics() {
               xAxisKey="month"
               observation="None"
             />
-          </div>
-          <div className="col-span-1">
-            <DotChart
-              data={chartDataSalesEv}
-              title="Sales Revenus Evolution"
-              description="Evolution from January to June 2024"
-              lineKey="amount"
-              xAxisKey="month"
-              observation="None"
-            />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
