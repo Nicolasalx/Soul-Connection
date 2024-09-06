@@ -1,11 +1,9 @@
-import React from "react"
-import NumberStat from "@/components/NumberStat"
-import { BarrChart } from "@/components/BarChart"
-import { DotChart } from "@/components/DotChart"
-import { PiieChart } from "@/components/PieChart"
-import { getCoachs, getEmployees } from "../lib/dbhelper/employees"
-
-{/* Data qui entre dans les charts, pour chaque charts, un dictionnaire, donc j'aimerais les infos de la db sous cette forme si possible */}
+import React from "react";
+import { Divider } from 'antd';
+import { BarrChart } from "@/components/BarChart";
+import { DotChart } from "@/components/DotChart";
+import { PiieChart } from "@/components/PieChart";
+import { getCoachs, getEmployees } from "../lib/dbhelper/employees";
 
 const chartDataCoachNbEncounters = [
   { coach: "Coach01", value: 2 },
@@ -16,7 +14,7 @@ const chartDataCoachNbEncounters = [
   { coach: "Coach06", value: 15 },
 ];
 
-const chartDataCoachesAverageDateRating= [
+const chartDataCoachesAverageDateRating = [
   { coach: "Coach01", grade: 10 },
   { coach: "Coach02", grade: 5 },
   { coach: "Coach03", grade: 2 },
@@ -40,11 +38,11 @@ const chartConfigAge = {
   },
   "65-80": {
     label: "65-80",
-    color: "hsl(38, 100%, 67%",
+    color: "hsl(38, 100%, 67%)",
   },
 };
 
-const chartDataAgeProportion= [
+const chartDataAgeProportion = [
   { age: "18-25", value: 186 },
   { age: "26-35", value: 305 },
   { age: "35-65", value: 237 },
@@ -61,66 +59,76 @@ const chartDataSalesEv = [
 ];
 
 async function Statistics() {
-  const employees = await getEmployees();
-  const coaches = await getCoachs();
-
   return (
-    <div className="p-6">
-      <div className="bg-white border border-gray-300 p-6 rounded w-3/4 ml-80 mt-28">
-        <div className="space-x-4">
-        <h1 className="text-xl font-bold text-gray-400 mb-4">
-          Welcome to your Statistics
+    <div className="flex flex-col h-screen p-6">
+      <div className="bg-white border border-gray-300 p-12 rounded-lg">
+        <h1 className="font-bold text-gray-600 mb-10 mt-10 text-2xl" style={{ fontSize: "4rem" }}>
+          Statistics
+          <Divider style={{ borderColor: '#d3d3d3' }} />
         </h1>
-        <div className="bg-grey-200 p-4 border border-gray-300 flex justify-center rounded mb-6">
-          <NumberStat title="Current Employees Count" value={employees.length} />
-          <NumberStat title="Current Coaches Count" value={coaches.length} />
-          <NumberStat title="Total Encounters Count" value={0} /> {/* Infos db: Obtenir la somme de toutes les renocntres réalisées */}
-          <NumberStat title="Total Sales Revenus" value={0} /> {/* Infos db: Obtenir la somme tous les paiements reçus */}
-          <NumberStat title="Total Incoming Meeting Count" value={0} /> {/* Infos db: Récupérer le nombre de prochains meeting */}
-        </div>
-          <BarrChart
-            data={chartDataCoachNbEncounters}
-            title="[Example] Coaches total perfomances"
-            description="Count of each coach total encounters generated"
-            yAxisKey="coach" 
-            barKey="value"
-            observation="Observation"
-            details="Details"
-          />
-          <BarrChart
-            data={chartDataCoachesAverageDateRating}
-            title="[Example] Coaches Average Dates Rating"
-            description="Moyenne de note des rencontres de chaque coachs"
-            yAxisKey="coach" 
-            barKey="grade"
-            observation="Observation"
-            details="Details"
-          />
-          <PiieChart
-            data={chartDataAgeProportion}
-            title="Age Ranges Present on SC"
-            description="for [Example] the last 6 months"
-            dataKey="value"
-            nameKey="age"
-            config={chartConfigAge}
-            observation="None"
-            details="None"
-          />
-          <DotChart
-            data={chartDataSalesEv}
-            title="Sales Revenus Evolution"
-            description="[Example] January 2024 - June 2024 (A Extraire)"
-            lineKey="amount"         
-            xAxisKey="month"
-            observation="None"
-            details="None"
-          /> {/* Infos db: Besoin des paiements et de leur dates pour faire une courbe évolutive (pareil que sur la page home)*/}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="col-span-1">
+            <BarrChart
+              data={chartDataCoachNbEncounters}
+              title="Coaches Total Performances"
+              yAxisKey="coach"
+              barKey="value"
+            />
+          </div>
+          <div className="col-span-1">
+            <BarrChart
+              data={chartDataCoachesAverageDateRating}
+              title="Coaches Average Dates Rating"
+              yAxisKey="coach"
+              barKey="grade"
+            />
+          </div>
+          <div className="col-span-1">
+            <PiieChart
+              data={chartDataAgeProportion}
+              title="Age Ranges Present on SC"
+              description="Distribution of Age Ranges"
+              dataKey="value"
+              nameKey="age"
+              config={chartConfigAge}
+              observation="None"
+            />
+          </div>
+          <div className="col-span-1">
+            <PiieChart
+              data={chartDataAgeProportion}
+              title="Age Ranges Present on SC"
+              description="Distribution of Age Ranges"
+              dataKey="value"
+              nameKey="age"
+              config={chartConfigAge}
+              observation="None"
+            />
+          </div>
+          <div className="col-span-1">
+            <DotChart
+              data={chartDataSalesEv}
+              title="Sales Revenus Evolution"
+              description="Evolution from January to June 2024"
+              lineKey="amount"
+              xAxisKey="month"
+              observation="None"
+            />
+          </div>
+          <div className="col-span-1">
+            <DotChart
+              data={chartDataSalesEv}
+              title="Sales Revenus Evolution"
+              description="Evolution from January to June 2024"
+              lineKey="amount"
+              xAxisKey="month"
+              observation="None"
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
-{/* Note: Voir peut-être ajouter une chart observation sur l'évolution avec une flèche sur chiffre d'affaire ou autre chose. */}
 
 export default Statistics;

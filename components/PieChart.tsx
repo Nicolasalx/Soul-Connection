@@ -20,8 +20,8 @@ import {
 
 export const description = "A simple pie chart"
 
-export function PiieChart({ data, title, description, dataKey, nameKey, config, observation, details}: { 
-  data: any, title: string, description: string, dataKey: string, nameKey: string, config: any, observation: string, details: string}) {
+export function PiieChart({ data, title, description, dataKey, nameKey, config, observation}: { 
+  data: any, title: string, description: string, dataKey: string, nameKey: string, config: any, observation: string}) {
     return (
       <Card className="flex flex-col">
         <CardHeader className="items-center pb-0">

@@ -7,6 +7,8 @@ import arrows from "../../public/arrows.svg"
 import heart from "../../public/heart.svg"
 import stars from "../../public/stars.jpg"
 import { astroComps } from "./compatibilities";
+import { Divider } from 'antd';
+
 
 class Client {
   id: number;
@@ -135,12 +137,13 @@ export default function AstroCompatibility() {
   }
 
   return (
-    <Card className='flex justify-center m-12 mt-48 bg-white rounded-md w-[80%] shadow-lg'>
+    <Card className='flex justify-center m-10 mt-42 bg-white rounded-md w-[80%] shadow-lg'>
+      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-2xl p-12" style={{ fontSize: "4rem" }}>
+          Astrology Compatibility
+          <Divider style={{ borderColor: '#d3d3d3' }} />
+        </h1>
       <CardBody>
-        <form className='flex flex-col items-center p-4 w-full h-full' onSubmit={handleSubmit}>
-          <h1 className='m-6'>
-            Astrological
-          </h1>
+        <form className='flex flex-col items-center w-full h-full' onSubmit={handleSubmit}>
           <div className="flex flex-row flex-nowrap justify-around w-full gap-4">
             <div className="flex flex-col">
               <Autocomplete
