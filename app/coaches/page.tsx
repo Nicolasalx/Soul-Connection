@@ -1,5 +1,4 @@
-'use client';
-
+'use client'
 import { Button, Divider, Modal, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import type { SelectProps, TableColumnsType } from 'antd';
@@ -8,8 +7,6 @@ import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '..
 import { ObjectId } from 'mongodb';
 
 var mongoose = require('mongoose');
-
-/*     TABLE COACHES      */
 
 interface DataTypeCoaches {
   key: React.Key;
@@ -155,33 +152,35 @@ function Coaches() {
       dataIndex: 'lastConnection',
     },
   ];
-
+  
   return (
-  <div className="flex flex-col h-screen p-6">
-    <div className="bg-white border border-gray-300 p-12 rounded-lg">
-      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-2xl" style={{ fontSize: "4rem" }}>
-        Coaches
-        <Divider style={{ borderColor: '#d3d3d3' }} />
-      </h1>
-      <Button type="primary" onClick={showModal} className="mb-6 w-full">
-        Add Employee
-      </Button>
+    <div className="flex flex-col h-screen w-screen p-6">
+      <div className="bg-white border border-gray-300 p-12 rounded-lg flex-1 w-full">
+        <h1 className="font-bold text-gray-600 mb-10 text-2xl" style={{ fontSize: "4rem" }}>
+          Coaches
+          <Divider style={{ borderColor: '#d3d3d3' }} />
+        </h1>
+        <Button type="primary" onClick={showModal} className="mb-6 w-full">
+          Add Employee
+        </Button>
 
-      <Table
-        columns={columns} dataSource={data} size="large"
-        rowKey="id"
-        scroll={{ x: '100%' }}
-        pagination={{ pageSize: 5 }}
-      />
-      <Modal
-        title="Add Employee"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={() => setIsModalOpen(false)}
+        <Table
+          columns={columns}
+          dataSource={data}
+          size="large"
+          rowKey="id"
+          scroll={{ x: '100%' }} 
+        />
+
+        <Modal
+          title="Add Employee"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={() => setIsModalOpen(false)}
         ></Modal>
+      </div>
     </div>
-  </div>
   );
-  }
+}
 
   export default Coaches;

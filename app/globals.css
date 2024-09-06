@@ -17,11 +17,11 @@
 }
 
 html {
-  @apply theme-gradient bg-no-repeat h-full;
+  @apply bg-grey h-full;
 }
 
 body {
-  @apply bg-transparent flex justify-evenly;
+  @apply bg-grey flex justify-evenly h-full;
 }
 
 h1 {
@@ -39,7 +39,7 @@ h1 {
 }
 
 .btn-primary {
-  background: rgba(66,66,66,1);
+  background: rgb(50, 49, 49);
 }
 
 .btn-primary:hover {

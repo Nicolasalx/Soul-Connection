@@ -47,5 +47,5 @@ export async function getCoachs(): Promise<Employees[]>
 {
   const employees = await getEmployees();
 
-  return employees.filter(employee => employee.work == 'coach');
+  return employees.filter(employee => employee.work == 'Coach');
 }
