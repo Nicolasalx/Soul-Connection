@@ -1,4 +1,5 @@
 import { cookies } from "next/headers"
+import * as crypto from 'crypto'
 
 export async function POST(req: Request) {
     try {
@@ -22,7 +23,12 @@ export async function POST(req: Request) {
         if (result.ok) {
             const expiresAt = new Date(Date.now())
             expiresAt.setHours(expiresAt.getHours() + 24)   // wait 24 hours before token expiration in cookies
-            const {access_token} = await result.json()
+            let {access_token} = await result.json()
+            if (process.env.encryptKey && process.env.iv) {
+                const tmp = crypto.createCipheriv('aes-256-gcm', process.env.encryptKey, process.env.iv)
+                access_token = tmp.update(access_token, "utf8", "base64")
+                access_token += tmp.final("base64")
+            }
             cookies().set('token', access_token, {
                 httpOnly: true,
                 secure: true,
@@ -32,6 +38,6 @@ export async function POST(req: Request) {
         }
         return Response.json(result.statusText, { status: result.status })
     } catch(error) {
-        return Response.json({ error: 'Unknown error.' }, { status: 500 })
+        return Response.json({ error: error }, { status: 500 })
     }
 }

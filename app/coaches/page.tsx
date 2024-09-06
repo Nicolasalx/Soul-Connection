@@ -7,7 +7,8 @@ import type { SelectProps, TableColumnsType } from 'antd';
 import { getEmployees } from '../lib/dbhelper/employees';
 import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '../lib/dbhelper/customers';
 import { ObjectId } from 'mongodb';
-import Customers from "@/app/back/models/customers";
+import If from '@/components/If';
+import { isManager } from '../lib/user';
 
 var mongoose = require('mongoose');
 
@@ -35,6 +36,7 @@ function Coaches() {
   const [data, setData] = useState<DataTypeCoaches[]>([]);
   const [customerOptions, setCustomerOptions] = useState<SelectProps['options']>([]);
   const [prevSelections, setPrevSelections] = useState<{ [key: string]: string[] }>({});
+  const [hasRights, setHasRights] = useState(false)
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -88,6 +90,7 @@ function Coaches() {
   };
 
   useEffect(() => {
+    isManager().then(val => setHasRights(val))
     fetchEmployeesData();
     fetchCustomersData();
   }, []);
@@ -138,18 +141,20 @@ function Coaches() {
       dataIndex: 'birthDate',
     },
     {
-      title: 'Customers',
+      title: hasRights ? 'Customers' : '',
       dataIndex: 'customers',
       render: (_, record) => (
-        <Select
-          mode="multiple"
-          allowClear
-          style={{ width: '100%' }}
-          placeholder="Select customers"
-          defaultValue={record.customers}
-          onChange={(value) => handleCustomerChange(value, record)}
-          options={customerOptions}
-        />
+        <If condition={hasRights}>
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: '100%' }}
+            placeholder="Select customers"
+            defaultValue={record.customers}
+            onChange={(value) => handleCustomerChange(value, record)}
+            options={customerOptions}
+          />
+        </If>
       ),
     },
     {
@@ -162,36 +167,38 @@ function Coaches() {
     <>
       <div style={{ marginTop: 150 }}>
         <Table columns={columns} dataSource={data} size="large" style={{ width: 1800 }} />
-        
-        {/* Centering the Button */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-          <Button
-            type="primary"
-            size='large'
-            onClick={showModal}
-            style={{ backgroundColor: '#FFFFFF', borderColor: '#FFFFFF', color: '#000000' }}
-          >
-            Create New Employee
-          </Button>
-        </div>
-  
-        <Modal
-          title="Employee Creation"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          footer={[
-            <Button key="ok" type="primary" onClick={handleOk}>
-              OK
-            </Button>,
-          ]}
-        >
-          <EmployeeForm />
-        </Modal>
+
+        <If condition={hasRights}>
+          {/* Centering the Button */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+            <Button
+              type="primary"
+              size='large'
+              onClick={showModal}
+              style={{ backgroundColor: '#FFFFFF', borderColor: '#FFFFFF', color: '#000000' }}
+              >
+              Create New Employee
+            </Button>
+          </div>
+
+          <Modal
+            title="Employee Creation"
+            open={isModalOpen}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            footer={[
+              <Button key="ok" type="primary" onClick={handleOk}>
+                OK
+              </Button>,
+            ]}
+            >
+            <EmployeeForm />
+          </Modal>
+        </If>
       </div>
     </>
   );
-  
+
 }
 
 export default Coaches;
