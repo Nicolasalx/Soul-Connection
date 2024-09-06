@@ -29,7 +29,7 @@ function HomeDashboard() {
   return (
     <div className="flex flex-col h-screen w-screen p-6">
       <div className="bg-white border border-gray-300 p-12 rounded-lg flex-1">
-        <h1 className="font-bold text-gray-600 mb-10 mt-10 text-center text-2xl" style={{ fontSize: "4rem" }}>
+        <h1 className="font-bold text-gray-600 mb-10 mt-10 text-center text-5xl md:text-6xl">
           SOUL CONNECTION
         </h1>
         <h2 className="text-gray-400 mb-5 text-center text-xl" style={{ fontSize: "2rem" }}>

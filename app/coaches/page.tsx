@@ -155,7 +155,7 @@ function Coaches() {
   return (
     <div className="flex flex-col h-screen w-screen p-6">
       <div className="bg-white border border-gray-300 p-12 rounded-lg flex-1 w-full">
-        <h1 className="font-bold text-gray-600 mb-10 text-2xl" style={{ fontSize: "4rem" }}>
+        <h1 className="font-bold text-gray-600 mb-10 text-5xl md:text-6xl">
           Coaches
           <Divider style={{ borderColor: '#d3d3d3' }} />
         </h1>

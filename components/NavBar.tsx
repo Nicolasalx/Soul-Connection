@@ -51,11 +51,6 @@ const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>)
             <p>Clothing</p>
           </Link>
         </li>
-        <li>
-          <Link href="/clothing">
-            <p className="px-4 text-2xl" style={{ fontSize: "2rem" }}>Clothing</p>
-          </Link>
-        </li>
       </ul>
       <If condition={userConnected}>
         <div className="absolute bottom-4 w-full flex justify-center">
@@ -101,7 +96,7 @@ export default function NavBar() {
 
   return (
     <div>
-      <Button className="fixed top-0 left-0 z-50 shadow-lg text-3xl m-4 rounded-full md:disabled md:hidden" onClick={toggleSidebar}>
+      <Button className="bg-black text-white fixed top-0 left-0 z-50 shadow-lg text-3xl m-4 rounded-full md:disabled md:hidden" onClick={toggleSidebar}>
         {isSidebarOpen ? 'X' : 'Menu'}
       </Button>
       <div className={`fixed left-0 h-full w-[40%] md:w-[20%] z-40 bg-black/80 text-white backdrop-blur-sm border-r-8 border-pink-500 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out md:transform-none md:-translate-x-full`}>
