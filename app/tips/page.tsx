@@ -1,8 +1,7 @@
 'use client'
-
-import { Card } from 'antd';
-import { getTips } from '../lib/dbhelper/tips';
 import React, { useState, useEffect } from 'react';
+import { Card, Col, Row, Divider } from 'antd';
+import { getTips } from '../lib/dbhelper/tips';
 import Tips from "@/app/back/models/tips";
 
 export default function Advices() {
@@ -21,23 +20,34 @@ export default function Advices() {
   }, []);
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '60px', marginLeft: 300, marginTop: 120, marginBottom: 50 }}>
-      {allTips.length > 0 ? (
-        allTips.map((tip) => (
-          <Card
-            key={tip.id}
-            title={tip.title}
-            bordered={false}
-            style={{ width: 300 }}
-          >
-            <p>{tip.tip}</p>
-          </Card>
-        ))
-      ) : (
-        <Card title="Tips" bordered={false} style={{ width: 300 }}>
-          <p>No tips available</p>
-        </Card>
-      )}
+    <div className="flex flex-col h-screen w-screen p-6">
+      <div className="bg-white border border-gray-300 p-12 rounded-lg">
+        <h1 className="font-bold text-gray-600 mb-20 mt-10 text-2xl" style={{ fontSize: "4rem" }}>
+          Tips
+          <Divider style={{ borderColor: '#d3d3d3' }} />
+        </h1>
+        <Row gutter={16}>
+          {allTips.length > 0 ? (
+            allTips.map((tip) => (
+              <Col span={8} key={tip.id}>
+                <Card
+                  title={tip.title}
+                  bordered={false}
+                  style={{ marginBottom: '16px' }}
+                >
+                  <p>{tip.tip}</p>
+                </Card>
+              </Col>
+            ))
+          ) : (
+            <Col span={24}>
+              <Card title="Tips" bordered={false}>
+                <p>No tips available</p>
+              </Card>
+            </Col>
+          )}
+        </Row>
+      </div>
     </div>
   );
 }

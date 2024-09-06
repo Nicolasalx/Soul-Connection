@@ -30,8 +30,8 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function DotChart({data, title, description, xAxisKey, lineKey, observation, details}: { 
-  data: any, title: string, description: string, xAxisKey: string, lineKey: string, observation: string, details: string}) {
+export function DotChart({data, title, description, xAxisKey, lineKey, observation}: { 
+  data: any, title: string, description: string, xAxisKey: string, lineKey: string, observation: string}) {
   return (
     <Card>
       <CardHeader>
@@ -80,7 +80,6 @@ export function DotChart({data, title, description, xAxisKey, lineKey, observati
           {observation} <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          {details}
         </div>
       </CardFooter>
     </Card>

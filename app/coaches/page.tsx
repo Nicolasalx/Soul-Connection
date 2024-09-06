@@ -1,16 +1,12 @@
-'use client';
-
-import { Button, Modal, Select, Table } from 'antd';
+'use client'
+import { Button, Divider, Modal, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-import EmployeeForm from './employeeForm';
 import type { SelectProps, TableColumnsType } from 'antd';
 import { getEmployees } from '../lib/dbhelper/employees';
 import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '../lib/dbhelper/customers';
 import { ObjectId } from 'mongodb';
 
 var mongoose = require('mongoose');
-
-/*     TABLE COACHES      */
 
 interface DataTypeCoaches {
   key: React.Key;
@@ -156,19 +152,35 @@ function Coaches() {
       dataIndex: 'lastConnection',
     },
   ];
-
+  
   return (
-    <>
-      <div style={{ marginLeft: 300, marginTop: 150 }}>
-        <Table columns={columns} dataSource={data} size="middle" style={{width: 1800}}/>
-        <Button type="primary" onClick={showModal}>
-          Create New Employee
+    <div className="flex flex-col h-screen w-screen p-6">
+      <div className="bg-white border border-gray-300 p-12 rounded-lg flex-1 w-full">
+        <h1 className="font-bold text-gray-600 mb-10 text-2xl" style={{ fontSize: "4rem" }}>
+          Coaches
+          <Divider style={{ borderColor: '#d3d3d3' }} />
+        </h1>
+        <Button type="primary" onClick={showModal} className="mb-6 w-full">
+          Add Employee
         </Button>
-        <Modal title="Employee Creation" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-          <EmployeeForm />
-        </Modal>
+
+        <Table
+          columns={columns}
+          dataSource={data}
+          size="large"
+          rowKey="id"
+          pagination={{ pageSize: 7 }}
+          scroll={{ x: '100%' }} 
+        />
+
+        <Modal
+          title="Add Employee"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={() => setIsModalOpen(false)}
+        ></Modal>
       </div>
-    </>
+    </div>
   );
 }
 
