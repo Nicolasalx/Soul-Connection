@@ -28,8 +28,8 @@ export default function Login() {
   }
 
   return (
-    <div className='flex justify-center m-12 mt-48'>
-        <form className='bg-white rounded flex flex-col items-center p-4 shadow-lg' onSubmit={handleSubmit}>
+    <div className='flex flex-col mr-[25%] justify-center p-14'>
+        <form className='bg-white rounded flex flex-col items-center p-14 shadow-lg' onSubmit={handleSubmit}>
             <h1 className='m-6'>Login</h1>
             <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="email" name="email" aria-label="email" placeholder="Email" required />
             <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="password" name="password" aria-label="password" placeholder="Password" required />

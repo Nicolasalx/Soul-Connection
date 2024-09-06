@@ -1,18 +1,17 @@
-'use client';
-
-import { Button, Modal, Select, Table } from 'antd';
+'use client'
+import { Button, Divider, Modal, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-import EmployeeForm from './employeeForm';
 import type { SelectProps, TableColumnsType } from 'antd';
 import { getEmployees } from '../lib/dbhelper/employees';
 import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '../lib/dbhelper/customers';
 import { ObjectId } from 'mongodb';
+<<<<<<< HEAD
 import If from '@/components/If';
 import { isManager } from '../lib/user';
+=======
+>>>>>>> 7c6a783b284c0ec8e25ab7e6909fb5f6b3445663
 
 var mongoose = require('mongoose');
-
-/*     TABLE COACHES      */
 
 interface DataTypeCoaches {
   key: React.Key;
@@ -164,41 +163,37 @@ function Coaches() {
   ];
 
   return (
-    <>
-      <div style={{ marginTop: 150 }}>
-        <Table columns={columns} dataSource={data} size="large" style={{ width: 1800 }} />
-
+    <div className="flex flex-col h-screen w-screen p-6">
+      <div className="bg-white border border-gray-300 p-12 rounded-lg flex-1 w-full">
+        <h1 className="font-bold text-gray-600 mb-10 text-2xl" style={{ fontSize: "4rem" }}>
+          Coaches
+          <Divider style={{ borderColor: '#d3d3d3' }} />
+        </h1>
         <If condition={hasRights}>
-          {/* Centering the Button */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-            <Button
-              type="primary"
-              size='large'
-              onClick={showModal}
-              style={{ backgroundColor: '#FFFFFF', borderColor: '#FFFFFF', color: '#000000' }}
-              >
-              Create New Employee
-            </Button>
-          </div>
+          <Button type="primary" onClick={showModal} className="mb-6 w-full">
+            Add Employee
+          </Button>
+        </If>
 
+        <Table
+          columns={columns}
+          dataSource={data}
+          size="large"
+          rowKey="id"
+          pagination={{ pageSize: 7 }}
+          scroll={{ x: '100%' }}
+        />
+        <If condition={hasRights}>
           <Modal
-            title="Employee Creation"
+            title="Add Employee"
             open={isModalOpen}
             onOk={handleOk}
-            onCancel={handleCancel}
-            footer={[
-              <Button key="ok" type="primary" onClick={handleOk}>
-                OK
-              </Button>,
-            ]}
-            >
-            <EmployeeForm />
-          </Modal>
+            onCancel={() => setIsModalOpen(false)}
+          ></Modal>
         </If>
       </div>
-    </>
+    </div>
   );
-
 }
 
 export default Coaches;

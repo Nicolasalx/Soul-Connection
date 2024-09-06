@@ -26,30 +26,29 @@ const chartConfig = {
   },
 };
 
-export function BarrChart({ data, title, description, yAxisKey, barKey, observation, details }: {
-  data: any, title: string, description: string, yAxisKey: string, barKey: string, observation: string, details: string}) {
+export function BarrChart({ data, title, yAxisKey, barKey }: {
+  data: any, title: string, yAxisKey: string, barKey: string}) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart
-            width={500}
-            height={250}
+            width={400}
+            height={200}
             data={data}
             layout="vertical"
-            margin={{right: 80 }}
-            barSize={60}
+            margin={{bottom: 20}} 
+            barSize={20}
           >
             <CartesianGrid horizontal={false} />
             <YAxis
               dataKey={yAxisKey}
               type="category"
               tickLine={false}
-              tickMargin={10}
+              tickMargin={20}
               axisLine={false}
               tickFormatter={(value) => value.toString().slice(0, 3)}
             />
@@ -61,34 +60,26 @@ export function BarrChart({ data, title, description, yAxisKey, barKey, observat
             <Bar
               dataKey={barKey}
               fill={chartConfig.person.color}
-              radius={8}
+              radius={4}
             >
               <LabelList
                 dataKey={yAxisKey}
                 position="insideLeft"
-                offset={8}
+                offset={2}
                 className="fill-[--color-label]"
-                fontSize={16}
+                fontSize={11}
               />
               <LabelList
                 dataKey={barKey}
                 position="right"
-                offset={8}
+                offset={2}
                 className="fill-foreground"
-                fontSize={16}
+                fontSize={11}
               />
             </Bar>
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          {observation} <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          {details}
-        </div>
-      </CardFooter>
     </Card>
   );
 }
