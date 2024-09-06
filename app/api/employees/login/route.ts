@@ -27,13 +27,11 @@ export async function POST(req: Request) {
             let token: string = ''
 
             if (process.env.ENCRYPT_KEY) {
-                console.log("ok")
                 token = await new SignJWT({ token: access_token })
                     .setProtectedHeader({alg: 'HS256', typ: 'JWT'})
                     .setIssuedAt()
                     .setExpirationTime('24 hours')
                     .sign(new TextEncoder().encode(process.env.ENCRYPT_KEY));
-                console.log("okkk")
             }
             cookies().set('token', token, {
                 httpOnly: true,
