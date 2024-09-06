@@ -7,28 +7,7 @@
 
 import 'server-only'
 import { cookies } from 'next/headers'
-
-export async function isTokenValid(token: string) : Promise<boolean> {
-    const api_token = process.env.API_TOKEN
-    if (!api_token) {
-        console.error("Missing API token.")
-        return false
-    }
-    try {
-        const res = await fetch('https://soul-connection.fr/api/employees/me', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Group-Authorization': api_token,
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        return res.ok
-    } catch(err) {
-        console.error(err)
-        return false
-    }
-}
+import jose, { jwtVerify } from 'jose'
 
 export const verifyToken = async () => {
     const token = cookies().get('token')?.value
@@ -36,8 +15,13 @@ export const verifyToken = async () => {
     if (!token) {
         return null
     }
-    if (await isTokenValid(token)) {
-        return token
+    if (process.env.ENCRYPT_KEY) {
+        try {
+            const access_token = (await jwtVerify(token, new TextEncoder().encode(process.env.ENCRYPT_KEY))).payload.token
+            return access_token as string
+        } catch(err) {
+            return null
+        }
     }
     return null
 }

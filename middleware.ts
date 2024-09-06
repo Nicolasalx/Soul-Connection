@@ -1,19 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { verifyToken } from "./app/lib/dal";
 
 const publicRoutes = ['/login', '/']
 
 export default async function middleware(req: NextRequest) {
     const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname)
-    const token = cookies().get('token')?.value
+    const userConnected = await verifyToken() !== null
 
-    if (!isPublicRoute && !token) {
+    if (!isPublicRoute && !userConnected) {
         return NextResponse.redirect(new URL('/login', req.nextUrl))
     }
-    if (isPublicRoute && token) {
+    if (isPublicRoute && userConnected) {
         return NextResponse.redirect(new URL('/home', req.nextUrl))
     }
-    if (req.nextUrl.pathname === '/' && !token) {
+    if (req.nextUrl.pathname === '/' && !userConnected) {
         return NextResponse.redirect(new URL('/login', req.nextUrl))
     }
     return NextResponse.next()

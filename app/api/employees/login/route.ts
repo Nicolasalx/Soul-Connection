@@ -1,5 +1,5 @@
 import { cookies } from "next/headers"
-import * as crypto from 'crypto'
+import { SignJWT } from 'jose'
 
 export async function POST(req: Request) {
     try {
@@ -23,13 +23,19 @@ export async function POST(req: Request) {
         if (result.ok) {
             const expiresAt = new Date(Date.now())
             expiresAt.setHours(expiresAt.getHours() + 24)   // wait 24 hours before token expiration in cookies
-            let {access_token} = await result.json()
-            if (process.env.encryptKey && process.env.iv) {
-                const tmp = crypto.createCipheriv('aes-256-gcm', process.env.encryptKey, process.env.iv)
-                access_token = tmp.update(access_token, "utf8", "base64")
-                access_token += tmp.final("base64")
+            const { access_token } = await result.json()
+            let token: string = ''
+
+            if (process.env.ENCRYPT_KEY) {
+                console.log("ok")
+                token = await new SignJWT({ token: access_token })
+                    .setProtectedHeader({alg: 'HS256', typ: 'JWT'})
+                    .setIssuedAt()
+                    .setExpirationTime('24 hours')
+                    .sign(new TextEncoder().encode(process.env.ENCRYPT_KEY));
+                console.log("okkk")
             }
-            cookies().set('token', access_token, {
+            cookies().set('token', token, {
                 httpOnly: true,
                 secure: true,
                 expires: expiresAt,
