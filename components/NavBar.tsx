@@ -6,8 +6,15 @@ import { Button } from "@nextui-org/react";
 import { usePathname } from 'next/navigation';
 import If from "./If";
 import { isConnected } from "@/app/lib/connection";
+import { isManager } from "@/app/lib/user";
 
 const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>) => {
+  const [hasRights, setHasRights] = useState(false)
+
+  useEffect(() => {
+    isManager().then(val => setHasRights(val))
+  }, [])
+
   return (
     <>
       <ul className="ml-4 md:ml-8 mt-24 space-y-10 text-3xl md:text-2xl lg:text-3xl">
@@ -26,11 +33,13 @@ const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>)
             <p>Customers</p>
           </Link>
         </li>
-        <li>
-          <Link href="/statistics">
-            <p>Statistics</p>
-          </Link>
-        </li>
+        <If condition={hasRights}>
+          <li>
+            <Link href="/statistics">
+              <p>Statistics</p>
+            </Link>
+          </li>
+        </If>
         <li>
           <Link href="/tips">
             <p>Tips</p>

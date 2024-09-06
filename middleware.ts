@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "./app/lib/dal";
+import { isManagerMiddleware } from "./app/lib/user";
 
 const publicRoutes = ['/login', '/']
+const protectedRoutes = ['/statistics']
 
 export default async function middleware(req: NextRequest) {
     const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname)
+    const isProtectedRoute = protectedRoutes.includes(req.nextUrl.pathname)
     const userConnected = await verifyToken() !== null
 
     if (!isPublicRoute && !userConnected) {
@@ -15,6 +18,9 @@ export default async function middleware(req: NextRequest) {
     }
     if (req.nextUrl.pathname === '/' && !userConnected) {
         return NextResponse.redirect(new URL('/login', req.nextUrl))
+    }
+    if (isProtectedRoute && !(await isManagerMiddleware())) {
+        return NextResponse.redirect(new URL('/forbidden', req.nextUrl))
     }
     return NextResponse.next()
 }
