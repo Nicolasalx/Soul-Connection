@@ -180,10 +180,10 @@ function ClientProfile() {
         <Divider style={{ borderColor: '#d3d3d3' }} />
         <div className="flex flex-col md:flex-row space-x-4 mt-4">
           <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-            <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large"/>
+            <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large"/>
           </div>
           <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-            <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large"/>
+            <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large"/>
           </div>
         </div>
       </div>
