@@ -7,13 +7,21 @@
 
 import 'server-only'
 import { cookies } from 'next/headers'
-import { cache } from 'react'
+import jose, { jwtVerify } from 'jose'
 
-export const verifyToken = cache(async () => {
+export const verifyToken = async () => {
     const token = cookies().get('token')?.value
 
     if (!token) {
         return null
     }
-    return token
-})
+    if (process.env.ENCRYPT_KEY) {
+        try {
+            const access_token = (await jwtVerify(token, new TextEncoder().encode(process.env.ENCRYPT_KEY))).payload.token
+            return access_token as string
+        } catch(err) {
+            return null
+        }
+    }
+    return null
+}

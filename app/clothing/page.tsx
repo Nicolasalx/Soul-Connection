@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Select, Empty } from 'antd';
+import { Select, Empty, Divider } from 'antd';
 import { getCustomers } from '../lib/dbhelper/customers';
 import Customers from "@/app/back/models/customers";
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
@@ -126,135 +126,134 @@ const Clothing: React.FC = () => {
   };
 
   return (
-    <div style={{ margin: '0 auto', paddingTop: 20, textAlign: 'center', width: '100%', maxWidth: 600 }}>
-      <Select
-        allowClear
-        style={{ width: '100%', marginBottom: 20 }}
-        placeholder="Select a customer"
-        options={customerOptions}
-        onChange={handleChange}
-      />
+    <div className="flex flex-col h-screen w-screen p-6">
+      <div className="bg-white border border-gray-300 p-12 rounded-lg">
+        <h1 className="font-bold text-gray-600 text-5xl md:text-6xl">
+          Clothing
+          <Divider style={{ borderColor: '#d3d3d3' }} />
+        </h1>
+        <Select
+          allowClear
+          className='mb-5 w-full'
+          placeholder="Select a customer"
+          options={customerOptions}
+          onChange={handleChange}
+        />
 
-      {selectedCustomer ? (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          maxHeight: 'calc(100vh - 60px)',
-          overflowY: 'auto',
-          width: '100%',
-        }}>
-          {/* Hats */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
-            {hats.length > 0 && !hatImageError && (
-              <>
-                <LeftOutlined
-                  style={{ fontSize: '36px', cursor: 'pointer' }}
-                  onClick={() => handleArrowClick('Left', 'hat')}
-                />
-                <img
-                  src={`/api/clothes/${hats[currentHatIndex]?.id}/image`}
-                  alt="Hat Image"
-                  width={150}
-                  height={150}
-                  style={{ margin: '0 10px' }}
-                  onError={() => setHatImageError(true)}
-                />
-                <RightOutlined
-                  style={{ fontSize: '36px', cursor: 'pointer' }}
-                  onClick={() => handleArrowClick('Right', 'hat')}
-                />
-              </>
-            )}
-            {hatImageError || hats.length === 0 ? (
-              <Empty description="No Hat" />
-            ) : null}
-          </div>
+        {selectedCustomer ? (
+          <div className='flex flex-col items-center max-h-[calc(100vh - 60px)] overflow-y-auto w-full'>
+            {/* Hats */}
+            <div className='flex items-center justify-center mb-2'>
+              {hats.length > 0 && !hatImageError && (
+                <>
+                  <LeftOutlined
+                    className='text-4xl cursor-pointer'
+                    onClick={() => handleArrowClick('Left', 'hat')}
+                  />
+                  <img
+                    src={`/api/clothes/${hats[currentHatIndex]?.id}/image`}
+                    alt="Hat Image"
+                    width={150}
+                    height={150}
+                    className='mx-4 rounded'
+                    onError={() => setHatImageError(true)}
+                  />
+                  <RightOutlined
+                    className='text-4xl cursor-pointer'
+                    onClick={() => handleArrowClick('Right', 'hat')}
+                  />
+                </>
+              )}
+              {hatImageError || hats.length === 0 ? (
+                <Empty description="No Hat" />
+              ) : null}
+            </div>
 
-          {/* Tops */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
-            {tops.length > 0 && !topImageError && (
-              <>
-                <LeftOutlined
-                  style={{ fontSize: '36px', cursor: 'pointer' }}
-                  onClick={() => handleArrowClick('Left', 'top')}
-                />
-                <img
-                  src={`/api/clothes/${tops[currentTopIndex]?.id}/image`}
-                  alt="Top Image"
-                  width={150}
-                  height={150}
-                  style={{ margin: '0 10px' }}
-                  onError={() => setTopImageError(true)}
-                />
-                <RightOutlined
-                  style={{ fontSize: '36px', cursor: 'pointer' }}
-                  onClick={() => handleArrowClick('Right', 'top')}
-                />
-              </>
-            )}
-            {topImageError || tops.length === 0 ? (
-              <Empty description="No Top" />
-            ) : null}
-          </div>
+            {/* Tops */}
+            <div className='flex items-center justify-center mb-2'>
+              {tops.length > 0 && !topImageError && (
+                <>
+                  <LeftOutlined
+                    className='text-4xl cursor-pointer'
+                    onClick={() => handleArrowClick('Left', 'top')}
+                  />
+                  <img
+                    src={`/api/clothes/${tops[currentTopIndex]?.id}/image`}
+                    alt="Top Image"
+                    width={150}
+                    height={150}
+                    className='mx-4 rounded'
+                    onError={() => setTopImageError(true)}
+                  />
+                  <RightOutlined
+                    className='text-4xl cursor-pointer'
+                    onClick={() => handleArrowClick('Right', 'top')}
+                  />
+                </>
+              )}
+              {topImageError || tops.length === 0 ? (
+                <Empty description="No Top" />
+              ) : null}
+            </div>
 
-          {/* Bottoms */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
-            {bottoms.length > 0 && !bottomImageError && (
-              <>
-                <LeftOutlined
-                  style={{ fontSize: '36px', cursor: 'pointer' }}
-                  onClick={() => handleArrowClick('Left', 'bottom')}
-                />
-                <img
-                  src={`/api/clothes/${bottoms[currentBottomIndex]?.id}/image`}
-                  alt="Bottom Image"
-                  width={150}
-                  height={150}
-                  style={{ margin: '0 10px' }}
-                  onError={() => setBottomImageError(true)}
-                />
-                <RightOutlined
-                  style={{ fontSize: '36px', cursor: 'pointer' }}
-                  onClick={() => handleArrowClick('Right', 'bottom')}
-                />
-              </>
-            )}
-            {bottomImageError || bottoms.length === 0 ? (
-              <Empty description="No Bottom" />
-            ) : null}
-          </div>
+            {/* Bottoms */}
+            <div className='flex items-center justify-center mb-2'>
+              {bottoms.length > 0 && !bottomImageError && (
+                <>
+                  <LeftOutlined
+                    className='text-4xl cursor-pointer'
+                    onClick={() => handleArrowClick('Left', 'bottom')}
+                  />
+                  <img
+                    src={`/api/clothes/${bottoms[currentBottomIndex]?.id}/image`}
+                    alt="Bottom Image"
+                    width={150}
+                    height={150}
+                    className='mx-4 rounded'
+                    onError={() => setBottomImageError(true)}
+                  />
+                  <RightOutlined
+                    className='text-4xl cursor-pointer'
+                    onClick={() => handleArrowClick('Right', 'bottom')}
+                  />
+                </>
+              )}
+              {bottomImageError || bottoms.length === 0 ? (
+                <Empty description="No Bottom" />
+              ) : null}
+            </div>
 
-          {/* Shoes */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
-            {shoes.length > 0 && !shoesImageError && (
-              <>
-                <LeftOutlined
-                  style={{ fontSize: '36px', cursor: 'pointer' }}
-                  onClick={() => handleArrowClick('Left', 'shoes')}
-                />
-                <img
-                  src={`/api/clothes/${shoes[currentShoesIndex]?.id}/image`}
-                  alt="Shoes Image"
-                  width={150}
-                  height={150}
-                  style={{ margin: '0 10px' }}
-                  onError={() => setShoesImageError(true)}
-                />
-                <RightOutlined
-                  style={{ fontSize: '36px', cursor: 'pointer' }}
-                  onClick={() => handleArrowClick('Right', 'shoes')}
-                />
-              </>
-            )}
-            {shoesImageError || shoes.length === 0 ? (
-              <Empty description="No Shoes" />
-            ) : null}
+            {/* Shoes */}
+            <div className='flex items-center justify-center mb-2'>
+              {shoes.length > 0 && !shoesImageError && (
+                <>
+                  <LeftOutlined
+                    className='text-4xl cursor-pointer'
+                    onClick={() => handleArrowClick('Left', 'shoes')}
+                  />
+                  <img
+                    src={`/api/clothes/${shoes[currentShoesIndex]?.id}/image`}
+                    alt="Shoes Image"
+                    width={150}
+                    height={150}
+                    className='mx-4 rounded'
+                    onError={() => setShoesImageError(true)}
+                  />
+                  <RightOutlined
+                    className='text-4xl cursor-pointer'
+                    onClick={() => handleArrowClick('Right', 'shoes')}
+                  />
+                </>
+              )}
+              {shoesImageError || shoes.length === 0 ? (
+                <Empty description="No Shoes" />
+              ) : null}
+            </div>
           </div>
-        </div>
-      ) : (
-        <Empty description="No customer selected" />
-      )}
+        ) : (
+          <Empty description="No customer selected" />
+        )}
+      </div>
     </div>
   );
 };

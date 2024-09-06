@@ -5,6 +5,9 @@ import type { SelectProps, TableColumnsType } from 'antd';
 import { getEmployees } from '../lib/dbhelper/employees';
 import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '../lib/dbhelper/customers';
 import { ObjectId } from 'mongodb';
+import If from '@/components/If';
+import { isManager } from '../lib/user';
+import EmployeeForm from './employeeForm';
 
 var mongoose = require('mongoose');
 
@@ -30,17 +33,10 @@ function Coaches() {
   const [data, setData] = useState<DataTypeCoaches[]>([]);
   const [customerOptions, setCustomerOptions] = useState<SelectProps['options']>([]);
   const [prevSelections, setPrevSelections] = useState<{ [key: string]: string[] }>({});
+  const [hasRights, setHasRights] = useState(false)
 
   const showModal = () => {
     setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
   };
 
   const fetchEmployeesData = async () => {
@@ -83,6 +79,7 @@ function Coaches() {
   };
 
   useEffect(() => {
+    isManager().then(val => setHasRights(val))
     fetchEmployeesData();
     fetchCustomersData();
   }, []);
@@ -133,18 +130,20 @@ function Coaches() {
       dataIndex: 'birthDate',
     },
     {
-      title: 'Customers',
+      title: hasRights ? 'Customers' : '',
       dataIndex: 'customers',
       render: (_, record) => (
-        <Select
-          mode="multiple"
-          allowClear
-          style={{ width: '100%' }}
-          placeholder="Select customers"
-          defaultValue={record.customers}
-          onChange={(value) => handleCustomerChange(value, record)}
-          options={customerOptions}
-        />
+        <If condition={hasRights}>
+          <Select
+            mode="multiple"
+            allowClear
+            style={{ width: '100%' }}
+            placeholder="Select customers"
+            defaultValue={record.customers}
+            onChange={(value) => handleCustomerChange(value, record)}
+            options={customerOptions}
+          />
+        </If>
       ),
     },
     {
@@ -152,32 +151,37 @@ function Coaches() {
       dataIndex: 'lastConnection',
     },
   ];
-  
+
   return (
     <div className="flex flex-col h-screen w-screen p-6">
       <div className="bg-white border border-gray-300 p-12 rounded-lg flex-1 w-full">
-        <h1 className="font-bold text-gray-600 mb-10 text-2xl" style={{ fontSize: "4rem" }}>
+        <h1 className="font-bold text-gray-600 mb-10 text-5xl md:text-6xl">
           Coaches
           <Divider style={{ borderColor: '#d3d3d3' }} />
         </h1>
-        <Button type="primary" onClick={showModal} className="mb-6 w-full">
-          Add Employee
-        </Button>
+        <If condition={hasRights}>
+          <Button type="primary" onClick={showModal} className="mb-6 w-full">
+            Add Employee
+          </Button>
+        </If>
 
         <Table
           columns={columns}
           dataSource={data}
           size="large"
           rowKey="id"
-          scroll={{ x: '100%' }} 
+          scroll={{ x: '100%' }}
         />
-
-        <Modal
-          title="Add Employee"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={() => setIsModalOpen(false)}
-        ></Modal>
+        <If condition={hasRights}>
+          <Modal
+            title="Add Employee"
+            open={isModalOpen}
+            okButtonProps={{hidden: true}}
+            onCancel={() => setIsModalOpen(false)}
+          >
+            <EmployeeForm />
+          </Modal>
+        </If>
       </div>
     </div>
   );
