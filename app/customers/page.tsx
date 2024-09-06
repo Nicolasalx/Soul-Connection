@@ -9,6 +9,8 @@ import Customers from "@/app/back/models/customers";
 import Payments from "@/app/back/models/payments";
 import Encounters from "@/app/back/models/encounters";
 import { getSelfId } from '../lib/user';
+import If from '@/components/If';
+import { isManager } from '../lib/user';
 
 const baseStyle: React.CSSProperties = {
   width: '100%',
@@ -74,6 +76,7 @@ function ClientProfile() {
   const [paymentsDetails, setPaymentsDetails] = useState<DataTypePayments[]>([]);
   const [encountersDetails, setEncountersDetails] = useState<DataTypeEncounters[]>([]);
   const [customerId, setCustomerId] = useState<number | null>(null);
+  const [hasRights, setHasRights] = useState(false)
 
   useEffect(() => {
     async function fetchCustomerData() {
@@ -91,6 +94,7 @@ function ClientProfile() {
       }
     }
     fetchCustomerData();
+    isManager().then(val => setHasRights(val))
   }, []);
 
   useEffect(() => {
@@ -182,9 +186,12 @@ function ClientProfile() {
           <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
             <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large"/>
           </div>
-          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-            <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large"/>
-          </div>
+
+          <If condition={hasRights}>
+            <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+              <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large"/>
+            </div>
+          </If>
         </div>
       </div>
     </div>
