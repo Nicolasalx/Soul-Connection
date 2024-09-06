@@ -78,7 +78,6 @@ async function getClientInfos(client: number | null) {
 
 async function calcCompatibility(sign1: string, sign2: string) {
   const key = (sign1 + sign2).toLowerCase()
-  console.log(key)
   if (!Object.keys(astroComps).includes(key)) {
     return 0
   }
@@ -99,7 +98,7 @@ export default function AstroCompatibility() {
 
   useEffect(() => {
     try {
-      fetch('/api/customers', { method: 'GET' }).then(async (res) => {
+      fetch('/api/back/customers', { method: 'GET' }).then(async (res) => {
         if (res.ok) {
           const clients = await res.json() as Client[]
           setClients(clients)
@@ -137,11 +136,11 @@ export default function AstroCompatibility() {
   }
 
   return (
-    <Card className='flex justify-center m-10 mt-42 bg-white rounded-md w-[80%] shadow-lg'>
-      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-2xl p-12" style={{ fontSize: "4rem" }}>
-          Astrology Compatibility
-          <Divider style={{ borderColor: '#d3d3d3' }} />
-        </h1>
+    <Card className='flex justify-center m-10 p-4 bg-white rounded-md w-[80%] shadow-lg'>
+      <h1 className="font-bold text-gray-600 text-5xl md:text-6xl p-8">
+        Astrology Compatibility
+        <Divider style={{ borderColor: '#d3d3d3' }} />
+      </h1>
       <CardBody>
         <form className='flex flex-col items-center w-full h-full' onSubmit={handleSubmit}>
           <div className="flex flex-row flex-nowrap justify-around w-full gap-4">

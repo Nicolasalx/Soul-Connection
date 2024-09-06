@@ -1,4 +1,5 @@
 import { cookies } from "next/headers"
+import { SignJWT } from 'jose'
 
 export async function POST(req: Request) {
     try {
@@ -22,8 +23,19 @@ export async function POST(req: Request) {
         if (result.ok) {
             const expiresAt = new Date(Date.now())
             expiresAt.setHours(expiresAt.getHours() + 24)   // wait 24 hours before token expiration in cookies
-            const {access_token} = await result.json()
-            cookies().set('token', access_token, {
+            const { access_token } = await result.json()
+            let token: string = ''
+
+            if (process.env.ENCRYPT_KEY) {
+                console.log("ok")
+                token = await new SignJWT({ token: access_token })
+                    .setProtectedHeader({alg: 'HS256', typ: 'JWT'})
+                    .setIssuedAt()
+                    .setExpirationTime('24 hours')
+                    .sign(new TextEncoder().encode(process.env.ENCRYPT_KEY));
+                console.log("okkk")
+            }
+            cookies().set('token', token, {
                 httpOnly: true,
                 secure: true,
                 expires: expiresAt,
@@ -32,6 +44,6 @@ export async function POST(req: Request) {
         }
         return Response.json(result.statusText, { status: result.status })
     } catch(error) {
-        return Response.json({ error: 'Unknown error.' }, { status: 500 })
+        return Response.json({ error: error }, { status: 500 })
     }
 }

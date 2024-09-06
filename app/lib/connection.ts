@@ -14,14 +14,12 @@ export async function logout() {
 export async function isConnected() {
     try {
         const result = await fetch('/api/employees/status', { method: 'GET' })
-        let token: string | null = null;
 
         if (result.ok) {
-            token = await result.json()
+            return true
         }
-        return token ? true : false
     } catch(err) {
         console.error(err);
-        return false
     }
+    return false
 }
