@@ -5,11 +5,8 @@ import type { SelectProps, TableColumnsType } from 'antd';
 import { getEmployees } from '../lib/dbhelper/employees';
 import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '../lib/dbhelper/customers';
 import { ObjectId } from 'mongodb';
-<<<<<<< HEAD
 import If from '@/components/If';
 import { isManager } from '../lib/user';
-=======
->>>>>>> 7c6a783b284c0ec8e25ab7e6909fb5f6b3445663
 
 var mongoose = require('mongoose');
 
