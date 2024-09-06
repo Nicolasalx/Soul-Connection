@@ -38,7 +38,7 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
 const EmployeeForm: React.FC = () => (
   <Form
     name="basic"
-    labelCol={{ span: 8 }}
+    labelCol={{ span: 5 }}
     wrapperCol={{ span: 16 }}
     style={{ maxWidth: 600 }}
     initialValues={{ remember: true }}
@@ -94,7 +94,7 @@ const EmployeeForm: React.FC = () => (
       <Input />
     </Form.Item>
 
-    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+    <Form.Item wrapperCol={{ offset: 10, span: 16 }}>
       <Button type="primary" htmlType="submit">
         Submit
       </Button>

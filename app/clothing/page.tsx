@@ -71,7 +71,7 @@ const CustomerSelect: React.FC = () => {
     setHats(hatList);
     setTops(topList);
     setBottoms(bottomList);
-    
+
     console.log("ALL HAT", hatList);
     console.log("ALL TOP", topList);
     console.log("ALL BOTTOM", bottomList);
@@ -107,82 +107,84 @@ const CustomerSelect: React.FC = () => {
   };
 
   return (
-    <div style={{ marginLeft: 300, marginTop: 200, width: 500 }}>
-      <Select
-        allowClear
-        style={{ width: '100%' }}
-        placeholder="Select a customer"
-        options={customerOptions}
-        onChange={handleChange}
-      />
+    <div className="flex flex-col h-full w-full p-6">
+      <div className="bg-white h-full border border-gray-300 p-12 rounded-lg">
+        <Select
+          allowClear
+          className="flex justify-center m-2 w-full"
+          placeholder="Select a customer"
+          options={customerOptions}
+          onChange={handleChange}
+        />
 
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        height: '100vh',
-        justifyContent: 'space-around'
-      }}>
-        {/* Hats */}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <LeftOutlined
-            style={{ fontSize: '24px', cursor: 'pointer' }}
-            onClick={() => handleArrowClick('Left', 'hat')}
-          />
-          <img
-            src={`/api/clothes/${hats[currentHatIndex]?.id}/image`}
-            alt="Hat Image"
-            width={400}
-            height={300}
-            style={{ margin: '0 20px' }}
-          />
-          <RightOutlined
-            style={{ fontSize: '24px', cursor: 'pointer' }}
-            onClick={() => handleArrowClick('Right', 'hat')}
-          />
-        </div>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          height: '100vh',
+          justifyContent: 'space-around'
+        }}>
+          {/* Hats */}
+          <div className="flex justify-center m-2">
+            <LeftOutlined
+              style={{ fontSize: '24px', cursor: 'pointer' }}
+              onClick={() => handleArrowClick('Left', 'hat')}
+            />
+            <img
+              src={`/api/clothes/${hats[currentHatIndex]?.id}/image`}
+              alt="Hat Image"
+              width={400}
+              height={300}
+              className="mx-4 rounded-lg"
+            />
+            <RightOutlined
+              style={{ fontSize: '24px', cursor: 'pointer' }}
+              onClick={() => handleArrowClick('Right', 'hat')}
+            />
+          </div>
 
-        {/* Tops */}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <LeftOutlined
-            style={{ fontSize: '24px', cursor: 'pointer' }}
-            onClick={() => handleArrowClick('Left', 'top')}
-          />
-          <img
-            src={`/api/clothes/${tops[currentTopIndex]?.id}/image`}
-            alt="Top Image"
-            width={400}
-            height={300}
-            style={{ margin: '0 20px' }}
-          />
-          <RightOutlined
-            style={{ fontSize: '24px', cursor: 'pointer' }}
-            onClick={() => handleArrowClick('Right', 'top')}
-          />
-        </div>
+          {/* Tops */}
+          <div className="flex justify-center m-2">
+            <LeftOutlined
+              style={{ fontSize: '24px', cursor: 'pointer' }}
+              onClick={() => handleArrowClick('Left', 'top')}
+            />
+            <img
+              src={`/api/clothes/${tops[currentTopIndex]?.id}/image`}
+              alt="Top Image"
+              width={400}
+              height={300}
+              className="mx-4 rounded-lg"
+            />
+            <RightOutlined
+              style={{ fontSize: '24px', cursor: 'pointer' }}
+              onClick={() => handleArrowClick('Right', 'top')}
+            />
+          </div>
 
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <LeftOutlined
-            style={{ fontSize: '24px', cursor: 'pointer' }}
-            onClick={() => handleArrowClick('Left', 'bottom')}
-          />
-          <img
-            src={`/api/clothes/${bottoms[currentBottomIndex]?.id}/image`}
-            alt="Bottom Image"
-            width={400}
-            height={300}
-            style={{ margin: '0 20px' }}
-          />
-          <RightOutlined
-            style={{ fontSize: '24px', cursor: 'pointer' }}
-            onClick={() => handleArrowClick('Right', 'bottom')}
-          />
+          <div className="flex justify-center m-2">
+            <LeftOutlined
+              style={{ fontSize: '24px', cursor: 'pointer' }}
+              onClick={() => handleArrowClick('Left', 'bottom')}
+            />
+            <img
+              src={`/api/clothes/${bottoms[currentBottomIndex]?.id}/image`}
+              alt="Bottom Image"
+              width={400}
+              height={300}
+              className="mx-4 rounded-lg"
+            />
+            <RightOutlined
+              style={{ fontSize: '24px', cursor: 'pointer' }}
+              onClick={() => handleArrowClick('Right', 'bottom')}
+            />
+          </div>
         </div>
       </div>
-    </div>
-  );
-};
+      </div>
+    );
+  };
 
-export default CustomerSelect;
+  export default CustomerSelect;
 
 

@@ -7,6 +7,7 @@ import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '..
 import { ObjectId } from 'mongodb';
 import If from '@/components/If';
 import { isManager } from '../lib/user';
+import EmployeeForm from './employeeForm';
 
 var mongoose = require('mongoose');
 
@@ -36,14 +37,6 @@ function Coaches() {
 
   const showModal = () => {
     setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
   };
 
   const fetchEmployeesData = async () => {
@@ -184,9 +177,11 @@ function Coaches() {
           <Modal
             title="Add Employee"
             open={isModalOpen}
-            onOk={handleOk}
+            okButtonProps={{hidden: true}}
             onCancel={() => setIsModalOpen(false)}
-          ></Modal>
+          >
+            <EmployeeForm />
+          </Modal>
         </If>
       </div>
     </div>
