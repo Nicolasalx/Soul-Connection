@@ -1,9 +1,12 @@
-import React from "react";
+'use client';
+
+import React, { useEffect } from "react";
 import { Divider } from 'antd';
 import { BarrChart } from "@/components/BarChart";
 import { DotChart } from "@/components/DotChart";
 import { PiieChart } from "@/components/PieChart";
 import { getCoachs, getEmployees } from "../lib/dbhelper/employees";
+import { fillCoachStatistic } from "../lib/dbhelper/statistics_data";
 
 const chartDataCoachNbEncounters = [
   { coach: "Coach01", value: 2 },
@@ -59,6 +62,14 @@ const chartDataSalesEv = [
 ];
 
 async function Statistics() {
+
+  useEffect(() => {
+    // Fill 
+    const coachsStatistics = fillCoachStatistic();
+
+
+  }, [])
+
   return (
     <div className="flex flex-col h-screen w-screen p-6">
       <div className="bg-white border border-gray-300 p-12 rounded-lg">

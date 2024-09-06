@@ -170,7 +170,6 @@ function Coaches() {
           dataSource={data}
           size="large"
           rowKey="id"
-          pagination={{ pageSize: 7 }}
           scroll={{ x: '100%' }}
         />
         <If condition={hasRights}>
@@ -188,4 +187,4 @@ function Coaches() {
   );
 }
 
-export default Coaches;
+  export default Coaches;

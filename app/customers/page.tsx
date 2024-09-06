@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Image, Divider, Table, Select, Typography } from 'antd';
+import { Image, Divider, Table, Select, Typography, Empty } from 'antd';
 import type { TableColumnsType, SelectProps } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPerson, faLocationDot, faCakeCandles, faPhone, faComment } from '@fortawesome/free-solid-svg-icons';
@@ -135,6 +135,8 @@ function ClientProfile() {
     setSelectedCustomer(value as string);
   };
 
+  const imageUrl = customerId ? `/api/customers/${customerId}/image` : null;
+
   return (
     <div className="flex flex-col h-screen w-screen p-6">
       <div className="bg-white border border-gray-300 p-12 rounded-lg">
@@ -161,10 +163,17 @@ function ClientProfile() {
             </div>
           </div>
           <div className="flex-1 flex justify-center items-center">
-            <Image
-              width={300}
-              src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-            />
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="Customer Image"
+                width={400}
+                height={300}
+                style={{ margin: '0 20px' }}
+              />
+            ) : (
+              <Empty description="No image available" />
+            )}
           </div>
         </div>
 

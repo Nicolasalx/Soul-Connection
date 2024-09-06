@@ -33,7 +33,12 @@ export default function Advices() {
                 <Card
                   title={tip.title}
                   bordered={false}
-                  style={{ marginBottom: '16px' }}
+                  style={{
+                    marginBottom: '16px',
+                    border: '2px solid #d3d3d3',
+                    borderRadius: '10px',
+                    padding: '16px'
+                  }}
                 >
                   <p>{tip.tip}</p>
                 </Card>
@@ -41,7 +46,15 @@ export default function Advices() {
             ))
           ) : (
             <Col span={24}>
-              <Card title="Tips" bordered={false}>
+              <Card
+                title="Tips"
+                bordered={false}
+                style={{
+                  border: '2px solid #d3d3d3',
+                  borderRadius: '10px',
+                  padding: '16px'
+                }}
+              >
                 <p>No tips available</p>
               </Card>
             </Col>

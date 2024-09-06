@@ -51,6 +51,11 @@ const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>)
             <p>Clothing</p>
           </Link>
         </li>
+        <li>
+          <Link href="/clothing">
+            <p className="px-4 text-2xl" style={{ fontSize: "2rem" }}>Clothing</p>
+          </Link>
+        </li>
       </ul>
       <If condition={userConnected}>
         <div className="absolute bottom-4 w-full flex justify-center">
