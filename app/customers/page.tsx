@@ -105,8 +105,6 @@ function ClientProfile() {
       setCustomerDetails(customer || {});
       setCustomerId(customer?.id ?? null);
 
-      console.log("CUSTOMER ID: ", customerId);
-
       if (customer?.id !== undefined) {
         /*     PAYMENTS     */
         const customerPayments = getCustomerPayments(customer.id);
