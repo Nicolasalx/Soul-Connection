@@ -5,7 +5,7 @@ export default class Employees
     constructor(
         public id: number,
         public email: string,
-        public password: string,
+        public password: string = "_",
         public name: string,
         public surname: string,
         public birth_date: string,
