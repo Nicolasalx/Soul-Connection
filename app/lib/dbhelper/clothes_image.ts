@@ -51,3 +51,20 @@ export async function createClothesImage(id: string, imageBlob: Blob): Promise<v
     console.error('Error creating image:', error);
   }
 }
+
+export async function deleteClothesImage(id: string): Promise<void> {
+  try {
+    const response = await fetch(`/api/back/clothes_image?id=${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to delete image');
+    }
+
+    console.log('Image deleted successfully');
+  } catch (error) {
+    console.error('Error deleting image:', error);
+  }
+}
