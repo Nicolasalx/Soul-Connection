@@ -13,6 +13,7 @@ import { delete_db_encounters, update_db_encounters } from "@/app/lib/update_db_
 import { delete_db_events, update_db_events } from "@/app/lib/update_db_data/update_db_events";
 import { delete_db_payments, update_db_payments } from "@/app/lib/update_db_data/update_db_payments";
 import { delete_db_tips, update_db_tips } from "@/app/lib/update_db_data/update_db_tips";
+import { delete_db_clothes_image, update_db_clothes_image } from "@/app/lib/update_db_data/update_db_clothes_image";
 
 const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>, openDBPopup: () => void) => {
   const [hasRights, setHasRights] = useState(false)
@@ -158,6 +159,10 @@ export default function NavBar()
             <div className="flex justify-between items-center mb-1">
               <Button className="m-2" color="default" onClick={() => update_db_tips()}>Update tips DB</Button>
               <Button className="m-2" color="danger" onClick={() => delete_db_tips()}>Delete tips DB</Button>
+            </div>
+            <div className="flex justify-between items-center mb-1">
+              <Button className="m-2" color="default" onClick={() => update_db_clothes_image()}>Update Clothes Image DB</Button>
+              <Button className="m-2" color="danger" onClick={() => delete_db_clothes_image()}>Delete Clothes Image DB</Button>
             </div>
           </ModalBody>
           <ModalFooter>
