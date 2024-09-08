@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { Divider } from 'antd';
 import { BarrChart } from "@/components/BarChart";
-import { DotChart } from "@/components/DotChart";
 import { PiieChart } from "@/components/PieChart";
 import { fillCoachStatistic } from "../lib/dbhelper/statistics_data";
 
@@ -14,62 +13,74 @@ function Statistics() {
   const [nbEventsByCoach, setNbEventsByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [averageRatingByCoach, setAverageRatingByCoach] = useState<{ coach: string; value: number }[]>([]);
 
-useEffect(() => {
-  const makeStatistics = async () => {
-    const coachsStatistics = await fillCoachStatistic();
+  const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
 
-    console.log(coachsStatistics);
+  useEffect(() => {
+    const makeStatistics = async () => {
+      const coachsStatistics = await fillCoachStatistic();
 
-    const nbCustomerData = coachsStatistics.coach_list
-      .map((coach, index) => ({
-        coach,
-        value: coachsStatistics.coach_nb_client[index],
-      }))
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 5);
-    setNbCustomersByCoach(nbCustomerData);
+      const nbCustomerData = coachsStatistics.coach_list
+        .map((coach, index) => ({
+          coach,
+          value: coachsStatistics.coach_nb_client[index],
+        }))
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 5);
+      setNbCustomersByCoach(nbCustomerData);
 
-    const nbGainData = coachsStatistics.coach_list
-      .map((coach, index) => ({
-        coach,
-        value: coachsStatistics.coach_gain[index],
-      }))
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 5);
-      console.log("HERE: ", nbGainData);
-    setNbGainByCoach(nbGainData);
-    console.log("HERE2: ", nbGainByCoach);
+      const colorPalette = [
+        '#2C3E50',
+        '#34495E',
+        '#1F2A38',
+        '#3E4A59',
+        '#2D3436'
+      ];
 
-    const nbEncounters = coachsStatistics.coach_list
-      .map((coach, index) => ({
-        coach,
-        value: coachsStatistics.coach_encounter[index],
-      }))
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 5);
-    setNbEncountersByCoach(nbEncounters);
+      const config = nbCustomerData.reduce((configAcc, item, index) => {
+        configAcc[item.coach] = { color: colorPalette[index] };
+        return configAcc;
+      }, {} as Record<string, { color: string }>);
 
-    const nbEvents = coachsStatistics.coach_list
-      .map((coach, index) => ({
-        coach,
-        value: coachsStatistics.coach_nb_event[index],
-      }))
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 5);
-    setNbEventsByCoach(nbEvents);
+      setChartConfigCustomers(config);
 
-    const averageRating = coachsStatistics.coach_list
-      .map((coach, index) => ({
-        coach,
-        value: coachsStatistics.coach_average_rating[index],
-      }))
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 5);
-    setAverageRatingByCoach(averageRating);
-  };
-  makeStatistics();
-}, []);
+      const nbGainData = coachsStatistics.coach_list
+        .map((coach, index) => ({
+          coach,
+          value: coachsStatistics.coach_gain[index],
+        }))
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 5);
+      setNbGainByCoach(nbGainData);
 
+      const nbEncounters = coachsStatistics.coach_list
+        .map((coach, index) => ({
+          coach,
+          value: coachsStatistics.coach_encounter[index],
+        }))
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 5);
+      setNbEncountersByCoach(nbEncounters);
+
+      const nbEvents = coachsStatistics.coach_list
+        .map((coach, index) => ({
+          coach,
+          value: coachsStatistics.coach_nb_event[index],
+        }))
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 5);
+      setNbEventsByCoach(nbEvents);
+
+      const averageRating = coachsStatistics.coach_list
+        .map((coach, index) => ({
+          coach,
+          value: coachsStatistics.coach_average_rating[index],
+        }))
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 5);
+      setAverageRatingByCoach(averageRating);
+    };
+    makeStatistics();
+  }, []);
 
   return (
     <div className="flex flex-col h-screen w-screen p-6">
@@ -80,11 +91,14 @@ useEffect(() => {
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="col-span-1">
-            <BarrChart
+            <PiieChart
               data={nbCustomersByCoach}
               title="Number of customers by coach"
-              yAxisKey="coach"
-              barKey="value"
+              description=""
+              dataKey="value"
+              nameKey="coach"
+              config={chartConfigCustomers}
+              observation="Top 5 Coaches by Customer Count"
             />
           </div>
 
@@ -120,27 +134,6 @@ useEffect(() => {
               barKey="value"
             />
           </div>
-          {/* <div className="col-span-1">
-            <PiieChart
-              data={chartDataAgeProportion}
-              title="Age Ranges Present on SC"
-              description="Distribution of Age Ranges"
-              dataKey="value"
-              nameKey="age"
-              config={chartConfigAge}
-              observation="None"
-            />
-          </div>
-          <div className="col-span-1">
-            <DotChart
-              data={chartDataSalesEv}
-              title="Sales Revenus Evolution"
-              description="Evolution from January to June 2024"
-              lineKey="amount"
-              xAxisKey="month"
-              observation="None"
-            />
-          </div> */}
         </div>
       </div>
     </div>
