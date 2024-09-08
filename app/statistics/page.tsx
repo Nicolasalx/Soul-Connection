@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Divider } from 'antd';
 import { BarrChart } from "@/components/BarChart";
 import { PiieChart } from "@/components/PieChart";
+import { DotChart } from "@/components/DotChart";
 import { fillCoachStatistic } from "../lib/dbhelper/statistics_data";
 
 function Statistics() {
@@ -49,7 +50,8 @@ function Statistics() {
           value: coachsStatistics.coach_gain[index],
         }))
         .sort((a, b) => b.value - a.value)
-        .slice(0, 5);
+        .slice(0, 5)
+        .reverse();
       setNbGainByCoach(nbGainData);
 
       const nbEncounters = coachsStatistics.coach_list
@@ -103,13 +105,16 @@ function Statistics() {
           </div>
 
           <div className="col-span-1">
-            <BarrChart
+            <DotChart
               data={nbGainByCoach}
               title="Earnings by coach"
-              yAxisKey="coach"
-              barKey="value"
+              description="Earnings of Top 5 Coaches"
+              xAxisKey="coach"
+              lineKey="value"
+              observation="Line Observation"
             />
           </div>
+
           <div className="col-span-1">
             <BarrChart
               data={nbEncountersByCoach}
@@ -118,6 +123,7 @@ function Statistics() {
               barKey="value"
             />
           </div>
+
           <div className="col-span-1">
             <BarrChart
               data={nbEventsByCoach}
@@ -126,6 +132,7 @@ function Statistics() {
               barKey="value"
             />
           </div>
+
           <div className="col-span-1">
             <BarrChart
               data={averageRatingByCoach}
