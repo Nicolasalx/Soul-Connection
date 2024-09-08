@@ -7,7 +7,7 @@ import Tips from '@/app/back/models/tips';
 export default function Advices() {
   const [allTips, setAllTips] = useState<Tips[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const tipsPerPage = 12; // Define how many tips per page
+  const tipsPerPage = 12;
 
   useEffect(() => {
     const fetchTips = async () => {
@@ -21,7 +21,6 @@ export default function Advices() {
     fetchTips();
   }, []);
 
-  // Calculate the current tips to show based on the page
   const indexOfLastTip = currentPage * tipsPerPage;
   const indexOfFirstTip = indexOfLastTip - tipsPerPage;
   const currentTips = allTips.slice(indexOfFirstTip, indexOfLastTip);
