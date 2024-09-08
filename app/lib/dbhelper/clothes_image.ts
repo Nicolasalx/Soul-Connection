@@ -1,5 +1,3 @@
-import { sc_db_api } from "./db_api_instance";
-
 export async function getClothesImage(id: string): Promise<any | null> {
   try {
     const response = await fetch(`/api/back/clothes_image?id=${id}`);

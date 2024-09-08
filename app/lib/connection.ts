@@ -1,10 +1,3 @@
-/*
-** EPITECH PROJECT, 2024
-** connection.ts
-** File description:
-** connection related functions
-*/
-
 import { deleteToken } from './token'
 
 export async function logout() {

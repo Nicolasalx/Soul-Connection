@@ -1,13 +1,5 @@
-/*
-** EPITECH PROJECT, 2024
-** api.ts
-** File description:
-** useful functions to call APIs
-*/
-
 import { verifyToken } from "./dal"
 
-// Adds the Bearer token and the API token to the request
 export async function callAPI(req: Request) {
     const token = await verifyToken()
     if (!token) {

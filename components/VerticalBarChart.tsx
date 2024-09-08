@@ -4,11 +4,25 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 interface VerticalBarChartProps {
   data: { coach: string; value: number }[];
   title: string;
-  yAxisKey: string;
-  barKey: string;
+  yAxisKey?: string;
+  barKey?: string;
 }
 
-const VerticalBarChart: React.FC<VerticalBarChartProps> = ({ data, title, yAxisKey, barKey }) => {
+const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
+  data,
+  title,
+  yAxisKey = 'coach',
+  barKey = 'value'
+}) => {
+  if (!data || data.length === 0) {
+    return <div>No data available</div>;
+  }
+
+  const sampleData = data[0];
+  if (!(yAxisKey in sampleData) || !(barKey in sampleData)) {
+    return <div>Invalid data keys provided</div>;
+  }
+
   return (
     <div className="bg-white border border-gray-300 p-4 rounded-lg overflow-hidden">
       <h2 className="font-bold text-gray-600 mb-4 text-xl">{title}</h2>

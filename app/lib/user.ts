@@ -1,10 +1,3 @@
-/*
-** EPITECH PROJECT, 2024
-** user.ts
-** File description:
-** connected user related functions
-*/
-
 export async function isManagerMiddleware() {
     try {
         const result = await fetch('http://localhost:3000/api/employees/me', { method: 'GET' })
