@@ -40,7 +40,7 @@ export function BarrChart({ data, title, yAxisKey, barKey }: {
             height={200}
             data={data}
             layout="vertical"
-            margin={{bottom: 20}} 
+            margin={{bottom: 20}}
             barSize={20}
           >
             <CartesianGrid horizontal={false} />

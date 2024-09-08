@@ -5,6 +5,7 @@ import { Divider } from 'antd';
 import { BarrChart } from "@/components/BarChart";
 import { PiieChart } from "@/components/PieChart";
 import { DotChart } from "@/components/DotChart";
+import VerticalBarChart from "@/components/VerticalBarChart";
 import { fillCoachStatistic } from "../lib/dbhelper/statistics_data";
 
 function Statistics() {
@@ -15,6 +16,7 @@ function Statistics() {
   const [averageRatingByCoach, setAverageRatingByCoach] = useState<{ coach: string; value: number }[]>([]);
 
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
+
 
   useEffect(() => {
     const makeStatistics = async () => {
@@ -108,15 +110,15 @@ function Statistics() {
             <DotChart
               data={nbGainByCoach}
               title="Earnings by coach"
-              description="Earnings of Top 5 Coaches"
+              description=""
               xAxisKey="coach"
               lineKey="value"
-              observation="Line Observation"
+              observation="Earnings of Top 5 Coaches"
             />
           </div>
 
           <div className="col-span-1">
-            <BarrChart
+            <VerticalBarChart
               data={nbEncountersByCoach}
               title="Number of encounters by coach"
               yAxisKey="coach"
