@@ -24,7 +24,7 @@ export async function fillCoachStatistic(): Promise<CoachStatistic>
   const encounters = await getEncounters();
   const events = await getEvents();
   const payments = await getPayments();
-  
+
   const coach_gain: number[] = [];
   const coach_encounter: number[] = [];
   const coach_nb_client: number[] = [];
@@ -34,27 +34,27 @@ export async function fillCoachStatistic(): Promise<CoachStatistic>
 
   for (const coach of coachs) {
       const coachId = coach.id;
-      
+
       const coachCustomers = customers.filter(customer => customer.coach_id === coachId);
-      
+
       const nbClients = coachCustomers.length;
       coach_nb_client.push(nbClients);
-      
+
       const coachPayments = payments.filter(payment => coachCustomers.some(c => c.id === payment.customer_id));
       const totalGain = coachPayments.reduce((sum, payment) => sum + payment.amount, 0);
-      coach_gain.push(totalGain);
-      
+      coach_gain.push(parseFloat(totalGain.toFixed(2)));
+
       const coachEncounters = encounters.filter(encounter => coachCustomers.some(c => c.id === encounter.customer_id));
       const nbEncounters = coachEncounters.length;
       coach_encounter.push(nbEncounters);
-      
+
       const totalRating = coachEncounters.reduce((sum, encounter) => sum + encounter.rating, 0);
       const avgRating = nbEncounters > 0 ? totalRating / nbEncounters : 0;
-      coach_average_rating.push(avgRating);
-      
+      coach_average_rating.push(parseFloat(avgRating.toFixed(2)));
+
       const nbEvents = events.filter(event => event.employee_id === coachId).length;
       coach_nb_event.push(nbEvents);
-      
+
       coach_list.push(`${coach.name} ${coach.surname}`);
   }
 
