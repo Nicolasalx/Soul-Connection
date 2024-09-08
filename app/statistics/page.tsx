@@ -6,6 +6,7 @@ import { BarrChart } from "@/components/BarChart";
 import { PiieChart } from "@/components/PieChart";
 import { DotChart } from "@/components/DotChart";
 import VerticalBarChart from "@/components/VerticalBarChart";
+import RadarChart from "@/components/RadarChart";
 import { fillCoachStatistic } from "../lib/dbhelper/statistics_data";
 
 function Statistics() {
@@ -14,9 +15,8 @@ function Statistics() {
   const [nbEncountersByCoach, setNbEncountersByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [nbEventsByCoach, setNbEventsByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [averageRatingByCoach, setAverageRatingByCoach] = useState<{ coach: string; value: number }[]>([]);
-
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
-
+  const [astrologicalData, setAstrologicalData] = useState<{ name: string; value: number }[]>([]);
 
   useEffect(() => {
     const makeStatistics = async () => {
@@ -82,6 +82,14 @@ function Statistics() {
         .sort((a, b) => b.value - a.value)
         .slice(0, 5);
       setAverageRatingByCoach(averageRating);
+
+      const astroData = coachsStatistics.data_astrological_sign.name_astro_sign
+        .map((sign, index) => ({
+          name: sign,
+          value: coachsStatistics.data_astrological_sign.number_astro_sign[index],
+        }));
+      setAstrologicalData(astroData);
+
     };
     makeStatistics();
   }, []);
@@ -141,6 +149,13 @@ function Statistics() {
               title="Average rating by coach"
               yAxisKey="coach"
               barKey="value"
+            />
+          </div>
+
+          <div className="col-span-1">
+            <RadarChart
+              data={astrologicalData}
+              title="Astrological Sign Distribution"
             />
           </div>
         </div>
