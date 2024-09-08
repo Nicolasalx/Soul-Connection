@@ -1,11 +1,13 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
-import { Card, Col, Row, Divider } from 'antd';
+import { Card, Col, Row, Divider, Pagination } from 'antd';
 import { getTips } from '../lib/dbhelper/tips';
-import Tips from "@/app/back/models/tips";
+import Tips from '@/app/back/models/tips';
 
 export default function Advices() {
   const [allTips, setAllTips] = useState<Tips[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const tipsPerPage = 12; // Define how many tips per page
 
   useEffect(() => {
     const fetchTips = async () => {
@@ -19,6 +21,15 @@ export default function Advices() {
     fetchTips();
   }, []);
 
+  // Calculate the current tips to show based on the page
+  const indexOfLastTip = currentPage * tipsPerPage;
+  const indexOfFirstTip = indexOfLastTip - tipsPerPage;
+  const currentTips = allTips.slice(indexOfFirstTip, indexOfLastTip);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="flex flex-col h-screen w-screen p-6">
       <div className="bg-white border border-gray-300 p-12 rounded-lg">
@@ -27,8 +38,8 @@ export default function Advices() {
           <Divider style={{ borderColor: '#d3d3d3' }} />
         </h1>
         <Row gutter={16}>
-          {allTips.length > 0 ? (
-            allTips.map((tip) => (
+          {currentTips.length > 0 ? (
+            currentTips.map((tip) => (
               <Col span={8} key={tip.id}>
                 <Card
                   title={tip.title}
@@ -60,6 +71,15 @@ export default function Advices() {
             </Col>
           )}
         </Row>
+        {allTips.length > tipsPerPage && (
+          <Pagination
+            current={currentPage}
+            total={allTips.length}
+            pageSize={tipsPerPage}
+            onChange={handlePageChange}
+            style={{ marginTop: '20px', textAlign: 'center' }}
+          />
+        )}
       </div>
     </div>
   );
