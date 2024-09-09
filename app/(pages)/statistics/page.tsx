@@ -19,11 +19,7 @@ function Statistics() {
   const [averageRatingByCoach, setAverageRatingByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
   const [astrologicalData, setAstrologicalData] = useState<{ name: string; value: number }[]>([]);
-<<<<<<< HEAD:app/(pages)/statistics/page.tsx
   const [hasRights, setHasRights] = useState<boolean|null>(null);
-=======
-  const [hasRights, setHasRights] = useState<boolean | null>(null);
->>>>>>> 85c714dfb458b15051b5da2c07abf2f762d1e6f7:app/statistics/page.tsx
 
   useEffect(() => {
     isManager().then(val => setHasRights(val))
@@ -104,13 +100,10 @@ function Statistics() {
     makeStatistics();
   }, []);
 
-<<<<<<< HEAD:app/(pages)/statistics/page.tsx
   if (hasRights === null) {
     return null
   }
 
-=======
->>>>>>> 85c714dfb458b15051b5da2c07abf2f762d1e6f7:app/statistics/page.tsx
   if (hasRights === false) {
     return <Forbidden />
   }
