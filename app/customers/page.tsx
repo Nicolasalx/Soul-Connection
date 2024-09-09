@@ -11,6 +11,7 @@ import Encounters from "@/app/back/models/encounters";
 import { getSelfId } from '../lib/user';
 import If from '@/components/If';
 import { isManager } from '../lib/user';
+import { getCustomersImage } from '../lib/dbhelper/customers_image';
 
 const baseStyle: React.CSSProperties = {
   width: '100%',
@@ -97,43 +98,56 @@ function ClientProfile() {
     isManager().then(val => setHasRights(val))
   }, []);
 
+  const [urlCustomer, setCustomerUrl] = useState('');
+
   useEffect(() => {
-    if (selectedCustomer) {
-      const customer = customerData.find(cust => cust.id.toString() === selectedCustomer);
-      setCustomerDetails(customer || {});
-      setCustomerId(customer?.id ?? null);
+    async function fetchCustomerDetails() {
+      if (selectedCustomer) {
+        const customer = customerData.find(cust => cust.id.toString() === selectedCustomer);
+        setCustomerDetails(customer || {});
 
-      if (customer?.id || customer?.id === 0) {
-        const customerPayments = getCustomerPayments(customer.id);
-        customerPayments.then(payments => {
-          const formattedPayments = payments.map((payment: Payments) => ({
-            key: payment.id.toString(),
-            date: payment.date,
-            amount: payment.amount.toString(),
-            comment: payment.comment,
-          }));
-          setPaymentsDetails(formattedPayments);
-        }).catch(error => {
-          console.error('Failed to fetch customer payments:', error);
-        });
-
-        /*     ENCOUNTERS     */
-        const customerEncounters = getCustomerEncounters(customer.id);
-        customerEncounters.then(encounters => {
-          const formattedEncounters = encounters.map((encounter: Encounters) => ({
-            key: encounter.id.toString(),
-            date: encounter.date,
-            rating: encounter.rating,
-            report: encounter.comment,
-            source: encounter.source
-          }));
-          setEncountersDetails(formattedEncounters);
-        }).catch(error => {
-          console.error('Failed to fetch customer encounters:', error);
-        });
+        try {
+          if (customer) {
+            const imageData = await getCustomersImage(customer.id.toString());
+            setCustomerUrl(imageData.image);
+          }
+        } catch (error) {
+          console.error('Failed to fetch customer image:', error);
+        }
+        setCustomerId(customer?.id ?? null);
+        if (customer?.id || customer?.id === 0) {
+          try {
+            const customerPayments = await getCustomerPayments(customer.id);
+            const formattedPayments = customerPayments.map((payment: Payments) => ({
+              key: payment.id.toString(),
+              date: payment.date,
+              amount: payment.amount.toString(),
+              comment: payment.comment,
+            }));
+            setPaymentsDetails(formattedPayments);
+          } catch (error) {
+            console.error('Failed to fetch customer payments:', error);
+          }
+  
+          try {
+            const customerEncounters = await getCustomerEncounters(customer.id);
+            const formattedEncounters = customerEncounters.map((encounter: Encounters) => ({
+              key: encounter.id.toString(),
+              date: encounter.date,
+              rating: encounter.rating,
+              report: encounter.comment,
+              source: encounter.source
+            }));
+            setEncountersDetails(formattedEncounters);
+          } catch (error) {
+            console.error('Failed to fetch customer encounters:', error);
+          }
+        }
       }
     }
+    fetchCustomerDetails();
   }, [selectedCustomer, customerData]);
+  
 
   const handleChange = (value: string | string[]) => {
     setSelectedCustomer(value as string);
@@ -169,7 +183,7 @@ function ClientProfile() {
           <div className="flex-1 flex justify-center items-center">
             {imageUrl ? (
               <img
-                src={imageUrl}
+                src={urlCustomer}
                 alt="Customer Image"
                 width={400}
                 height={300}

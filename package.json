@@ -23,6 +23,7 @@
     "@nextui-org/react": "^2.4.6",
     "antd": "^5.20.4",
     "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
     "child_process": "^1.0.2",
     "dotenv": "^16.4.5",
     "embla-carousel-react": "^7.1.0",
@@ -46,6 +47,7 @@
     "uuid-int": "^3.1.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^4.17.21",
     "@types/node": "^20",
     "@types/node-cron": "^3.0.11",

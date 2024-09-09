@@ -36,7 +36,7 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
             dataKey={yAxisKey}
-            tick={{ angle: -45, textAnchor: 'end', fontSize: 12 }}
+            tick={{ textAnchor: 'end', fontSize: 12 }}
             interval={0}
           />
           <YAxis />
