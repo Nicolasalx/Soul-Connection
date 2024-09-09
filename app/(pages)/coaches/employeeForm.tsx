@@ -3,7 +3,7 @@
 import type { FormProps } from 'antd';
 import { Button, Form, Input } from 'antd';
 import React from 'react';
-import { createEmployee } from '../lib/dbhelper/employees';
+import { createEmployee } from '../../lib/dbhelper/employees';
 import Employees from "@/app/back/models/employees";
 
 type FieldType = {

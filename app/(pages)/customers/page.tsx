@@ -4,13 +4,13 @@ import { Image, Divider, Table, Select, Typography, Empty } from 'antd';
 import type { TableColumnsType, SelectProps } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPerson, faLocationDot, faCakeCandles, faPhone, faComment } from '@fortawesome/free-solid-svg-icons';
-import { getCoachCustomers, getCustomerEncounters, getCustomerPayments } from '../lib/dbhelper/customers';
+import { getCoachCustomers, getCustomerEncounters, getCustomerPayments } from '../../lib/dbhelper/customers';
 import Customers from "@/app/back/models/customers";
 import Payments from "@/app/back/models/payments";
 import Encounters from "@/app/back/models/encounters";
-import { getSelfId } from '../lib/user';
+import { getSelfId } from '../../lib/user';
 import If from '@/components/If';
-import { isManager } from '../lib/user';
+import { isManager } from '../../lib/user';
 
 const baseStyle: React.CSSProperties = {
   width: '100%',
@@ -142,59 +142,57 @@ function ClientProfile() {
   const imageUrl = customerId ? `/api/customers/${customerId}/image` : null;
 
   return (
-    <div className="flex flex-col h-screen w-screen p-6">
-      <div className="bg-white border border-gray-300 p-12 rounded-lg">
-        <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
-          Customers
-          <Divider style={{ borderColor: '#d3d3d3' }} />
-        </h1>
-        <div className="flex flex-col md:flex-row space-x-4 mb-6">
-          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-            <Select
-              size="large"
-              placeholder="Select a customer"
-              onChange={handleChange}
-              style={{ width: '100%' }}
-              options={options}
-              value={selectedCustomer}
-            />
-            <div className="mt-6">
-              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPerson} /> {customerDetails.name || "No name"}</Title>
-              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faCakeCandles} /> {customerDetails.birth_date || "No birth date"}</Title>
-              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faLocationDot} /> {customerDetails.address || "No address"}</Title>
-              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPhone} /> {customerDetails.phone_number || "No phone number"}</Title>
-              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faComment} /> {customerDetails.description || "No description"}</Title>
-            </div>
-          </div>
-          <div className="flex-1 flex justify-center items-center">
-            {imageUrl ? (
-              <img
-                src={imageUrl}
-                alt="Customer Image"
-                width={400}
-                height={300}
-                style={{ margin: '0 20px' }}
-              />
-            ) : (
-              <Empty description="No image available" />
-            )}
+    <>
+      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
+        Customers
+        <Divider style={{ borderColor: '#d3d3d3' }} />
+      </h1>
+      <div className="flex flex-col md:flex-row space-x-4 mb-6">
+        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+          <Select
+            size="large"
+            placeholder="Select a customer"
+            onChange={handleChange}
+            style={{ width: '100%' }}
+            options={options}
+            value={selectedCustomer}
+          />
+          <div className="mt-6">
+            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPerson} /> {customerDetails.name || "No name"}</Title>
+            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faCakeCandles} /> {customerDetails.birth_date || "No birth date"}</Title>
+            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faLocationDot} /> {customerDetails.address || "No address"}</Title>
+            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPhone} /> {customerDetails.phone_number || "No phone number"}</Title>
+            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faComment} /> {customerDetails.description || "No description"}</Title>
           </div>
         </div>
-
-        <Divider style={{ borderColor: '#d3d3d3' }} />
-        <div className="flex flex-col md:flex-row space-x-4 mt-4">
-          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-            <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large" pagination={{ pageSize: 5 }}/>
-          </div>
-
-          <If condition={hasRights}>
-            <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-              <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large" pagination={{ pageSize: 5 }}/>
-            </div>
-          </If>
+        <div className="flex-1 flex justify-center items-center">
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt="Customer Image"
+              width={400}
+              height={300}
+              style={{ margin: '0 20px' }}
+            />
+          ) : (
+            <Empty description="No image available" />
+          )}
         </div>
       </div>
-    </div>
+
+      <Divider style={{ borderColor: '#d3d3d3' }} />
+      <div className="flex flex-col md:flex-row space-x-4 mt-4">
+        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+          <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large" pagination={{ pageSize: 5 }}/>
+        </div>
+
+        <If condition={hasRights}>
+          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+            <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large" pagination={{ pageSize: 5 }}/>
+          </div>
+        </If>
+      </div>
+    </>
   );
 }
 
