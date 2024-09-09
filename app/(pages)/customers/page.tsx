@@ -5,14 +5,13 @@ import { Image, Divider, Table, Select, Typography, Empty } from 'antd';
 import type { TableColumnsType, SelectProps } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPerson, faLocationDot, faCakeCandles, faPhone, faComment } from '@fortawesome/free-solid-svg-icons';
-import { getCoachCustomers, getCustomerEncounters, getCustomerPayments } from '../lib/dbhelper/customers';
+import { getCoachCustomers, getCustomerEncounters, getCustomerPayments } from '../../lib/dbhelper/customers';
 import Customers from "@/app/back/models/customers";
 import Payments from "@/app/back/models/payments";
 import Encounters from "@/app/back/models/encounters";
-import { getSelfId } from '../lib/user';
+import { getSelfId, isManager } from '../../lib/user';
 import If from '@/components/If';
-import { isManager } from '../lib/user';
-import { getCustomersImage } from '../lib/dbhelper/customers_image';
+import { getCustomersImage } from '@/app/lib/dbhelper/customers_image';
 
 const { Title } = Typography;
 
@@ -185,19 +184,19 @@ function ClientProfile() {
             )}
           </div>
         </div>
+      </div>
 
-        <Divider style={{ borderColor: '#d3d3d3' }} />
-        <div className="flex flex-col md:flex-row space-x-4 mt-4">
-          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-            <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large" pagination={{ pageSize: 5 }}/>
-          </div>
-
-          <If condition={hasRights}>
-            <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-              <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large" pagination={{ pageSize: 5 }}/>
-            </div>
-          </If>
+      <Divider style={{ borderColor: '#d3d3d3' }} />
+      <div className="flex flex-col md:flex-row space-x-4 mt-4">
+        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+          <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large" pagination={{ pageSize: 5 }}/>
         </div>
+
+        <If condition={hasRights}>
+          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+            <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large" pagination={{ pageSize: 5 }}/>
+          </div>
+        </If>
       </div>
     </div>
   );

@@ -21,12 +21,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       </head>
       <body className={inter.className}>
-        <div className="flex-none w-0 md:flex-2 md:w-[20%]">
-          <NavBar />
-        </div>
-        <div className="flex flex-auto md:flex-3 justify-center w-full md:w-[80%]">
-          {children}
-        </div>
+       {children}
       </body>
     </html>
   );

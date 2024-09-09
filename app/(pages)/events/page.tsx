@@ -1,10 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { BadgeProps, CalendarProps } from 'antd';
-import { Badge, Calendar, Card, Button, Divider } from 'antd';
+import { Badge, Calendar, Button, Divider } from 'antd';
 import type { Dayjs } from 'dayjs';
 import styles from './Calendar.module.css';
+import Map from '@/components/Map';
+import Events from '../../back/models/events';
+import { getEvents } from '../../lib/dbhelper/events';
+import { Card, CardBody, CardFooter, CardHeader, Listbox, ListboxItem } from '@nextui-org/react';
 
 const getListData = (value: Dayjs) => {
   let listData: { type: string; content: string }[] = [];
@@ -43,9 +47,13 @@ const getMonthData = (value: Dayjs) => {
   }
 };
 
-export default function Events() {
+export default function EventsPage() {
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
-  const [events, setEvents] = useState<{ type: string; content: string }[]>([]);
+  const [events, setEvents] = useState<Events[]>([]);
+
+  useEffect(() => {
+    getEvents().then(res => setEvents(res.sort().reverse()))
+  }, [])
 
   const monthCellRender = (value: Dayjs) => {
     const num = getMonthData(value);
@@ -72,7 +80,6 @@ export default function Events() {
 
   const onSelect = (value: Dayjs) => {
     setSelectedDate(value);
-    setEvents(getListData(value));
   };
 
   const cellRender: CalendarProps<Dayjs>['cellRender'] = (current, info) => {
@@ -82,6 +89,41 @@ export default function Events() {
   };
 
   return (
+    <>
+      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
+        Events
+        <Divider style={{ borderColor: '#d3d3d3' }} />
+      </h1>
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-2 md:h-[464px]">
+        <div className="bg-white-700 h-[305px] md:h-full">
+          <Map events={events} posix={[46.619209, 2.466162]} zoom={5} />
+        </div>
+        <Listbox
+          className="flex flex-col overflow-y-scroll h-[305px] md:h-full"
+          items={events}>
+          {event => (
+            <ListboxItem key={event.id} textValue={event.name}>
+              <Card className="shadow-none">
+                <CardHeader className="flex flex-row justify-between">
+                  <h2>{event.name}</h2>
+                  <p>{event.date}</p>
+                </CardHeader>
+                <CardBody>
+                  {/* add location icon */}
+                  {event.location_name}
+                </CardBody>
+                <CardFooter>
+                  Max participants: {event.max_participants}
+                </CardFooter>
+              </Card>
+            </ListboxItem>
+          )}
+        </Listbox>
+      </div>
+    </>
+  )
+
+  /*return (
     <div className="flex flex-col h-screen w-screen p-6">
       <div className="bg-white border border-gray-300 p-12 rounded-lg">
         <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
@@ -96,7 +138,7 @@ export default function Events() {
           <div className={styles.cardContainer}>
             {selectedDate && events.length > 0 && (
               <div className={styles.selectedDateText}>
-                <Card title={`Events on ${selectedDate.format('YYYY-MM-DD')}`} bordered={false} style={{ width: 300 }}>
+                <Card title={`Events on ${selectedDate?.format('YYYY-MM-DD')}`} bordered={false} style={{ width: 300 }}>
                   <ul>
                     {events.map((event, index) => (
                       <li key={index}>
@@ -116,7 +158,7 @@ export default function Events() {
 
             {selectedDate && events.length === 0 && (
               <div className={styles.selectedDateText}>
-                <Card title={`No events on ${selectedDate.format('YYYY-MM-DD')}`} bordered={false} style={{ width: 300 }}>
+                <Card title={`No events on ${selectedDate?.format('YYYY-MM-DD')}`} bordered={false} style={{ width: 300 }}>
                 </Card>
               </div>
             )}
@@ -124,5 +166,5 @@ export default function Events() {
         </div>
       </div>
     </div>
-  );
+  );*/
 }
