@@ -31,7 +31,7 @@ function HomeDashboard()
 {
   cron.schedule('0 0 * * *', async () => {
     try {
-      // await update_full_db();
+      await update_full_db();
       console.log("DB updated !!!");
     } catch (error) {
       console.error(error);
