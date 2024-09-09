@@ -100,7 +100,7 @@ function Statistics() {
     makeStatistics();
   }, []);
 
-  if (hasRights === false) {
+  if (!hasRights === false) {
     return <Forbidden />
   }
 
