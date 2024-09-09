@@ -2,11 +2,11 @@
 import { Button, Divider, Modal, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import type { SelectProps, TableColumnsType } from 'antd';
-import { getEmployees } from '../lib/dbhelper/employees';
-import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '../lib/dbhelper/customers';
+import { getEmployees } from '../../lib/dbhelper/employees';
+import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '../../lib/dbhelper/customers';
 import { ObjectId } from 'mongodb';
 import If from '@/components/If';
-import { isManager } from '../lib/user';
+import { isManager } from '../../lib/user';
 import EmployeeForm from './employeeForm';
 
 var mongoose = require('mongoose');
@@ -153,37 +153,35 @@ function Coaches() {
   ];
 
   return (
-    <div className="flex flex-col h-screen w-screen p-6">
-      <div className="bg-white border border-gray-300 p-12 rounded-lg flex-1 w-full">
-        <h1 className="font-bold text-gray-600 mb-10 text-5xl md:text-6xl">
-          Coaches
-          <Divider style={{ borderColor: '#d3d3d3' }} />
-        </h1>
-        <If condition={hasRights}>
-          <Button type="primary" onClick={showModal} className="mb-6 w-full">
-            Add Employee
-          </Button>
-        </If>
+    <>
+      <h1 className="font-bold text-gray-600 mb-10 text-5xl md:text-6xl">
+        Coaches
+        <Divider style={{ borderColor: '#d3d3d3' }} />
+      </h1>
+      <If condition={hasRights}>
+        <Button type="primary" onClick={showModal} className="mb-6 w-full">
+          Add Employee
+        </Button>
+      </If>
 
-        <Table
-          columns={columns}
-          dataSource={data}
-          size="large"
-          rowKey="id"
-          scroll={{ x: '100%' }}
-        />
-        <If condition={hasRights}>
-          <Modal
-            title="Add Employee"
-            open={isModalOpen}
-            okButtonProps={{hidden: true}}
-            onCancel={() => setIsModalOpen(false)}
-          >
-            <EmployeeForm />
-          </Modal>
-        </If>
-      </div>
-    </div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        size="large"
+        rowKey="id"
+        scroll={{ x: '100%' }}
+      />
+      <If condition={hasRights}>
+        <Modal
+          title="Add Employee"
+          open={isModalOpen}
+          okButtonProps={{hidden: true}}
+          onCancel={() => setIsModalOpen(false)}
+        >
+          <EmployeeForm />
+        </Modal>
+      </If>
+    </>
   );
 }
 
