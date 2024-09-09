@@ -1,5 +1,6 @@
 import { cookies } from "next/headers"
 import { SignJWT } from 'jose'
+import { getEmployeeInfos } from "@/app/lib/user"
 
 export async function POST(req: Request) {
     try {
@@ -27,7 +28,11 @@ export async function POST(req: Request) {
             let token: string = ''
 
             if (process.env.ENCRYPT_KEY) {
-                token = await new SignJWT({ token: access_token })
+                const infos = await getEmployeeInfos(access_token)
+                if (!infos) {
+                    return Response.json({ error: "Couldn't fetch employee infos" }, { status: 404 })
+                }
+                token = await new SignJWT({ token: access_token, infos: infos })
                     .setProtectedHeader({alg: 'HS256', typ: 'JWT'})
                     .setIssuedAt()
                     .setExpirationTime('24 hours')

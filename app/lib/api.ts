@@ -1,7 +1,7 @@
 import { verifyToken } from "./dal"
 
 export async function callAPI(req: Request) {
-    const token = await verifyToken()
+    const token = (await verifyToken())?.token
     if (!token) {
         return Response.json({ error: 'Not logged in.' }, { status: 403 })
     }

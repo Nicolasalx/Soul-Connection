@@ -1,6 +1,6 @@
-import 'server-only'
+'use server'
+import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
-import jose, { jwtVerify } from 'jose'
 
 export const verifyToken = async () => {
     const token = cookies().get('token')?.value
@@ -10,8 +10,8 @@ export const verifyToken = async () => {
     }
     if (process.env.ENCRYPT_KEY) {
         try {
-            const access_token = (await jwtVerify(token, new TextEncoder().encode(process.env.ENCRYPT_KEY))).payload.token
-            return access_token as string
+            const payload = (await jwtVerify(token, new TextEncoder().encode(process.env.ENCRYPT_KEY))).payload
+            return payload
         } catch(err) {
             return null
         }
