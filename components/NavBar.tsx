@@ -15,6 +15,7 @@ import { delete_db_payments, update_db_payments } from "@/app/lib/update_db_data
 import { delete_db_tips, update_db_tips } from "@/app/lib/update_db_data/update_db_tips";
 import { delete_db_clothes_image, update_db_clothes_image } from "@/app/lib/update_db_data/update_db_clothes_image";
 import { delete_db_customers_image, update_db_customers_image } from "@/app/lib/update_db_data/update_db_customers_image";
+import { delete_db_employees_image, update_db_employees_image } from "@/app/lib/update_db_data/update_db_employees_image";
 
 const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>, openDBPopup: () => void) => {
   const [hasRights, setHasRights] = useState(false)
@@ -138,36 +139,40 @@ export default function NavBar()
           <ModalBody>
             <p>Select an action:</p>
             <div className="flex justify-between items-center mb-1">
-              <Button className="m-2" color="default" onClick={() => update_db_customers()}>Update customers DB</Button>
-              <Button className="m-2" color="danger" onClick={() => delete_db_customers()}>Delete customers DB</Button>
+              <Button className="m-1 my-0 w-full" color="default" onClick={() => update_db_customers()}>Update customers</Button>
+              <Button className="m-1 my-0 w-full" color="danger" onClick={() => delete_db_customers()}>Delete customers</Button>
             </div>
             <div className="flex justify-between items-center mb-1">
-              <Button className="m-2" color="default" onClick={() => update_db_employees()}>Update employees DB</Button>
-              <Button className="m-2" color="danger" onClick={() => delete_db_employees()}>Delete employees DB</Button>
+              <Button className="m-1 my-0 w-full" color="default" onClick={() => update_db_employees()}>Update employees</Button>
+              <Button className="m-1 my-0 w-full" color="danger" onClick={() => delete_db_employees()}>Delete employees</Button>
             </div>
             <div className="flex justify-between items-center mb-1">
-              <Button className="m-2" color="default" onClick={() => update_db_encounters()}>Update encounters DB</Button>
-              <Button className="m-2" color="danger" onClick={() => delete_db_encounters()}>Delete dbencounters</Button>
+              <Button className="m-1 my-0 w-full" color="default" onClick={() => update_db_encounters()}>Update encounters</Button>
+              <Button className="m-1 my-0 w-full" color="danger" onClick={() => delete_db_encounters()}>Delete encounters</Button>
             </div>
             <div className="flex justify-between items-center mb-1">
-              <Button className="m-2" color="default" onClick={() => update_db_events()}>Update events DB</Button>
-              <Button className="m-2" color="danger" onClick={() => delete_db_events()}>Delete events DB</Button>
+              <Button className="m-1 my-0 w-full" color="default" onClick={() => update_db_events()}>Update events</Button>
+              <Button className="m-1 my-0 w-full" color="danger" onClick={() => delete_db_events()}>Delete events</Button>
             </div>
             <div className="flex justify-between items-center mb-1">
-              <Button className="m-2" color="default" onClick={() => update_db_payments()}>Update payments DB</Button>
-              <Button className="m-2" color="danger" onClick={() => delete_db_payments()}>Delete payments DB</Button>
+              <Button className="m-1 my-0 w-full" color="default" onClick={() => update_db_payments()}>Update payments</Button>
+              <Button className="m-1 my-0 w-full" color="danger" onClick={() => delete_db_payments()}>Delete payments</Button>
             </div>
             <div className="flex justify-between items-center mb-1">
-              <Button className="m-2" color="default" onClick={() => update_db_tips()}>Update tips DB</Button>
-              <Button className="m-2" color="danger" onClick={() => delete_db_tips()}>Delete tips DB</Button>
+              <Button className="m-1 my-0 w-full" color="default" onClick={() => update_db_tips()}>Update tips</Button>
+              <Button className="m-1 my-0 w-full" color="danger" onClick={() => delete_db_tips()}>Delete tips</Button>
             </div>
             <div className="flex justify-between items-center mb-1">
-              <Button className="m-2" color="default" onClick={() => update_db_clothes_image()}>Update Clothes Image DB</Button>
-              <Button className="m-2" color="danger" onClick={() => delete_db_clothes_image()}>Delete Clothes Image DB</Button>
+              <Button className="m-1 my-0 w-full" color="default" onClick={() => update_db_clothes_image()}>Update Clothes Image</Button>
+              <Button className="m-1 my-0 w-full" color="danger" onClick={() => delete_db_clothes_image()}>Delete Clothes Image</Button>
             </div>
             <div className="flex justify-between items-center mb-1">
-              <Button className="m-2" color="default" onClick={() => update_db_customers_image()}>Update Customers Image DB</Button>
-              <Button className="m-2" color="danger" onClick={() => delete_db_customers_image()}>Delete Customers Image DB</Button>
+              <Button className="m-1 my-0 w-full" color="default" onClick={() => update_db_customers_image()}>Update Customers Image</Button>
+              <Button className="m-1 my-0 w-full" color="danger" onClick={() => delete_db_customers_image()}>Delete Customers Image</Button>
+            </div>
+            <div className="flex justify-between items-center mb-1">
+              <Button className="m-1 my-0 w-full" color="default" onClick={() => update_db_employees_image()}>Update Employees Image</Button>
+              <Button className="m-1 my-0 w-full" color="danger" onClick={() => delete_db_employees_image()}>Delete Employees Image</Button>
             </div>
           </ModalBody>
           <ModalFooter>
