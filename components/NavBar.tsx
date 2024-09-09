@@ -15,6 +15,7 @@ import { delete_db_payments, update_db_payments } from "@/app/lib/update_db_data
 import { delete_db_tips, update_db_tips } from "@/app/lib/update_db_data/update_db_tips";
 import { delete_db_clothes_image, update_db_clothes_image } from "@/app/lib/update_db_data/update_db_clothes_image";
 import { delete_db_customers_image, update_db_customers_image } from "@/app/lib/update_db_data/update_db_customers_image";
+import { delete_db_employees_image, update_db_employees_image } from "@/app/lib/update_db_data/update_db_employees_image";
 
 const SideBarItems = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
   const [hasRights, setHasRights] = useState(false)
