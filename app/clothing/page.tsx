@@ -6,6 +6,7 @@ import { getCustomers } from '../lib/dbhelper/customers';
 import Customers from "@/app/back/models/customers";
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import type { SelectProps } from 'antd/es/select';
+import { getClothesImage } from '../lib/dbhelper/clothes_image';
 
 type Direction = 'Left' | 'Right';
 
@@ -22,10 +23,10 @@ const Clothing: React.FC = () => {
   const [currentBottomIndex, setCurrentBottomIndex] = useState<number>(0);
   const [currentShoesIndex, setCurrentShoesIndex] = useState<number>(0);
 
-  const [hatImageError, setHatImageError] = useState<boolean>(false);
-  const [topImageError, setTopImageError] = useState<boolean>(false);
-  const [bottomImageError, setBottomImageError] = useState<boolean>(false);
-  const [shoesImageError, setShoesImageError] = useState<boolean>(false);
+  const [currentHatUrl, setCurrentHatUrl] = useState<string>('');
+  const [currentTopUrl, setCurrentTopUrl] = useState<string>('');
+  const [currentBottomUrl, setCurrentBottomUrl] = useState<string>('');
+  const [currentShoesUrl, setCurrentShoesUrl] = useState<string>('');
 
   const fetchCustomersData = async () => {
     const dataCustomers = await getCustomers();
@@ -39,6 +40,7 @@ const Clothing: React.FC = () => {
   const handleChange = async (value: string) => {
     const dataCustomers = await getCustomers();
     const customer = dataCustomers.find((c: Customers) => c._id?.toString() === value);
+
     if (customer) {
       setSelectedCustomer(customer);
       categorizeClothes(customer.clothes);
@@ -55,7 +57,7 @@ const Clothing: React.FC = () => {
     }
   };
 
-  const categorizeClothes = (clothes: any[]) => {
+  const categorizeClothes = async (clothes: any[]) => {
     const hatList: any[] = [];
     const topList: any[] = [];
     const bottomList: any[] = [];
@@ -84,42 +86,107 @@ const Clothing: React.FC = () => {
     setTops(topList);
     setBottoms(bottomList);
     setShoes(shoesList);
+
+    try {
+      if (hatList.length > 0) {
+        const hatUrl = await getClothesImage(hatList[0]?.id);
+        setCurrentHatUrl(hatUrl.image);
+      } else {
+        setCurrentHatUrl('');
+      }
+    } catch {
+      setCurrentHatUrl('');
+    }
+
+    try {
+      if (topList.length > 0) {
+        const topUrl = await getClothesImage(topList[0]?.id);
+        setCurrentTopUrl(topUrl.image);
+      } else {
+        setCurrentTopUrl('');
+      }
+    } catch {
+      setCurrentTopUrl('');
+    }
+
+    try {
+      if (bottomList.length > 0) {
+        const bottomUrl = await getClothesImage(bottomList[0]?.id);
+        setCurrentBottomUrl(bottomUrl.image);
+      } else {
+        setCurrentBottomUrl('');
+      }
+    } catch {
+      setCurrentBottomUrl('');
+    }
+
+    try {
+      if (shoesList.length > 0) {
+        const shoesUrl = await getClothesImage(shoesList[0]?.id);
+        setCurrentShoesUrl(shoesUrl.image);
+      } else {
+        setCurrentShoesUrl('');
+      }
+    } catch {
+      setCurrentShoesUrl('');
+    }
   };
 
   useEffect(() => {
     fetchCustomersData();
   }, []);
 
-  const handleArrowClick = (direction: Direction, category: 'hat' | 'top' | 'bottom' | 'shoes') => {
+  const handleArrowClick = async (direction: Direction, category: 'hat' | 'top' | 'bottom' | 'shoes') => {
+    let newIndex: number;
     switch (category) {
       case 'hat':
-        setCurrentHatIndex(prevIndex => {
-          const newIndex = direction === 'Left' ? prevIndex - 1 : prevIndex + 1;
-          return Math.max(0, Math.min(hats.length - 1, newIndex));
-        });
-        setHatImageError(false);
+        newIndex = direction === 'Left' ? currentHatIndex - 1 : currentHatIndex + 1;
+        setCurrentHatIndex(Math.max(0, Math.min(hats.length - 1, newIndex)));
+
+        try {
+          const urlHat = await getClothesImage(hats[newIndex]?.id);
+          setCurrentHatUrl(urlHat.image);
+        } catch {
+          setCurrentHatUrl('');
+        }
         break;
+
       case 'top':
-        setCurrentTopIndex(prevIndex => {
-          const newIndex = direction === 'Left' ? prevIndex - 1 : prevIndex + 1;
-          return Math.max(0, Math.min(tops.length - 1, newIndex));
-        });
-        setTopImageError(false);
+        newIndex = direction === 'Left' ? currentTopIndex - 1 : currentTopIndex + 1;
+        setCurrentTopIndex(Math.max(0, Math.min(tops.length - 1, newIndex)));
+
+        try {
+          const urlTop = await getClothesImage(tops[newIndex]?.id);
+          setCurrentTopUrl(urlTop.image);
+        } catch {
+          setCurrentTopUrl('');
+        }
         break;
+
       case 'bottom':
-        setCurrentBottomIndex(prevIndex => {
-          const newIndex = direction === 'Left' ? prevIndex - 1 : prevIndex + 1;
-          return Math.max(0, Math.min(bottoms.length - 1, newIndex));
-        });
-        setBottomImageError(false);
+        newIndex = direction === 'Left' ? currentBottomIndex - 1 : currentBottomIndex + 1;
+        setCurrentBottomIndex(Math.max(0, Math.min(bottoms.length - 1, newIndex)));
+
+        try {
+          const urlBottom = await getClothesImage(bottoms[newIndex]?.id);
+          setCurrentBottomUrl(urlBottom.image);
+        } catch {
+          setCurrentBottomUrl('');
+        }
         break;
+
       case 'shoes':
-        setCurrentShoesIndex(prevIndex => {
-          const newIndex = direction === 'Left' ? prevIndex - 1 : prevIndex + 1;
-          return Math.max(0, Math.min(shoes.length - 1, newIndex));
-        });
-        setShoesImageError(false);
+        newIndex = direction === 'Left' ? currentShoesIndex - 1 : currentShoesIndex + 1;
+        setCurrentShoesIndex(Math.max(0, Math.min(shoes.length - 1, newIndex)));
+
+        try {
+          const urlShoes = await getClothesImage(shoes[newIndex]?.id);
+          setCurrentShoesUrl(urlShoes.image);
+        } catch {
+          setCurrentShoesUrl('');
+        }
         break;
+
       default:
         break;
     }
@@ -144,114 +211,106 @@ const Clothing: React.FC = () => {
           <div className='flex flex-col items-center max-h-[calc(100vh - 60px)] overflow-y-auto w-full'>
             {/* Hats */}
             <div className='flex items-center justify-center mb-2'>
-              {hats.length > 0 && !hatImageError && (
-                <>
-                  <LeftOutlined
-                    className='text-4xl cursor-pointer'
-                    onClick={() => handleArrowClick('Left', 'hat')}
-                  />
-                  <img
-                    src={`/api/clothes/${hats[currentHatIndex]?.id}/image`}
-                    alt="Hat Image"
-                    width={150}
-                    height={150}
-                    className='mx-4 rounded'
-                    onError={() => setHatImageError(true)}
-                  />
-                  <RightOutlined
-                    className='text-4xl cursor-pointer'
-                    onClick={() => handleArrowClick('Right', 'hat')}
-                  />
-                </>
+              {currentHatUrl ? (
+              <>
+                <LeftOutlined
+                  className='text-4xl cursor-pointer'
+                  onClick={() => handleArrowClick('Left', 'hat')}
+                />
+                <img
+                  src={currentHatUrl}
+                  alt="Hat Image"
+                  width={150}
+                  height={150}
+                  className='mx-4 rounded'
+                />
+                <RightOutlined
+                  className='text-4xl cursor-pointer'
+                  onClick={() => handleArrowClick('Right', 'hat')}
+                />
+              </>
+              ) : (
+                <Empty description="No hat available" />
               )}
-              {hatImageError || hats.length === 0 ? (
-                <Empty description="No Hat" />
-              ) : null}
             </div>
 
             {/* Tops */}
             <div className='flex items-center justify-center mb-2'>
-              {tops.length > 0 && !topImageError && (
-                <>
-                  <LeftOutlined
-                    className='text-4xl cursor-pointer'
-                    onClick={() => handleArrowClick('Left', 'top')}
-                  />
-                  <img
-                    src={`/api/clothes/${tops[currentTopIndex]?.id}/image`}
-                    alt="Top Image"
-                    width={150}
-                    height={150}
-                    className='mx-4 rounded'
-                    onError={() => setTopImageError(true)}
-                  />
-                  <RightOutlined
-                    className='text-4xl cursor-pointer'
-                    onClick={() => handleArrowClick('Right', 'top')}
-                  />
-                </>
+              {currentTopUrl ? (
+              <>
+                <LeftOutlined
+                  className='text-4xl cursor-pointer'
+                  onClick={() => handleArrowClick('Left', 'top')}
+                />
+                <img
+                  src={currentTopUrl}
+                  alt="Top Image"
+                  width={150}
+                  height={150}
+                  className='mx-4 rounded'
+                />
+                <RightOutlined
+                  className='text-4xl cursor-pointer'
+                  onClick={() => handleArrowClick('Right', 'top')}
+                />
+              </>
+              ) : (
+                <Empty description="No top available" />
               )}
-              {topImageError || tops.length === 0 ? (
-                <Empty description="No Top" />
-              ) : null}
             </div>
 
             {/* Bottoms */}
             <div className='flex items-center justify-center mb-2'>
-              {bottoms.length > 0 && !bottomImageError && (
-                <>
-                  <LeftOutlined
-                    className='text-4xl cursor-pointer'
-                    onClick={() => handleArrowClick('Left', 'bottom')}
-                  />
-                  <img
-                    src={`/api/clothes/${bottoms[currentBottomIndex]?.id}/image`}
-                    alt="Bottom Image"
-                    width={150}
-                    height={150}
-                    className='mx-4 rounded'
-                    onError={() => setBottomImageError(true)}
-                  />
-                  <RightOutlined
-                    className='text-4xl cursor-pointer'
-                    onClick={() => handleArrowClick('Right', 'bottom')}
-                  />
-                </>
+              {currentBottomUrl ? (
+              <>
+                <LeftOutlined
+                  className='text-4xl cursor-pointer'
+                  onClick={() => handleArrowClick('Left', 'bottom')}
+                />
+                <img
+                  src={currentBottomUrl}
+                  alt="Bottom Image"
+                  width={150}
+                  height={150}
+                  className='mx-4 rounded'
+                />
+                <RightOutlined
+                  className='text-4xl cursor-pointer'
+                  onClick={() => handleArrowClick('Right', 'bottom')}
+                />
+              </>
+              ) : (
+                <Empty description="No bottom available" />
               )}
-              {bottomImageError || bottoms.length === 0 ? (
-                <Empty description="No Bottom" />
-              ) : null}
             </div>
 
             {/* Shoes */}
             <div className='flex items-center justify-center mb-2'>
-              {shoes.length > 0 && !shoesImageError && (
-                <>
-                  <LeftOutlined
-                    className='text-4xl cursor-pointer'
-                    onClick={() => handleArrowClick('Left', 'shoes')}
-                  />
-                  <img
-                    src={`/api/clothes/${shoes[currentShoesIndex]?.id}/image`}
-                    alt="Shoes Image"
-                    width={150}
-                    height={150}
-                    className='mx-4 rounded'
-                    onError={() => setShoesImageError(true)}
-                  />
-                  <RightOutlined
-                    className='text-4xl cursor-pointer'
-                    onClick={() => handleArrowClick('Right', 'shoes')}
-                  />
-                </>
+              {currentShoesUrl ? (
+              <>
+                <LeftOutlined
+                  className='text-4xl cursor-pointer'
+                  onClick={() => handleArrowClick('Left', 'shoes')}
+                />
+                <img
+                  src={currentShoesUrl}
+                  alt="Shoes Image"
+                  width={150}
+                  height={150}
+                  className='mx-4 rounded'
+                />
+                <RightOutlined
+                  className='text-4xl cursor-pointer'
+                  onClick={() => handleArrowClick('Right', 'shoes')}
+                />
+              </>
+              ) : (
+                <Empty description="No shoes available" />
               )}
-              {shoesImageError || shoes.length === 0 ? (
-                <Empty description="No Shoes" />
-              ) : null}
             </div>
           </div>
         ) : (
-          <Empty description="No customer selected" />
+          <p>No customer selected</p>
         )}
       </div>
     </div>
