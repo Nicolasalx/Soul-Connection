@@ -16,7 +16,7 @@ import { delete_db_tips, update_db_tips } from "@/app/lib/update_db_data/update_
 import { delete_db_clothes_image, update_db_clothes_image } from "@/app/lib/update_db_data/update_db_clothes_image";
 import { delete_db_customers_image, update_db_customers_image } from "@/app/lib/update_db_data/update_db_customers_image";
 
-const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>, openDBPopup: () => void) => {
+const SideBarItems = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
   const [hasRights, setHasRights] = useState(false)
 
   useEffect(() => {
@@ -69,18 +69,16 @@ const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>,
           </Link>
         </li>
       </ul>
-      <If condition={userConnected}>
-        <div className="absolute left-[25%] bottom-4 w-[50%] flex flex-col justify-center gap-4 lg:left-0 lg:w-full lg:flex lg:flex-row lg:justify-center">
-          <Button className="font-bold" color="primary" onClick={handleLogout}>
-            Log Out
+      <div className="absolute left-[25%] bottom-4 w-[50%] flex flex-col justify-center gap-4 lg:left-0 lg:w-full lg:flex lg:flex-row lg:justify-center">
+        <Button className="font-bold" color="primary" onClick={handleLogout}>
+          Log Out
+        </Button>
+        <If condition={hasRights}>
+          <Button className="font-bold" color="primary" onClick={openDBPopup}>
+            DataBase
           </Button>
-          <If condition={hasRights}>
-            <Button className="font-bold" color="primary" onClick={openDBPopup}>
-              DataBase
-            </Button>
-          </If>
-        </div>
-      </If>
+        </If>
+      </div>
     </>
   );
 }
@@ -137,7 +135,6 @@ const DatabaseModal = (isDBPopupOpen: boolean, closeDBPopup: () => void) => {
 export default function NavBar()
 {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [userConnected, setUserConnected] = useState(false);
   const pathname = usePathname();
   const [isDBPopupOpen, setIsDBPopupOpen] = useState(false);
 
@@ -164,13 +161,6 @@ export default function NavBar()
     setIsSidebarOpen(!isSidebarOpen)
   }
 
-  useEffect(() => {
-    isConnected().then((status) => {
-      setUserConnected(status);
-    });
-  }, []);
-
-
   if (pathname === '/login') {
     return null;
   }
@@ -181,7 +171,7 @@ export default function NavBar()
         {isSidebarOpen ? 'X' : 'Menu'}
       </Button>
       <div className={`fixed left-0 h-full w-[40%] md:w-[20%] z-40 bg-black/80 text-white backdrop-blur-sm border-r-8 border-pink-500 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out md:transform-none md:-translate-x-full`}>
-        { SideBarItems(userConnected, handleLogout, openDBPopup) }
+        { SideBarItems(handleLogout, openDBPopup) }
       </div>
       { DatabaseModal(isDBPopupOpen, closeDBPopup) }
     </div>

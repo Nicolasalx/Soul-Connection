@@ -100,6 +100,10 @@ function Statistics() {
     makeStatistics();
   }, []);
 
+  if (hasRights === null) {
+    return null
+  }
+
   if (hasRights === false) {
     return <Forbidden />
   }
