@@ -73,9 +73,11 @@ const SideBarItems = (userConnected: boolean, handleLogout: () => Promise<void>,
           <Button className="font-bold" color="primary" onClick={handleLogout}>
             Log Out
           </Button>
+          <If condition={hasRights}>
           <Button className="font-bold" color="primary" onClick={openDBPopup}>
             DataBase
           </Button>
+          </If>
         </div>
       </If>
     </>
