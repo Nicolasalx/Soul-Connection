@@ -8,6 +8,8 @@ import { DotChart } from "@/components/DotChart";
 import VerticalBarChart from "@/components/VerticalBarChart";
 import RadarChart from "@/components/RadarChart";
 import { fillCoachStatistic } from "../lib/dbhelper/statistics_data";
+import { isManager } from "../lib/user";
+import Forbidden from "@/components/Forbidden";
 
 function Statistics() {
   const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);
@@ -17,8 +19,13 @@ function Statistics() {
   const [averageRatingByCoach, setAverageRatingByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
   const [astrologicalData, setAstrologicalData] = useState<{ name: string; value: number }[]>([]);
+  const [hasRights, setHasRights] = useState(false);
 
   useEffect(() => {
+    isManager().then(val => setHasRights(val))
+    if (!hasRights) {
+      return
+    }
     const makeStatistics = async () => {
       const coachsStatistics = await fillCoachStatistic();
 
@@ -89,10 +96,13 @@ function Statistics() {
           value: coachsStatistics.data_astrological_sign.number_astro_sign[index],
         }));
       setAstrologicalData(astroData);
-
     };
     makeStatistics();
   }, []);
+
+  if (!hasRights) {
+    return <Forbidden />
+  }
 
   return (
     <div className="flex flex-col h-screen w-screen p-6">
