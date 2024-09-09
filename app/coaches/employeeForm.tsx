@@ -6,6 +6,7 @@ import React from 'react';
 import { createEmployee } from '../lib/dbhelper/employees';
 import Employees from "@/app/back/models/employees";
 import dayjs from 'dayjs';
+import bcrypt from 'bcryptjs';
 
 type FieldType = {
   email: string;
@@ -23,7 +24,6 @@ const EmployeeForm: React.FC = () => {
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     const key = 'updatable';
 
-    // Show loading message
     messageApi.open({
       key,
       type: 'loading',
@@ -33,11 +33,13 @@ const EmployeeForm: React.FC = () => {
     const uuid = Math.floor(Math.random() * 10 ** 15);
     const formattedBirthDate = values.birthDate ? dayjs(values.birthDate).format('YYYY-MM-DD') : '';
 
+    const hashedPassword = await bcrypt.hash(values.password, 10);
+
     const employee = new Employees(
       uuid,
       values.email,
+      hashedPassword,
       values.name,
-      values.password,
       values.surname,
       formattedBirthDate,
       values.gender,
@@ -45,9 +47,7 @@ const EmployeeForm: React.FC = () => {
     );
 
     try {
-      await createEmployee(employee);
-      
-      // Update to success message
+      createEmployee(employee);
       messageApi.open({
         key,
         type: 'success',
@@ -55,7 +55,6 @@ const EmployeeForm: React.FC = () => {
         duration: 2,
       });
     } catch (error) {
-      // Update to error message if submission fails
       messageApi.open({
         key,
         type: 'error',
@@ -66,7 +65,6 @@ const EmployeeForm: React.FC = () => {
   };
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    // Display error message when validation fails
     messageApi.open({
       type: 'error',
       content: 'Please fill in all required fields correctly.',
