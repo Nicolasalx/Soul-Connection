@@ -10,12 +10,9 @@ import Payments from "@/app/back/models/payments";
 import Encounters from "@/app/back/models/encounters";
 import { getSelfId } from '../../lib/user';
 import If from '@/components/If';
-<<<<<<< HEAD:app/(pages)/customers/page.tsx
 import { isManager } from '../../lib/user';
-=======
 import { isManager } from '../lib/user';
 import { getCustomersImage } from '../lib/dbhelper/customers_image';
->>>>>>> 85c714dfb458b15051b5da2c07abf2f762d1e6f7:app/customers/page.tsx
 
 const baseStyle: React.CSSProperties = {
   width: '100%',
@@ -160,29 +157,6 @@ function ClientProfile() {
   const imageUrl = customerId ? `/api/customers/${customerId}/image` : null;
 
   return (
-<<<<<<< HEAD:app/(pages)/customers/page.tsx
-    <>
-      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
-        Customers
-        <Divider style={{ borderColor: '#d3d3d3' }} />
-      </h1>
-      <div className="flex flex-col md:flex-row space-x-4 mb-6">
-        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-          <Select
-            size="large"
-            placeholder="Select a customer"
-            onChange={handleChange}
-            style={{ width: '100%' }}
-            options={options}
-            value={selectedCustomer}
-          />
-          <div className="mt-6">
-            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPerson} /> {customerDetails.name || "No name"}</Title>
-            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faCakeCandles} /> {customerDetails.birth_date || "No birth date"}</Title>
-            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faLocationDot} /> {customerDetails.address || "No address"}</Title>
-            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPhone} /> {customerDetails.phone_number || "No phone number"}</Title>
-            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faComment} /> {customerDetails.description || "No description"}</Title>
-=======
     <div className="flex flex-col h-screen w-screen p-6">
       <div className="bg-white border border-gray-300 p-12 rounded-lg">
         <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
@@ -219,7 +193,6 @@ function ClientProfile() {
             ) : (
               <Empty description="No image available" />
             )}
->>>>>>> 85c714dfb458b15051b5da2c07abf2f762d1e6f7:app/customers/page.tsx
           </div>
         </div>
         <div className="flex-1 flex justify-center items-center">
