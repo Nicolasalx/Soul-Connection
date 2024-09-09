@@ -3,7 +3,7 @@
 import type { FormProps } from 'antd';
 import { Button, Form, Input, DatePicker, message } from 'antd';
 import React from 'react';
-import { createEmployee } from '../lib/dbhelper/employees';
+import { createEmployee } from '../../lib/dbhelper/employees';
 import Employees from "@/app/back/models/employees";
 import dayjs from 'dayjs';
 import bcrypt from 'bcryptjs';

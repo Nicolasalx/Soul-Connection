@@ -7,8 +7,8 @@ import { PiieChart } from "@/components/PieChart";
 import { DotChart } from "@/components/DotChart";
 import VerticalBarChart from "@/components/VerticalBarChart";
 import RadarChart from "@/components/RadarChart";
-import { fillCoachStatistic } from "../lib/dbhelper/statistics_data";
-import { isManager } from "../lib/user";
+import { fillCoachStatistic } from "../../lib/dbhelper/statistics_data";
+import { isManager } from "../../lib/user";
 import Forbidden from "@/components/Forbidden";
 
 function Statistics() {
@@ -19,7 +19,11 @@ function Statistics() {
   const [averageRatingByCoach, setAverageRatingByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
   const [astrologicalData, setAstrologicalData] = useState<{ name: string; value: number }[]>([]);
+<<<<<<< HEAD:app/(pages)/statistics/page.tsx
+  const [hasRights, setHasRights] = useState<boolean|null>(null);
+=======
   const [hasRights, setHasRights] = useState<boolean | null>(null);
+>>>>>>> 85c714dfb458b15051b5da2c07abf2f762d1e6f7:app/statistics/page.tsx
 
   useEffect(() => {
     isManager().then(val => setHasRights(val))
@@ -100,77 +104,82 @@ function Statistics() {
     makeStatistics();
   }, []);
 
+<<<<<<< HEAD:app/(pages)/statistics/page.tsx
+  if (hasRights === null) {
+    return null
+  }
+
+=======
+>>>>>>> 85c714dfb458b15051b5da2c07abf2f762d1e6f7:app/statistics/page.tsx
   if (hasRights === false) {
     return <Forbidden />
   }
 
   return (
-    <div className="flex flex-col h-screen w-screen p-6">
-      <div className="bg-white border border-gray-300 p-12 rounded-lg">
-        <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
-          Statistics
-          <Divider style={{ borderColor: '#d3d3d3' }} />
-        </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="col-span-1">
-            <PiieChart
-              data={nbCustomersByCoach}
-              title="Number of customers by coach"
-              description=""
-              dataKey="value"
-              nameKey="coach"
-              config={chartConfigCustomers}
-              observation="Top 5 Coaches by Customer Count"
-            />
-          </div>
+    <>
+      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
+        Statistics
+        <Divider style={{ borderColor: '#d3d3d3' }} />
+      </h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="col-span-1">
+          <PiieChart
+            data={nbCustomersByCoach}
+            title="Number of customers by coach"
+            description=""
+            dataKey="value"
+            nameKey="coach"
+            config={chartConfigCustomers}
+            observation="Top 5 Coaches by Customer Count"
+          />
+        </div>
 
-          <div className="col-span-1">
-            <DotChart
-              data={nbGainByCoach}
-              title="Earnings by coach"
-              description=""
-              xAxisKey="coach"
-              lineKey="value"
-              observation="Earnings of Top 5 Coaches"
-            />
-          </div>
+        <div className="col-span-1">
+          <DotChart
+            data={nbGainByCoach}
+            title="Earnings by coach"
+            description=""
+            xAxisKey="coach"
+            lineKey="value"
+            observation="Earnings of Top 5 Coaches"
+          />
+        </div>
 
-          <div className="col-span-1">
-            <VerticalBarChart
-              data={nbEncountersByCoach}
-              title="Number of encounters by coach"
-              yAxisKey="coach"
-              barKey="value"
-            />
-          </div>
+        <div className="col-span-1">
+          <VerticalBarChart
+            data={nbEncountersByCoach}
+            title="Number of encounters by coach"
+            yAxisKey="coach"
+            barKey="value"
+          />
+        </div>
 
-          <div className="col-span-1">
-            <BarrChart
-              data={nbEventsByCoach}
-              title="Number of events by coach"
-              yAxisKey="coach"
-              barKey="value"
-            />
-          </div>
+        <div className="col-span-1">
+          <BarrChart
+            data={nbEventsByCoach}
+            title="Number of events by coach"
+            yAxisKey="coach"
+            barKey="value"
+          />
+        </div>
 
-          <div className="col-span-1">
-            <BarrChart
-              data={averageRatingByCoach}
-              title="Average rating by coach"
-              yAxisKey="coach"
-              barKey="value"
-            />
-          </div>
+        <div className="col-span-1">
+          <BarrChart
+            data={averageRatingByCoach}
+            title="Average rating by coach"
+            yAxisKey="coach"
+            barKey="value"
+          />
+        </div>
 
-          <div className="col-span-1">
-            <RadarChart
-              data={astrologicalData}
-              title="Astrological Sign Distribution"
-            />
-          </div>
+        <div className="col-span-1">
+          <RadarChart
+            data={astrologicalData}
+            title="Astrological Sign Distribution"
+          />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -3,9 +3,9 @@ import If from "@/components/If";
 import { Autocomplete, AutocompleteItem, Button, Card, CardBody, CircularProgress, Input, Tooltip } from "@nextui-org/react";
 import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
-import arrows from "../../public/arrows.svg"
-import heart from "../../public/heart.svg"
-import stars from "../../public/stars.jpg"
+import arrows from "../../../public/arrows.svg"
+import heart from "../../../public/heart.svg"
+import stars from "../../../public/stars.jpg"
 import { astroComps } from "./compatibilities";
 import { Divider } from 'antd';
 
@@ -136,12 +136,12 @@ export default function AstroCompatibility() {
   }
 
   return (
-    <Card className='flex justify-center m-10 p-4 bg-white rounded-md w-[80%] shadow-lg'>
+    <>
       <h1 className="font-bold text-gray-600 text-5xl md:text-6xl p-8">
         Astrology Compatibility
         <Divider style={{ borderColor: '#d3d3d3' }} />
       </h1>
-      <CardBody>
+      <div>
         <form className='flex flex-col items-center w-full h-full' onSubmit={handleSubmit}>
           <div className="flex flex-row flex-nowrap justify-around w-full gap-4">
             <div className="flex flex-col">
@@ -205,7 +205,7 @@ export default function AstroCompatibility() {
           </Tooltip>
           <Image src={heart} width={200} height={200} alt="Heart shape" />
         </form>
-      </CardBody>
-    </Card>
+      </div>
+    </>
   )
 }
