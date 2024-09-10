@@ -34,6 +34,7 @@ export async function update_db_employees()
                     fullData.id,
                     fullData.email,
                     null,
+                    null,
                     fullData.name,
                     fullData.surname,
                     fullData.birth_date,

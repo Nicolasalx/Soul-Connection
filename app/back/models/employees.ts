@@ -6,6 +6,7 @@ export default class Employees
         public id: number,
         public email: string,
         public password: string | null,
+        public last_connection: Date | null,
         public name: string,
         public surname: string,
         public birth_date: string,
