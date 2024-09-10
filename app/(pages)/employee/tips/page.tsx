@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Row, Divider, Pagination } from 'antd';
-import { getTips } from '../../lib/dbhelper/tips';
+import { getTips } from '../../../lib/dbhelper/tips';
 import Tips from '@/app/back/models/tips';
 
 export default function Advices() {

@@ -1,8 +1,8 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import { Divider, Table } from 'antd';
-import { fillCoachStatistic } from "../../lib/dbhelper/statistics_data";
-import { isManager } from "../../lib/user";
+import { fillCoachStatistic } from "../../../lib/dbhelper/statistics_data";
+import { isManager } from "../../../lib/user";
 import { DonutChart } from "@/components/DonutChart";
 import VerticalBarChart from "@/components/VerticalBarChart";
 

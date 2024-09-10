@@ -5,11 +5,11 @@ import { Image, Divider, Table, Select, Typography, Empty } from 'antd';
 import type { TableColumnsType, SelectProps } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPerson, faLocationDot, faCakeCandles, faPhone, faComment } from '@fortawesome/free-solid-svg-icons';
-import { getCoachCustomers, getCustomerEncounters, getCustomerPayments, getCustomers } from '../../lib/dbhelper/customers';
+import { getCoachCustomers, getCustomerEncounters, getCustomerPayments, getCustomers } from '../../../lib/dbhelper/customers';
 import Customers from "@/app/back/models/customers";
 import Payments from "@/app/back/models/payments";
 import Encounters from "@/app/back/models/encounters";
-import { getSelfId, isManager } from '../../lib/user';
+import { getSelfId, isManager } from '../../../lib/user';
 import If from '@/components/If';
 import { getCustomersImage } from '@/app/lib/dbhelper/customers_image';
 

@@ -3,9 +3,9 @@ import If from "@/components/If";
 import { Autocomplete, AutocompleteItem, Button, Card, CardBody, CircularProgress, Input, Tooltip } from "@nextui-org/react";
 import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
-import arrows from "../../../public/arrows.svg"
-import heart from "../../../public/heart.svg"
-import stars from "../../../public/stars.jpg"
+import arrows from "../../../../public/arrows.svg"
+import heart from "../../../../public/heart.svg"
+import stars from "../../../../public/stars.jpg"
 import { astroComps } from "./compatibilities";
 import { Divider } from 'antd';
 

@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react';
 import { Divider } from 'antd';
 import Map from '@/components/Map';
-import Events from '../../back/models/events';
-import { getEvents } from '../../lib/dbhelper/events';
+import Events from '../../../back/models/events';
+import { getEvents } from '../../../lib/dbhelper/events';
 import { Card, CardBody, CardFooter, CardHeader, Listbox, ListboxItem } from '@nextui-org/react';
-import location from '../../../public/location.svg';
+import location from '../../../../public/location.svg';
 import Image from 'next/image';
 
 export default function EventsPage() {

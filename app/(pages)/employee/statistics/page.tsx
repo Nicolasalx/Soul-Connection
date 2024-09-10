@@ -7,7 +7,7 @@ import { PiieChart } from "@/components/PieChart";
 import { DotChart } from "@/components/DotChart";
 import VerticalBarChart from "@/components/VerticalBarChart";
 import RadarChart from "@/components/RadarChart";
-import { fillCoachStatistic } from "../../lib/dbhelper/statistics_data";
+import { fillCoachStatistic } from "../../../lib/dbhelper/statistics_data";
 
 function Statistics() {
   const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);

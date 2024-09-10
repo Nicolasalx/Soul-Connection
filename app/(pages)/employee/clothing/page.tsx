@@ -193,127 +193,125 @@ const Clothing: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen p-6">
-      <div className="bg-white border border-gray-300 p-12 rounded-lg">
-        <h1 className="font-bold text-gray-600 text-5xl md:text-6xl">
-          Clothing
-          <Divider style={{ borderColor: '#d3d3d3' }} />
-        </h1>
-        <Select
-          allowClear
-          className='mb-5 w-full'
-          placeholder="Select a customer"
-          options={customerOptions}
-          onChange={handleChange}
-        />
+    <>
+      <h1 className="font-bold text-gray-600 text-5xl md:text-6xl">
+        Clothing
+        <Divider style={{ borderColor: '#d3d3d3' }} />
+      </h1>
+      <Select
+        allowClear
+        className='mb-5 w-full'
+        placeholder="Select a customer"
+        options={customerOptions}
+        onChange={handleChange}
+      />
 
-        {selectedCustomer ? (
-          <div className='flex flex-col items-center max-h-[calc(100vh - 60px)] overflow-y-auto w-full'>
-            {/* Hats */}
-            <div className='flex items-center justify-center mb-2'>
-              {currentHatUrl ? (
-              <>
-                <LeftOutlined
-                  className='text-4xl cursor-pointer'
-                  onClick={() => handleArrowClick('Left', 'hat')}
-                />
-                <img
-                  src={currentHatUrl}
-                  alt="Hat Image"
-                  width={150}
-                  height={150}
-                  className='mx-4 rounded'
-                />
-                <RightOutlined
-                  className='text-4xl cursor-pointer'
-                  onClick={() => handleArrowClick('Right', 'hat')}
-                />
-              </>
-              ) : (
-                <Empty description="No hat available" />
-              )}
-            </div>
-
-            {/* Tops */}
-            <div className='flex items-center justify-center mb-2'>
-              {currentTopUrl ? (
-              <>
-                <LeftOutlined
-                  className='text-4xl cursor-pointer'
-                  onClick={() => handleArrowClick('Left', 'top')}
-                />
-                <img
-                  src={currentTopUrl}
-                  alt="Top Image"
-                  width={150}
-                  height={150}
-                  className='mx-4 rounded'
-                />
-                <RightOutlined
-                  className='text-4xl cursor-pointer'
-                  onClick={() => handleArrowClick('Right', 'top')}
-                />
-              </>
-              ) : (
-                <Empty description="No top available" />
-              )}
-            </div>
-
-            {/* Bottoms */}
-            <div className='flex items-center justify-center mb-2'>
-              {currentBottomUrl ? (
-              <>
-                <LeftOutlined
-                  className='text-4xl cursor-pointer'
-                  onClick={() => handleArrowClick('Left', 'bottom')}
-                />
-                <img
-                  src={currentBottomUrl}
-                  alt="Bottom Image"
-                  width={150}
-                  height={150}
-                  className='mx-4 rounded'
-                />
-                <RightOutlined
-                  className='text-4xl cursor-pointer'
-                  onClick={() => handleArrowClick('Right', 'bottom')}
-                />
-              </>
-              ) : (
-                <Empty description="No bottom available" />
-              )}
-            </div>
-
-            {/* Shoes */}
-            <div className='flex items-center justify-center mb-2'>
-              {currentShoesUrl ? (
-              <>
-                <LeftOutlined
-                  className='text-4xl cursor-pointer'
-                  onClick={() => handleArrowClick('Left', 'shoes')}
-                />
-                <img
-                  src={currentShoesUrl}
-                  alt="Shoes Image"
-                  width={150}
-                  height={150}
-                  className='mx-4 rounded'
-                />
-                <RightOutlined
-                  className='text-4xl cursor-pointer'
-                  onClick={() => handleArrowClick('Right', 'shoes')}
-                />
-              </>
-              ) : (
-                <Empty description="No shoes available" />
-              )}
-            </div>
+      {selectedCustomer ? (
+        <div className='flex flex-col items-center max-h-[calc(100vh - 60px)] overflow-y-auto w-full'>
+          {/* Hats */}
+          <div className='flex items-center justify-center mb-2'>
+            {currentHatUrl ? (
+            <>
+              <LeftOutlined
+                className='text-4xl cursor-pointer'
+                onClick={() => handleArrowClick('Left', 'hat')}
+              />
+              <img
+                src={currentHatUrl}
+                alt="Hat Image"
+                width={150}
+                height={150}
+                className='mx-4 rounded'
+              />
+              <RightOutlined
+                className='text-4xl cursor-pointer'
+                onClick={() => handleArrowClick('Right', 'hat')}
+              />
+            </>
+            ) : (
+              <Empty description="No hat available" />
+            )}
           </div>
-        ) : (
-          <p>No customer selected</p>
-        )}
-      </div>
-    </div>
+
+          {/* Tops */}
+          <div className='flex items-center justify-center mb-2'>
+            {currentTopUrl ? (
+            <>
+              <LeftOutlined
+                className='text-4xl cursor-pointer'
+                onClick={() => handleArrowClick('Left', 'top')}
+              />
+              <img
+                src={currentTopUrl}
+                alt="Top Image"
+                width={150}
+                height={150}
+                className='mx-4 rounded'
+              />
+              <RightOutlined
+                className='text-4xl cursor-pointer'
+                onClick={() => handleArrowClick('Right', 'top')}
+              />
+            </>
+            ) : (
+              <Empty description="No top available" />
+            )}
+          </div>
+
+          {/* Bottoms */}
+          <div className='flex items-center justify-center mb-2'>
+            {currentBottomUrl ? (
+            <>
+              <LeftOutlined
+                className='text-4xl cursor-pointer'
+                onClick={() => handleArrowClick('Left', 'bottom')}
+              />
+              <img
+                src={currentBottomUrl}
+                alt="Bottom Image"
+                width={150}
+                height={150}
+                className='mx-4 rounded'
+              />
+              <RightOutlined
+                className='text-4xl cursor-pointer'
+                onClick={() => handleArrowClick('Right', 'bottom')}
+              />
+            </>
+            ) : (
+              <Empty description="No bottom available" />
+            )}
+          </div>
+
+          {/* Shoes */}
+          <div className='flex items-center justify-center mb-2'>
+            {currentShoesUrl ? (
+            <>
+              <LeftOutlined
+                className='text-4xl cursor-pointer'
+                onClick={() => handleArrowClick('Left', 'shoes')}
+              />
+              <img
+                src={currentShoesUrl}
+                alt="Shoes Image"
+                width={150}
+                height={150}
+                className='mx-4 rounded'
+              />
+              <RightOutlined
+                className='text-4xl cursor-pointer'
+                onClick={() => handleArrowClick('Right', 'shoes')}
+              />
+            </>
+            ) : (
+              <Empty description="No shoes available" />
+            )}
+          </div>
+        </div>
+      ) : (
+        <p>No customer selected</p>
+      )}
+    </>
   );
 };
 

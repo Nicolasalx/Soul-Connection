@@ -15,7 +15,6 @@ import { delete_db_payments, update_db_payments } from "@/app/lib/update_db_data
 import { delete_db_tips, update_db_tips } from "@/app/lib/update_db_data/update_db_tips";
 import { delete_db_clothes_image, update_db_clothes_image } from "@/app/lib/update_db_data/update_db_clothes_image";
 import { delete_db_customers_image, update_db_customers_image } from "@/app/lib/update_db_data/update_db_customers_image";
-import { delete_db_employees_image, update_db_employees_image } from "@/app/lib/update_db_data/update_db_employees_image";
 
 const SideBarItems = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
   const [hasRights, setHasRights] = useState(false)
@@ -28,46 +27,46 @@ const SideBarItems = (handleLogout: () => Promise<void>, openDBPopup: () => void
     <>
       <ul className="ml-4 md:ml-8 mt-24 space-y-10 text-3xl md:text-xl lg:text-3xl">
         <li>
-          <Link href="/home">
+          <Link href="/employee/home">
             <p>Home</p>
           </Link>
         </li>
         <If condition={hasRights}>
           <li>
-            <Link href="/coaches">
+            <Link href="/employee/coaches">
               <p>Coaches</p>
             </Link>
           </li>
         </If>
         <li>
-          <Link href="/customers">
+          <Link href="/employee/customers">
             <p>Customers</p>
           </Link>
         </li>
         <If condition={hasRights}>
           <li>
-            <Link href="/statistics">
+            <Link href="/employee/statistics">
               <p>Statistics</p>
             </Link>
           </li>
         </If>
         <li>
-          <Link href="/tips">
+          <Link href="/employee/tips">
             <p>Tips</p>
           </Link>
         </li>
         <li>
-          <Link href="/events">
+          <Link href="/employee/events">
             <p>Events</p>
           </Link>
         </li>
         <li>
-          <Link href="/astro-compatibility">
+          <Link href="/employee/astro-compatibility">
             <p>Astrology</p>
           </Link>
         </li>
         <li>
-          <Link href="/clothing">
+          <Link href="/employee/clothing">
             <p>Clothing</p>
           </Link>
         </li>

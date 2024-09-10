@@ -2,11 +2,11 @@
 import { Divider, Modal, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import type { SelectProps, TableColumnsType } from 'antd';
-import { getEmployees } from '../../lib/dbhelper/employees';
-import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '../../lib/dbhelper/customers';
+import { getEmployees } from '../../../lib/dbhelper/employees';
+import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '../../../lib/dbhelper/customers';
 import { ObjectId } from 'mongodb';
 import If from '@/components/If';
-import { isManager } from '../../lib/user';
+import { isManager } from '../../../lib/user';
 import EmployeeForm from './employeeForm';
 import { Button } from '@nextui-org/react';
 

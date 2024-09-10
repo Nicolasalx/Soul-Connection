@@ -3,7 +3,7 @@ import { verifyToken } from "./app/lib/dal";
 import { isManager } from "./app/lib/user";
 
 const publicRoutes = ['/login', '/']
-const protectedRoutes = ['/statistics', '/coaches']
+const protectedRoutes = ['/employee/statistics', '/employee/coaches']
 
 export default async function middleware(req: NextRequest) {
     const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname)
@@ -14,7 +14,7 @@ export default async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL('/login', req.nextUrl))
     }
     if (isPublicRoute && userConnected) {
-        return NextResponse.redirect(new URL('/home', req.nextUrl))
+        return NextResponse.redirect(new URL('/employee/home', req.nextUrl))
     }
     if (req.nextUrl.pathname === '/' && !userConnected) {
         return NextResponse.redirect(new URL('/login', req.nextUrl))
