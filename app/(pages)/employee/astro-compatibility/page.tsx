@@ -65,7 +65,7 @@ async function getClientInfos(client: number | null) {
     return null
   }
   try {
-    const res = await fetch(`/api/customers/${client}`, { method: 'GET' })
+    const res = await fetch(`/api/back/customers?id=${client}`, { method: 'GET' })
     if (res.ok) {
       const clientInfos = await res.json() as ClientInfos
       return clientInfos

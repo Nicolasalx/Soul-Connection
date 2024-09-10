@@ -18,7 +18,7 @@ export async function POST(req: Request) {
         return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
     try {
-        const result = await fetch('https://soul-connection.fr/api/employees/login', {
+        const result = await fetch(`${process.env.apiUrl as string}/api/employees/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
