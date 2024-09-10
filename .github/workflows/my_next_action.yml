@@ -1,0 +1,41 @@
+name: my_next_action
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  check_all:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: install node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: install dependency
+      run: |
+        npm ci
+
+    - name: check compilation
+      run: |
+          
+          echo "## 🚀 Compilation result" >> $GITHUB_STEP_SUMMARY
+          {
+            set +e
+            npm run build
+            if [ $? -ne 0 ]; then
+              echo "- ### Compilation failed ❌" >> $GITHUB_STEP_SUMMARY
+              echo "Compilation failed."
+              exit 1
+            else
+              echo "- ### Compilation succeed ✅" >> $GITHUB_STEP_SUMMARY
+              exit 0
+            fi
+          }

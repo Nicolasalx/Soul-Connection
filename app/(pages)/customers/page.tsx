@@ -197,7 +197,7 @@ function ClientProfile() {
         </div>
         <div className="flex-1 flex justify-center items-center">
           {urlCustomer ? (
-            <img
+            <Image
               src={urlCustomer}
               alt="Customer Image"
               width={400}
