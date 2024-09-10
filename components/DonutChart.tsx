@@ -22,7 +22,7 @@ export function DonutChart({ data, title, description, dataKey, nameKey, config,
     return data.reduce((acc, curr) => acc + (curr[dataKey] as number), 0)
   }, [data, dataKey])
 
-  const totalCoaches = data.length; // coachs nbr
+  const totalCoaches = data.length; // coaches nb
 
   return (
     <Card className="flex flex-col">
@@ -31,12 +31,12 @@ export function DonutChart({ data, title, description, dataKey, nameKey, config,
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
-        <ChartContainer className="mx-auto aspect-square max-h-[250px]">
+        <ChartContainer className="mx-auto aspect-square max-h-[250px]" config={config}>
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
             <Pie data={data} dataKey={dataKey} nameKey={nameKey} innerRadius={60} strokeWidth={5}>
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={config[entry[nameKey]]?.color} />
+                <Cell key={`cell-${index}`} fill={config[entry[nameKey]]?.color || '#ccc'} />
               ))}
               <Label
                 content={({ viewBox }) => {
@@ -52,6 +52,7 @@ export function DonutChart({ data, title, description, dataKey, nameKey, config,
                       </text>
                     );
                   }
+                  return null;
                 }}
               />
             </Pie>
