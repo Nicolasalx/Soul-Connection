@@ -4,8 +4,48 @@ import { Divider, Table } from 'antd';
 import { fillCoachStatistic } from "../../../lib/dbhelper/statistics_data";
 import { isManager } from "../../../lib/user";
 import { DonutChart } from "@/components/DonutChart";
+import { getEvents } from '../../../lib/dbhelper/events';
+import { getEmployees } from '../../../lib/dbhelper/employees';
 import VerticalBarChart from "@/components/VerticalBarChart";
 import ScrollingList from "@/components/ScrollingList";
+
+export async function mergeEventsAndEmployees() {
+  try {
+    const events = await getEvents();
+    const employees = await getEmployees();
+
+    const coachEmployees = employees.filter(employee => employee.work === "Coach");
+
+    const mergedData = coachEmployees.map(employee => {
+      const {
+        _id,
+        birth_date,
+        gender,
+        last_connection,
+        password,
+        ...employeeDataWithoutSensitiveInfo
+      } = employee;
+
+      const eventForEmployee = events.find(event => event.id === employee.id);
+
+      if (eventForEmployee) {
+        const { _id, location_x, location_y, ...eventDataWithoutLocation } = eventForEmployee;
+        return {
+          ...employeeDataWithoutSensitiveInfo,
+          ...eventDataWithoutLocation
+        };
+      }
+
+      return employeeDataWithoutSensitiveInfo;
+    });
+
+    console.log("Event+Employees list:", mergedData);
+    return mergedData;
+  } catch (error) {
+    console.error("Failed to merge events and employees:", error);
+    throw new Error('Failed to merge data');
+  }
+}
 
 function HomeDashboard() {
   const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);
@@ -13,7 +53,7 @@ function HomeDashboard() {
   const [nbGainByCoach, setNbGainByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [CoachNamesNbEncountersCA, setCoachNamesNbEncountersCA] = useState<
     { index: number; coach: string; encounterCount: number; ca: number }[]>([]);
-
+  const [scrollingListData, setScrollingListData] = useState<{ [key: string]: any }[]>([]);
   const [hasRights, setHasRights] = useState(false);
 
   useEffect(() => {
@@ -52,15 +92,22 @@ function HomeDashboard() {
           setCoachNamesNbEncountersCA(encounterData);
 
           const nbGainData = coachsStatistics.coach_list
-          .map((coach, index) => ({
-            coach,
-            value: coachsStatistics.coach_gain[index],
-          }))
-          .sort((a, b) => b.value - a.value)
-          .slice(0, 5)
-          .reverse();
+            .map((coach, index) => ({
+              coach,
+              value: coachsStatistics.coach_gain[index],
+            }))
+            .sort((a, b) => b.value - a.value)
+            .slice(0, 5)
+            .reverse();
           setNbGainByCoach(nbGainData);
 
+          // Appeler mergeEventsAndEmployees et mettre à jour l'état
+          try {
+            const mergedData = await mergeEventsAndEmployees();
+            setScrollingListData(mergedData);
+          } catch (error) {
+            console.error("Erreur lors de la récupération des données fusionnées :", error);
+          }
         };
 
         makeStatistics();
@@ -92,7 +139,7 @@ function HomeDashboard() {
       <Divider style={{ borderColor: '#d3d3d3' }} />
 
       <div className="flex space-x-4 mb-6">
-        <div className="w-1/3 h-1/3">
+        <div className="w-1/3 h-100">
           <DonutChart
             data={nbCustomersByCoach}
             title="Number of customers by coach"
@@ -103,7 +150,7 @@ function HomeDashboard() {
             observation="Top 5 Coaches by Customer Count"
           />
         </div>
-        <div className="w-1/3 h-1/3">
+        <div className="w-1/3 h-100">
           <VerticalBarChart
             data={nbGainByCoach}
             title="Number of encounters by coach"
@@ -111,8 +158,8 @@ function HomeDashboard() {
             barKey="value"
           />
         </div>
-        <div className="w-1/3">
-          <ScrollingList />
+        <div className="w-1/3 h-100">
+          <ScrollingList data={scrollingListData} />
         </div>
       </div>
       <div className="mt-2">
