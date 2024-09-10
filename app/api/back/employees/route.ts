@@ -16,7 +16,6 @@ export async function GET(request: NextRequest)
       surname: fromUTF8Array(employee.surname),
       birth_date: fromUTF8Array(employee.birth_date),
       email: fromUTF8Array(employee.email),
-      password: employee.password ? fromUTF8Array(employee.password) : null,
       gender: fromUTF8Array(employee.gender),
       work: fromUTF8Array(employee.work),
     }));
@@ -42,7 +41,6 @@ export async function POST(request: NextRequest)
       surname: toUTF8Array(body.surname),
       birth_date: toUTF8Array(body.birth_date),
       email: toUTF8Array(body.email),
-      password: body.password ? toUTF8Array(body.password) : null,
       gender: toUTF8Array(body.gender),
       work: toUTF8Array(body.work),
     };

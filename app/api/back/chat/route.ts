@@ -1,47 +1,48 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '@/app/back/services/database.service';
-import { ObjectId } from 'mongodb';
-import { fromUTF8Array, toUTF8Array } from '@/app/lib/dbhelper/utf_encoder';
+import { connectToDatabase } from "@/app/back/services/database.service";
+import { fromUTF8Array, toUTF8Array } from "@/app/lib/dbhelper/utf_encoder";
+import { ObjectId } from "mongodb";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest)
 {
-  try {
-    const db = await connectToDatabase();
-    const customersCollection = db.collection('customers');
-    const customers = await customersCollection.find({}).toArray();
+    try {
+        const db = await connectToDatabase();
+        const convCollection = db.collection('conv');
 
-    const convertedCustomers = customers.map(customer => ({
-      ...customer,
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get('id');
 
-      email: fromUTF8Array(customer.email),
-      name: fromUTF8Array(customer.name),
-      surname: fromUTF8Array(customer.surname),
-      birth_date: fromUTF8Array(customer.birth_date),
-      gender: fromUTF8Array(customer.gender),
-      description: fromUTF8Array(customer.description),
-      astrological_sign: fromUTF8Array(customer.astrological_sign),
-      phone_number: fromUTF8Array(customer.phone_number),
-      address: fromUTF8Array(customer.address)
-    }));
+        if (!id) {
+            return NextResponse.json({ message: 'Missing id parameter' }, { status: 400 });
+        }
 
-    return NextResponse.json(convertedCustomers, { status: 200 });
-  } catch (error) {
-    console.error('Error fetching customers:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
-  }
+        const conv = await convCollection.findOne({ id: id });
+
+        if (!conv) {
+            return NextResponse.json({ message: 'Conv not found' }, { status: 404 });
+        }
+
+        // convert to utf8
+
+        return NextResponse.json(conv, { status: 200 });
+    } catch (error) {
+        console.error('Error fetching conv:', error);
+        return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    }
 }
 
 export async function POST(request: NextRequest)
 {
   try {
     const db = await connectToDatabase();
-    const customersCollection = db.collection('customers');
+    const convCollection = db.collection('conv');
 
     const body = await request.json();
     
     const newCustomer = {
       ...body,
       email: toUTF8Array(body.email),
+      password: body.password ? toUTF8Array(body.password) : null,
       name: toUTF8Array(body.name),
       surname: toUTF8Array(body.surname),
       birth_date: toUTF8Array(body.birth_date),
@@ -52,7 +53,7 @@ export async function POST(request: NextRequest)
       address: toUTF8Array(body.address)
     };
     
-    const result = await customersCollection.insertOne(newCustomer);
+    const result = await convCollection.insertOne(newCustomer);
     return NextResponse.json(result, { status: 201 });
   } catch (error) {
     console.error('Error creating customer:', error);
@@ -64,7 +65,7 @@ export async function PUT(request: NextRequest)
 {
   try {
     const db = await connectToDatabase();
-    const customersCollection = db.collection('customers');
+    const convCollection = db.collection('conv');
 
     const body = await request.json();
     const { _id, ...updateFields } = body;
@@ -73,7 +74,7 @@ export async function PUT(request: NextRequest)
       return NextResponse.json({ message: 'ID is required for updating a customer' }, { status: 400 });
     }
 
-    const updateResult = await customersCollection.updateOne(
+    const updateResult = await convCollection.updateOne(
       { _id: new ObjectId(_id) },
       { $set: updateFields }
     );
@@ -93,7 +94,7 @@ export async function DELETE(request: NextRequest)
 {
   try {
     const db = await connectToDatabase();
-    const customersCollection = db.collection('customers');
+    const convCollection = db.collection('conv');
 
     const { searchParams } = new URL(request.url);
     const deleteId = searchParams.get('deleteId');
@@ -102,7 +103,7 @@ export async function DELETE(request: NextRequest)
       return NextResponse.json({ message: 'ID is required for deleting a customer' }, { status: 400 });
     }
 
-    const deleteResult = await customersCollection.deleteOne({ _id: new ObjectId(deleteId) });
+    const deleteResult = await convCollection.deleteOne({ _id: new ObjectId(deleteId) });
 
     if (deleteResult.deletedCount === 0) {
       return NextResponse.json({ message: 'Customer not found' }, { status: 404 });

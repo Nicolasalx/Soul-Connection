@@ -25,11 +25,11 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
 
   return (
     <div className="bg-white border border-gray-300 p-4 rounded-lg overflow-hidden">
-      <h2 className="font-bold text-gray-600 mb-4 text-xl">{title}</h2>
+      <h2 className="font-bold text-gray-600 text-xl">{title}</h2>
       <div className="w-full h-72">
         <BarChart
           width={400}
-          height={300}
+          height={280}
           data={data}
           margin={{ bottom: 50 }}
         >
