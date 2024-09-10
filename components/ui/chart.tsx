@@ -67,9 +67,13 @@ const ChartContainer = React.forwardRef<
 ChartContainer.displayName = "Chart"
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
+  if (!config) {
+    return null;
+  }
+
   const colorConfig = Object.entries(config).filter(
-    ([_, config]) => config.theme || config.color
-  )
+    ([_, conf]) => conf?.theme || conf?.color
+  );
 
   if (!colorConfig.length) {
     return null
@@ -349,9 +353,10 @@ function getPayloadConfigFromPayload(
     ] as string
   }
 
-  return configLabelKey in config
-    ? config[configLabelKey]
-    : config[key as keyof typeof config]
+  return config && configLabelKey in config
+  ? config[configLabelKey]
+  : config ? config[key as keyof typeof config] : undefined;
+
 }
 
 export {

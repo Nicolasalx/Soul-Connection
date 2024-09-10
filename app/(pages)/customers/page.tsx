@@ -121,7 +121,7 @@ function ClientProfile() {
           } catch (error) {
             console.error('Failed to fetch customer payments:', error);
           }
-  
+
           try {
             const customerEncounters = await getCustomerEncounters(customer.id);
             const formattedEncounters = customerEncounters.map((encounter: Encounters) => ({
@@ -146,59 +146,57 @@ function ClientProfile() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen p-6">
-      <div className="bg-white border border-gray-300 p-12 rounded-lg">
-        <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
-          Customers
-          <Divider style={{ borderColor: '#d3d3d3' }} />
-        </h1>
-        <div className="flex flex-col md:flex-row space-x-4 mb-6">
-          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-            <Select
-              size="large"
-              placeholder="Select a customer"
-              onChange={handleChange}
-              style={{ width: '100%' }}
-              options={options}
-              value={selectedCustomer}
+    <>
+      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
+        Customers
+        <Divider style={{ borderColor: '#d3d3d3' }} />
+      </h1>
+      <div className="flex flex-col md:flex-row space-x-4 mb-6">
+        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+          <Select
+            size="large"
+            placeholder="Select a customer"
+            onChange={handleChange}
+            style={{ width: '100%' }}
+            options={options}
+            value={selectedCustomer}
+          />
+          <div className="mt-6">
+            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPerson} /> {customerDetails.name || "No name"}</Title>
+            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faCakeCandles} /> {customerDetails.birth_date || "No birth date"}</Title>
+            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faLocationDot} /> {customerDetails.address || "No address"}</Title>
+            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPhone} /> {customerDetails.phone_number || "No phone number"}</Title>
+            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faComment} /> {customerDetails.description || "No description"}</Title>
+          </div>
+        </div>
+        <div className="flex-1 flex justify-center items-center">
+          {urlCustomer ? (
+            <img
+              src={urlCustomer}
+              alt="Customer Image"
+              width={400}
+              height={300}
+              style={{ margin: '0 20px' }}
             />
-            <div className="mt-6">
-              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPerson} /> {customerDetails.name || "No name"}</Title>
-              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faCakeCandles} /> {customerDetails.birth_date || "No birth date"}</Title>
-              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faLocationDot} /> {customerDetails.address || "No address"}</Title>
-              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPhone} /> {customerDetails.phone_number || "No phone number"}</Title>
-              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faComment} /> {customerDetails.description || "No description"}</Title>
-            </div>
-          </div>
-          <div className="flex-1 flex justify-center items-center">
-            {urlCustomer ? (
-              <img
-                src={urlCustomer}
-                alt="Customer Image"
-                width={400}
-                height={300}
-                style={{ margin: '0 20px' }}
-              />
-            ) : (
-              <Empty description="No image available" />
-            )}
-          </div>
+          ) : (
+            <Empty description="No image available" />
+          )}
         </div>
       </div>
 
       <Divider style={{ borderColor: '#d3d3d3' }} />
       <div className="flex flex-col md:flex-row space-x-4 mt-4">
-        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-          <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large" pagination={{ pageSize: 5 }}/>
+        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg overflow-x-auto">
+          <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large" pagination={{ pageSize: 5 }} />
         </div>
 
         <If condition={hasRights}>
-          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-            <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large" pagination={{ pageSize: 5 }}/>
+          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg overflow-x-auto">
+            <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large" pagination={{ pageSize: 5 }} />
           </div>
         </If>
       </div>
-    </div>
+    </>
   );
 }
 

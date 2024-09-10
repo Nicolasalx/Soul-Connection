@@ -1,40 +1,86 @@
-import React from "react";
-import { BarrChart } from "@/components/BarChart";
-import { Divider } from 'antd';
-import Table from "@/components/Table";
-import { update_full_db } from "@/app/lib/update_db_data/update_full_db";
-import cron from "node-cron";
+'use client'
+import React, { useEffect, useState } from "react";
+import { Divider, Table } from 'antd';
+import Forbidden from "@/components/Forbidden";
+import { fillCoachStatistic } from "../../lib/dbhelper/statistics_data";
+import { isManager } from "../../lib/user";
+import { DonutChart } from "@/components/DonutChart";
+import VerticalBarChart from "@/components/VerticalBarChart";
 
-const chartDataSalesEv = [
-  { month: "January", amount: 600 },
-  { month: "February", amount: 1000 },
-  { month: "March", amount: 450 },
-  { month: "April", amount: 3000 },
-];
+function HomeDashboard() 
+{
+  const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);
+  const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
+  const [nbGainByCoach, setNbGainByCoach] = useState<{ coach: string; value: number }[]>([]);
+  const [CoachNamesNbEncountersCA, setCoachNamesNbEncountersCA] = useState<
+    { index: number; coach: string; encounterCount: number; ca: number }[]>([]);
+  
+  const [hasRights, setHasRights] = useState(false);
 
-const chartDataCoachNbEncounters = [
-  { coach: "Coach01", value: 2 },
-  { coach: "Coach02", value: 12 },
-  { coach: "Coach03", value: 7 },
-  { coach: "Coach04", value: 9 },
-];
+  useEffect(() => {
+    const checkManagerRights = async () => {
+      const managerRights = await isManager();
+      setHasRights(managerRights);
 
-const chartDataCoachesAverageDateRating = [
-  { coach: "Coach01", grade: 10 },
-  { coach: "Coach02", grade: 5 },
-  { coach: "Coach03", grade: 2 },
-  { coach: "Coach04", grade: 8 },
-];
+      if (managerRights) {
+        const makeStatistics = async () => {
+          const coachsStatistics = await fillCoachStatistic();
 
-function HomeDashboard() {
-  cron.schedule('0 0 * * *', async () => {
-    try {
-      await update_full_db();
-      console.log("DB updated !!!");
-    } catch (error) {
-      console.error(error);
-    }
-  });
+          const nbCustomerData = coachsStatistics.coach_list
+            .map((coach, index) => ({
+              coach,
+              value: coachsStatistics.coach_nb_client[index],
+            }))
+            .sort((a, b) => b.value - a.value)
+            .slice(0, 5);
+          setNbCustomersByCoach(nbCustomerData);
+
+          const colorPalette = ['#1f2a38', '#4b545f', '#787f87', '#a5a9af', '#e8e9eb'];
+
+          const config = nbCustomerData.reduce((configAcc, item, index) => {
+            configAcc[item.coach] = { color: colorPalette[index] };
+            return configAcc;
+          }, {} as Record<string, { color: string }>);
+
+          setChartConfigCustomers(config);
+
+          const encounterData = coachsStatistics.coach_list.map((coach, index) => ({
+            index,
+            coach,
+            encounterCount: coachsStatistics.coach_encounter[index],
+            ca: coachsStatistics.coach_gain[index],
+          }));
+          setCoachNamesNbEncountersCA(encounterData);
+
+          const nbGainData = coachsStatistics.coach_list
+          .map((coach, index) => ({
+            coach,
+            value: coachsStatistics.coach_gain[index],
+          }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 5)
+          .reverse();
+          setNbGainByCoach(nbGainData);
+
+        };
+
+        makeStatistics();
+      }
+    };
+
+    checkManagerRights();
+  }, []);
+
+  if (!hasRights) {
+    return <Forbidden />;
+  }
+
+  const columns = [
+    { title: 'Index', dataIndex: 'index', key: 'index' },
+    { title: 'Coach', dataIndex: 'coach', key: 'coach' },
+    { title: 'Encounters', dataIndex: 'encounterCount', key: 'encounterCount' },
+    { title: 'CA', dataIndex: 'ca', key: 'ca' },
+  ];
 
   return (
     <>
@@ -48,36 +94,37 @@ function HomeDashboard() {
 
       <div className="flex space-x-4 mb-6">
         <div className="w-1/3">
-          <BarrChart
-            data={chartDataCoachNbEncounters}
-            title="Coaches total performances"
+          <DonutChart
+            data={nbCustomersByCoach}
+            title="Number of customers by coach"
+            description=""
+            dataKey="value"
+            nameKey="coach"
+            config={chartConfigCustomers}
+            observation="Top 5 Coaches by Customer Count"
+          />
+        </div>
+        <div className="col-span-1">
+          <VerticalBarChart
+            data={nbGainByCoach}
+            title="Number of encounters by coach"
             yAxisKey="coach"
             barKey="value"
           />
         </div>
-        <div className="w-1/3">
-          <BarrChart
-            data={chartDataCoachesAverageDateRating}
-            title="Coaches Average Dates Rating"
-            yAxisKey="coach"
-            barKey="grade"
-          />
-        </div>
-        <div className="w-1/3">
-          <BarrChart
-            data={chartDataSalesEv}
-            title="Sales Revenus Evolution"
-            yAxisKey="month"
-            barKey="amount"
-          />
-        </div>
       </div>
-
+      <div className="w-1/3">
+        </div>
       <div className="mt-2">
-        <Table />
+        <Table
+          columns={columns}
+          dataSource={CoachNamesNbEncountersCA}
+          rowKey="index"
+          pagination={{ pageSize: 8 }}
+        />
       </div>
       <div className="mt-4 text-center">
-        <p className="text-sm">
+        <p className="text-sm text-grey">
           For more details, go to the <a href="/statistics" className="text-blue-500 underline">Statistics page</a>.
         </p>
       </div>
