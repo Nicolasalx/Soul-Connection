@@ -41,7 +41,7 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
           />
           <YAxis />
           <Tooltip />
-          <Bar dataKey={barKey} fill="#34495e" barSize={15} />
+          <Bar dataKey={barKey} fill="#34495e" barSize={25} />
         </BarChart>
       </div>
     </div>
