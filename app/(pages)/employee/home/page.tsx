@@ -39,10 +39,10 @@ export async function mergeEventsAndEmployees() {
       return employeeDataWithoutSensitiveInfo;
     });
 
-    console.log("Event+Employees list:", mergedData);
+    //console.log("Event+Employees list:", mergedData);
     return mergedData;
   } catch (error) {
-    console.error("Failed to merge events and employees:", error);
+    //console.error("Failed to merge events and employees:", error);
     throw new Error('Failed to merge data');
   }
 }
@@ -101,7 +101,6 @@ function HomeDashboard() {
             .reverse();
           setNbGainByCoach(nbGainData);
 
-          // Appeler mergeEventsAndEmployees et mettre à jour l'état
           try {
             const mergedData = await mergeEventsAndEmployees();
             setScrollingListData(mergedData);
