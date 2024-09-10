@@ -1,15 +1,22 @@
-import { cookies } from "next/headers"
-import { SignJWT } from 'jose'
-import { getEmployeeInfos } from "@/app/lib/user"
+import { getEmployee } from "@/app/lib/user"
+import { saveToken } from "@/app/lib/token"
+import { updateEmployee } from "@/app/lib/dbhelper/employees"
+import Employees from "@/app/back/models/employees"
+import bcrypt from 'bcryptjs'
+import { checkDBForEmployee, connectEmployee } from "@/app/lib/connection"
 
 export async function POST(req: Request) {
+    const { email, password } = await req.json()
+
+    if (await checkDBForEmployee(email as string, password as string)) {
+        return Response.json('OK', { status: 200 })
+    }
+    const api_token = process.env.API_TOKEN
+    if (!api_token) {
+        console.error("Missing API token.")
+        return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    }
     try {
-        const { email, password } = await req.json()
-        const api_token = process.env.API_TOKEN
-        if (!api_token) {
-            console.error("Missing API token.")
-            return Response.json({ error: 'Unauthorized' }, { status: 401 })
-        }
         const result = await fetch('https://soul-connection.fr/api/employees/login', {
             method: 'POST',
             headers: {
@@ -22,31 +29,18 @@ export async function POST(req: Request) {
             })
         })
         if (result.ok) {
-            const expiresAt = new Date(Date.now())
-            expiresAt.setHours(expiresAt.getHours() + 24)   // wait 24 hours before token expiration in cookies
             const { access_token } = await result.json()
-            let token: string = ''
+            let employee = await getEmployee(email)
 
-            if (process.env.ENCRYPT_KEY) {
-                const infos = await getEmployeeInfos(access_token)
-                if (!infos) {
-                    return Response.json({ error: "Couldn't fetch employee infos" }, { status: 404 })
-                }
-                token = await new SignJWT({ token: access_token, infos: infos })
-                    .setProtectedHeader({alg: 'HS256', typ: 'JWT'})
-                    .setIssuedAt()
-                    .setExpirationTime('24 hours')
-                    .sign(new TextEncoder().encode(process.env.ENCRYPT_KEY));
+            if (employee && employee._id) {
+                await connectEmployee(employee, access_token as string, password as string)
+            } else {
+                return Response.json({ error: 'Unauthorized' }, { status: 401 })
             }
-            cookies().set('token', token, {
-                httpOnly: true,
-                secure: true,
-                expires: expiresAt,
-                path: '/',
-            })
         }
         return Response.json(result.statusText, { status: result.status })
     } catch(error) {
+        console.log(error)
         return Response.json({ error: error }, { status: 500 })
     }
 }
