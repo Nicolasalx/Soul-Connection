@@ -18,6 +18,7 @@ function Statistics() {
   const [nbEventsByCoach, setNbEventsByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [averageRatingByCoach, setAverageRatingByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
+  const [chartConfigAverageRating, setChartConfigAverageRating] = useState<Record<string, { color: string }>>({});
   const [astrologicalData, setAstrologicalData] = useState<{ name: string; value: number }[]>([]);
   const [hasRights, setHasRights] = useState<boolean | null>(null);
 
@@ -27,9 +28,7 @@ function Statistics() {
       return
     }
     const makeStatistics = async () => {
-      console.log("ENTER");
       const coachsStatistics = await fillCoachStatistic();
-      console.log("ENTER2", coachsStatistics);
 
       const nbCustomerData = coachsStatistics.coach_list
         .map((coach, index) => ({
@@ -91,6 +90,21 @@ function Statistics() {
         .sort((a, b) => b.value - a.value)
         .slice(0, 5);
       setAverageRatingByCoach(averageRating);
+
+      const colorPaletteRate = [
+        '#4B4F6B',
+        '#5C6378',
+        '#3A3D4D',
+        '#53566D',
+        '#2F3342'
+      ];
+
+      const configAverageRating = averageRating.reduce((configAcc, item, index) => {
+        configAcc[item.coach] = { color: colorPaletteRate[index] };
+        return configAcc;
+      }, {} as Record<string, { color: string }>);
+
+      setChartConfigAverageRating(configAverageRating);
 
       const astroData = coachsStatistics.data_astrological_sign.name_astro_sign
         .map((sign, index) => ({
@@ -157,16 +171,17 @@ function Statistics() {
             barKey="value"
           />
         </div>
-
         <div className="col-span-1">
-          <BarrChart
+          <PiieChart
             data={averageRatingByCoach}
             title="Average rating by coach"
-            yAxisKey="coach"
-            barKey="value"
+            description=""
+            dataKey="value"
+            nameKey="coach"
+            config={chartConfigAverageRating}
+            observation="Top 5 Coaches by Average Rate"
           />
         </div>
-
         <div className="col-span-1">
           <RadarChart
             data={astrologicalData}
