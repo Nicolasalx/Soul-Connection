@@ -4,6 +4,7 @@ import { sc_db_api } from "./db_api_instance";
 export async function getEmployees(): Promise<Employees[]> {
   try {
     const response = await sc_db_api.get('/employees');
+    // console.log('getEmployees Response:', response.data);
     return response.data;
   } catch (error) {
     throw new Error('Failed to fetch employees');
