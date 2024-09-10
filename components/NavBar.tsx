@@ -171,7 +171,7 @@ export default function NavBar()
       <Button className="bg-black text-white fixed top-0 left-0 z-50 shadow-lg text-3xl m-4 rounded-full md:disabled md:hidden" onClick={toggleSidebar}>
         {isSidebarOpen ? 'X' : 'Menu'}
       </Button>
-      <div className={`fixed left-0 h-full w-[40%] md:w-[20%] z-40 bg-black/80 text-white backdrop-blur-sm border-r-8 border-pink-500 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out md:transform-none md:-translate-x-full`}>
+      <div className={`fixed left-0 h-full w-[40%] md:w-[20%] z-40 bg-black/80 text-white backdrop-blur-sm transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out md:transform-none md:-translate-x-full`}>
         { SideBarItems(handleLogout, openDBPopup) }
       </div>
       { DatabaseModal(isDBPopupOpen, closeDBPopup) }

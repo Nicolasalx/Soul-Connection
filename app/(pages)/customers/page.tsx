@@ -151,7 +151,7 @@ function ClientProfile() {
         Customers
         <Divider style={{ borderColor: '#d3d3d3' }} />
       </h1>
-      <div className="flex flex-col md:flex-row space-x-4 mb-6">
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
           <Select
             size="large"
@@ -185,14 +185,14 @@ function ClientProfile() {
       </div>
 
       <Divider style={{ borderColor: '#d3d3d3' }} />
-      <div className="flex flex-col md:flex-row space-x-4 mt-4">
-        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg overflow-x-auto">
-          <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large" pagination={{ pageSize: 5 }} />
+      <div className="flex flex-col gap-4 lg:flex-row mt-4">
+        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+          <Table title={() => 'Meetings'} footer={() => ''} bordered columns={columnsEncounters} dataSource={encountersDetails} size="large" pagination={{ pageSize: 5 }} scroll={{ x: '100%' }} />
         </div>
 
         <If condition={hasRights}>
-          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg overflow-x-auto">
-            <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large" pagination={{ pageSize: 5 }} />
+          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+            <Table title={() => 'Payments'} footer={() => ''} bordered columns={columnsPayments} dataSource={paymentsDetails} size="large" pagination={{ pageSize: 5 }} scroll={{ x: '100%' }} />
           </div>
         </If>
       </div>
