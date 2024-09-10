@@ -1,21 +1,20 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import { Divider, Table } from 'antd';
-import Forbidden from "@/components/Forbidden";
 import { fillCoachStatistic } from "../../lib/dbhelper/statistics_data";
 import { isManager } from "../../lib/user";
 import { DonutChart } from "@/components/DonutChart";
 import VerticalBarChart from "@/components/VerticalBarChart";
 
 
-function HomeDashboard() 
+function HomeDashboard()
 {
   const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
   const [nbGainByCoach, setNbGainByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [CoachNamesNbEncountersCA, setCoachNamesNbEncountersCA] = useState<
     { index: number; coach: string; encounterCount: number; ca: number }[]>([]);
-  
+
   const [hasRights, setHasRights] = useState(false);
 
   useEffect(() => {
@@ -73,7 +72,7 @@ function HomeDashboard()
   }, []);
 
   if (!hasRights) {
-    return <Forbidden />;
+    return null;
   }
 
   const columns = [

@@ -44,7 +44,7 @@ function Coaches() {
     const dataEmployees = await getEmployees();
     const dataCustomers = await getCustomers();
 
-    const formattedData = dataEmployees.map((employee: any) => {
+    const formattedData = dataEmployees.filter(e => e.work === 'Coach').map((employee: any) => {
       const coachCustomers = dataCustomers
         .filter((customer: CustomerType) => customer.coach_id === employee.id)
         .map((customer: CustomerType) => customer._id ? customer._id.toString() : '');
@@ -57,7 +57,7 @@ function Coaches() {
         customers: coachCustomers,
         lastConnection: 'N/A',
       };
-    });
+    }).sort((a, b) => a.id < b.id ? -1 : 1);
 
     setData(formattedData);
 
@@ -134,17 +134,15 @@ function Coaches() {
       title: hasRights ? 'Customers' : '',
       dataIndex: 'customers',
       render: (_, record) => (
-        <If condition={hasRights}>
-          <Select
-            mode="multiple"
-            allowClear
-            style={{ width: '100%' }}
-            placeholder="Select customers"
-            defaultValue={record.customers}
-            onChange={(value) => handleCustomerChange(value, record)}
-            options={customerOptions}
-          />
-        </If>
+        <Select
+          mode="multiple"
+          allowClear
+          style={{ width: '100%' }}
+          placeholder="Select customers"
+          defaultValue={record.customers}
+          onChange={(value) => handleCustomerChange(value, record)}
+          options={customerOptions}
+        />
       ),
     },
     {
@@ -159,29 +157,26 @@ function Coaches() {
         Coaches
         <Divider style={{ borderColor: '#d3d3d3' }} />
       </h1>
-      <If condition={hasRights}>
-        <Button color='primary' onClick={showModal} className="mb-6 w-full">
-          Add Employee
-        </Button>
-      </If>
+      <Button color='primary' onClick={showModal} className="mb-6 w-full">
+        Add Employee
+      </Button>
 
       <Table
         columns={columns}
         dataSource={data}
         size="large"
         rowKey="id"
+        pagination={{ pageSize: 6 }}
         scroll={{ x: '100%' }}
       />
-      <If condition={hasRights}>
-        <Modal
-          title="Add Employee"
-          open={isModalOpen}
-          okButtonProps={{hidden: true}}
-          onCancel={() => setIsModalOpen(false)}
-        >
-          <EmployeeForm />
-        </Modal>
-      </If>
+      <Modal
+        title="Add Employee"
+        open={isModalOpen}
+        okButtonProps={{hidden: true}}
+        onCancel={() => setIsModalOpen(false)}
+      >
+        <EmployeeForm />
+      </Modal>
     </>
   );
 }

@@ -32,11 +32,13 @@ const SideBarItems = (handleLogout: () => Promise<void>, openDBPopup: () => void
             <p>Home</p>
           </Link>
         </li>
-        <li>
-          <Link href="/coaches">
-            <p>Coaches</p>
-          </Link>
-        </li>
+        <If condition={hasRights}>
+          <li>
+            <Link href="/coaches">
+              <p>Coaches</p>
+            </Link>
+          </li>
+        </If>
         <li>
           <Link href="/customers">
             <p>Customers</p>

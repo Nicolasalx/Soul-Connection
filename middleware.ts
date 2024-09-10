@@ -3,7 +3,7 @@ import { verifyToken } from "./app/lib/dal";
 import { isManager } from "./app/lib/user";
 
 const publicRoutes = ['/login', '/']
-const protectedRoutes = ['/statistics']
+const protectedRoutes = ['/statistics', '/coaches']
 
 export default async function middleware(req: NextRequest) {
     const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname)
@@ -20,7 +20,7 @@ export default async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL('/login', req.nextUrl))
     }
     if (isProtectedRoute && !(await isManager())) {
-        return NextResponse.rewrite(req.nextUrl, { status: 403 })
+        return NextResponse.rewrite(new URL('/forbidden', req.nextUrl), { status: 403 })
     }
     return NextResponse.next()
 }
