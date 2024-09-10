@@ -19,7 +19,7 @@ function Statistics() {
   const [averageRatingByCoach, setAverageRatingByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
   const [astrologicalData, setAstrologicalData] = useState<{ name: string; value: number }[]>([]);
-  const [hasRights, setHasRights] = useState<boolean|null>(null);
+  const [hasRights, setHasRights] = useState<boolean | null>(null);
 
   useEffect(() => {
     isManager().then(val => setHasRights(val))
@@ -27,7 +27,9 @@ function Statistics() {
       return
     }
     const makeStatistics = async () => {
+      console.log("ENTER");
       const coachsStatistics = await fillCoachStatistic();
+      console.log("ENTER2", coachsStatistics);
 
       const nbCustomerData = coachsStatistics.coach_list
         .map((coach, index) => ({

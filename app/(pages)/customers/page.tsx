@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useState } from 'react';
 import { Image, Divider, Table, Select, Typography, Empty } from 'antd';
 import type { TableColumnsType, SelectProps } from 'antd';
@@ -8,15 +9,9 @@ import { getCoachCustomers, getCustomerEncounters, getCustomerPayments } from '.
 import Customers from "@/app/back/models/customers";
 import Payments from "@/app/back/models/payments";
 import Encounters from "@/app/back/models/encounters";
-import { getSelfId } from '../../lib/user';
+import { getSelfId, isManager } from '../../lib/user';
 import If from '@/components/If';
-import { isManager } from '../../lib/user';
 import { getCustomersImage } from '@/app/lib/dbhelper/customers_image';
-
-const baseStyle: React.CSSProperties = {
-  width: '100%',
-  height: 54
-};
 
 const { Title } = Typography;
 
@@ -76,7 +71,6 @@ function ClientProfile() {
   const [customerDetails, setCustomerDetails] = useState<Partial<Customers>>({});
   const [paymentsDetails, setPaymentsDetails] = useState<DataTypePayments[]>([]);
   const [encountersDetails, setEncountersDetails] = useState<DataTypeEncounters[]>([]);
-  const [customerId, setCustomerId] = useState<number | null>(null);
   const [hasRights, setHasRights] = useState(false)
 
   useEffect(() => {
@@ -114,7 +108,6 @@ function ClientProfile() {
         } catch (error) {
           console.error('Failed to fetch customer image:', error);
         }
-        setCustomerId(customer?.id ?? null);
         if (customer?.id || customer?.id === 0) {
           try {
             const customerPayments = await getCustomerPayments(customer.id);
@@ -148,49 +141,48 @@ function ClientProfile() {
     fetchCustomerDetails();
   }, [selectedCustomer, customerData]);
 
-
   const handleChange = (value: string | string[]) => {
     setSelectedCustomer(value as string);
   };
 
-  const imageUrl = customerId ? `/api/customers/${customerId}/image` : null;
-
   return (
-    <>
-      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
-        Customers
-        <Divider style={{ borderColor: '#d3d3d3' }} />
-      </h1>
-      <div className="flex flex-col md:flex-row space-x-4 mb-6">
-        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
-          <Select
-            size="large"
-            placeholder="Select a customer"
-            onChange={handleChange}
-            style={{ width: '100%' }}
-            options={options}
-            value={selectedCustomer}
-          />
-          <div className="mt-6">
-            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPerson} /> {customerDetails.name || "No name"}</Title>
-            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faCakeCandles} /> {customerDetails.birth_date || "No birth date"}</Title>
-            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faLocationDot} /> {customerDetails.address || "No address"}</Title>
-            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPhone} /> {customerDetails.phone_number || "No phone number"}</Title>
-            <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faComment} /> {customerDetails.description || "No description"}</Title>
-          </div>
-        </div>
-        <div className="flex-1 flex justify-center items-center">
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt="Customer Image"
-              width={400}
-              height={300}
-              style={{ margin: '0 20px' }}
+    <div className="flex flex-col h-screen w-screen p-6">
+      <div className="bg-white border border-gray-300 p-12 rounded-lg">
+        <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
+          Customers
+          <Divider style={{ borderColor: '#d3d3d3' }} />
+        </h1>
+        <div className="flex flex-col md:flex-row space-x-4 mb-6">
+          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+            <Select
+              size="large"
+              placeholder="Select a customer"
+              onChange={handleChange}
+              style={{ width: '100%' }}
+              options={options}
+              value={selectedCustomer}
             />
-          ) : (
-            <Empty description="No image available" />
-          )}
+            <div className="mt-6">
+              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPerson} /> {customerDetails.name || "No name"}</Title>
+              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faCakeCandles} /> {customerDetails.birth_date || "No birth date"}</Title>
+              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faLocationDot} /> {customerDetails.address || "No address"}</Title>
+              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faPhone} /> {customerDetails.phone_number || "No phone number"}</Title>
+              <Title level={4} style={{ color: 'gray' }}><FontAwesomeIcon icon={faComment} /> {customerDetails.description || "No description"}</Title>
+            </div>
+          </div>
+          <div className="flex-1 flex justify-center items-center">
+            {urlCustomer ? (
+              <img
+                src={urlCustomer}
+                alt="Customer Image"
+                width={400}
+                height={300}
+                style={{ margin: '0 20px' }}
+              />
+            ) : (
+              <Empty description="No image available" />
+            )}
+          </div>
         </div>
       </div>
 
@@ -206,7 +198,7 @@ function ClientProfile() {
           </div>
         </If>
       </div>
-    </>
+    </div>
   );
 }
 

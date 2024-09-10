@@ -1,10 +1,9 @@
 import React from "react";
 import { BarrChart } from "@/components/BarChart";
 import { Divider } from 'antd';
-import cron from 'node-cron';
-
 import Table from "@/components/Table";
-import { update_full_db } from "../../lib/update_db_data/update_full_db";
+import { update_full_db } from "@/app/lib/update_db_data/update_full_db";
+import cron from "node-cron";
 
 const chartDataSalesEv = [
   { month: "January", amount: 600 },
@@ -27,11 +26,10 @@ const chartDataCoachesAverageDateRating = [
   { coach: "Coach04", grade: 8 },
 ];
 
-function HomeDashboard()
-{
+function HomeDashboard() {
   cron.schedule('0 0 * * *', async () => {
     try {
-      // await update_full_db();
+      await update_full_db();
       console.log("DB updated !!!");
     } catch (error) {
       console.error(error);
