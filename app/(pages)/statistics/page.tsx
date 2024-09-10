@@ -8,8 +8,6 @@ import { DotChart } from "@/components/DotChart";
 import VerticalBarChart from "@/components/VerticalBarChart";
 import RadarChart from "@/components/RadarChart";
 import { fillCoachStatistic } from "../../lib/dbhelper/statistics_data";
-import { isManager } from "../../lib/user";
-import Forbidden from "@/components/Forbidden";
 
 function Statistics() {
   const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);
@@ -20,13 +18,8 @@ function Statistics() {
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
   const [chartConfigAverageRating, setChartConfigAverageRating] = useState<Record<string, { color: string }>>({});
   const [astrologicalData, setAstrologicalData] = useState<{ name: string; value: number }[]>([]);
-  const [hasRights, setHasRights] = useState<boolean | null>(null);
 
   useEffect(() => {
-    isManager().then(val => setHasRights(val))
-    if (hasRights === false) {
-      return
-    }
     const makeStatistics = async () => {
       const coachsStatistics = await fillCoachStatistic();
 
@@ -115,14 +108,6 @@ function Statistics() {
     };
     makeStatistics();
   }, []);
-
-  if (hasRights === null) {
-    return null
-  }
-
-  if (hasRights === false) {
-    return <Forbidden />
-  }
 
   return (
     <>
