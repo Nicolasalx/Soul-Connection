@@ -27,7 +27,9 @@ function Statistics() {
       return
     }
     const makeStatistics = async () => {
+      console.log("ENTER");
       const coachsStatistics = await fillCoachStatistic();
+      console.log("ENTER2", coachsStatistics);
 
       const nbCustomerData = coachsStatistics.coach_list
         .map((coach, index) => ({

@@ -6,7 +6,6 @@ import { fillCoachStatistic } from "../../lib/dbhelper/statistics_data";
 import { isManager } from "../../lib/user";
 import { DonutChart } from "@/components/DonutChart";
 import VerticalBarChart from "@/components/VerticalBarChart";
-import { Calendar } from '';
 
 function HomeDashboard() 
 {
@@ -115,8 +114,6 @@ function HomeDashboard()
         </div>
       </div>
       <div className="w-1/3">
-          <Calendarr
-          />
         </div>
       <div className="mt-2">
         <Table

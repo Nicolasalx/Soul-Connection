@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useState } from 'react';
 import { Image, Divider, Table, Select, Typography, Empty } from 'antd';
 import type { TableColumnsType, SelectProps } from 'antd';
@@ -8,16 +9,9 @@ import { getCoachCustomers, getCustomerEncounters, getCustomerPayments } from '.
 import Customers from "@/app/back/models/customers";
 import Payments from "@/app/back/models/payments";
 import Encounters from "@/app/back/models/encounters";
-import { getSelfId } from '../../lib/user';
+import { getSelfId, isManager } from '../../lib/user';
 import If from '@/components/If';
-import { isManager } from '../../lib/user';
-import { isManager } from '../lib/user';
-import { getCustomersImage } from '../lib/dbhelper/customers_image';
-
-const baseStyle: React.CSSProperties = {
-  width: '100%',
-  height: 54
-};
+import { getCustomersImage } from '@/app/lib/dbhelper/customers_image';
 
 const { Title } = Typography;
 
@@ -77,7 +71,6 @@ function ClientProfile() {
   const [customerDetails, setCustomerDetails] = useState<Partial<Customers>>({});
   const [paymentsDetails, setPaymentsDetails] = useState<DataTypePayments[]>([]);
   const [encountersDetails, setEncountersDetails] = useState<DataTypeEncounters[]>([]);
-  const [customerId, setCustomerId] = useState<number | null>(null);
   const [hasRights, setHasRights] = useState(false)
 
   useEffect(() => {
@@ -115,7 +108,6 @@ function ClientProfile() {
         } catch (error) {
           console.error('Failed to fetch customer image:', error);
         }
-        setCustomerId(customer?.id ?? null);
         if (customer?.id || customer?.id === 0) {
           try {
             const customerPayments = await getCustomerPayments(customer.id);
@@ -148,13 +140,10 @@ function ClientProfile() {
     }
     fetchCustomerDetails();
   }, [selectedCustomer, customerData]);
-  
 
   const handleChange = (value: string | string[]) => {
     setSelectedCustomer(value as string);
   };
-
-  const imageUrl = customerId ? `/api/customers/${customerId}/image` : null;
 
   return (
     <div className="flex flex-col h-screen w-screen p-6">
@@ -182,7 +171,7 @@ function ClientProfile() {
             </div>
           </div>
           <div className="flex-1 flex justify-center items-center">
-            {imageUrl ? (
+            {urlCustomer ? (
               <img
                 src={urlCustomer}
                 alt="Customer Image"
@@ -194,19 +183,6 @@ function ClientProfile() {
               <Empty description="No image available" />
             )}
           </div>
-        </div>
-        <div className="flex-1 flex justify-center items-center">
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt="Customer Image"
-              width={400}
-              height={300}
-              style={{ margin: '0 20px' }}
-            />
-          ) : (
-            <Empty description="No image available" />
-          )}
         </div>
       </div>
 
@@ -222,7 +198,7 @@ function ClientProfile() {
           </div>
         </If>
       </div>
-    </>
+    </div>
   );
 }
 

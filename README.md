@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Soul Connection Dashboard
 
-## Getting Started
+## 1. Project Overview
 
-First, run the development server:
+The project aims to develop a frontend and backend for **Soul Connection**, a coaching agency specializing in relationships. The goal is to migrate existing data from the old system to a new dashboard, providing full data management capabilities for both clients and coaches.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Key Features:
+- **Account Management (Feature A)**: Allows the creation of employee accounts and assignment of clients. Each coach can only see their assigned clients, while managers can view all data, ensuring GDPR compliance.
+- **Client Profile (Feature B)**: Displays client information such as name, address, phone number, past meetings (including details like date, rating, and method of meeting), and payment history (accessible only by managers).
+- **Statistics (Feature C)**: Provides graphs that allow managers to compare coach performance based on the number of meetings their clients have.
+- **Coaching Advice (Feature D)**: A collection of tips to help coaches manage various types of client profiles.
+- **Events (Feature E)**: Shows a schedule of events organized by the agency (parties, workshops, speed dating) with a map of the event location and the number of registered clients.
+- **Astrological Compatibility (Feature F)**: Allows coaches to analyze the astrological compatibility between two clients based on their zodiac signs.
+- **Clothing Style (Feature G)**: Displays photos of clients' clothing and allows coaches to test different clothing combinations to advise clients on their style.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The site is **responsive**, accessible on all devices, and ensure a seamless transition between the existing system’s data and the new interface.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 2. API Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The **Soul Connection API** is critical for managing data in this project. It facilitates employee authentication and access to client information.
 
-## Learn More
+### How to Use the API:
+- **Authentication**: 
+  1. Use a group token in the `X-Group-Authorization` header for every HTTP request.
+  2. Once authenticated, employees need to log in using the `/employees/login` route with their email and password.
+  3. After logging in, an access token (Bearer token) is provided, which must be used to authorize requests to other routes.
+  
+- **Required Headers** for most API calls:
+  - `X-Group-Authorization: XXXX-XXXX-XXXX-XXXX`
+  - `Authorization: Bearer XXXXXXXXXXX`
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+For more detailed technical specifications, refer to the full API documentation at: [Soul Connection API Documentation](https://soul-connection.fr/docs).
