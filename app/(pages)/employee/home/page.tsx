@@ -5,10 +5,9 @@ import { fillCoachStatistic } from "../../../lib/dbhelper/statistics_data";
 import { isManager } from "../../../lib/user";
 import { DonutChart } from "@/components/DonutChart";
 import VerticalBarChart from "@/components/VerticalBarChart";
+import ScrollingList from "@/components/ScrollingList";
 
-
-function HomeDashboard()
-{
+function HomeDashboard() {
   const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
   const [nbGainByCoach, setNbGainByCoach] = useState<{ coach: string; value: number }[]>([]);
@@ -93,7 +92,7 @@ function HomeDashboard()
       <Divider style={{ borderColor: '#d3d3d3' }} />
 
       <div className="flex space-x-4 mb-6">
-        <div className="w-1/3">
+        <div className="w-1/3 h-1/3">
           <DonutChart
             data={nbCustomersByCoach}
             title="Number of customers by coach"
@@ -104,7 +103,7 @@ function HomeDashboard()
             observation="Top 5 Coaches by Customer Count"
           />
         </div>
-        <div className="col-span-1">
+        <div className="w-1/3 h-1/3">
           <VerticalBarChart
             data={nbGainByCoach}
             title="Number of encounters by coach"
@@ -112,7 +111,8 @@ function HomeDashboard()
             barKey="value"
           />
         </div>
-      <div className="w-1/3 flex">
+        <div className="w-1/3">
+          <ScrollingList />
         </div>
       </div>
       <div className="mt-2">
