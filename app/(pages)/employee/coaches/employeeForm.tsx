@@ -40,6 +40,7 @@ const EmployeeForm: React.FC = () => {
       uuid,
       values.email,
       hashedPassword,
+      new Date(Date.now()),
       values.name,
       values.surname,
       formattedBirthDate,
