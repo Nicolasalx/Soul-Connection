@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/back/services/database.service';
 import { ObjectId } from 'mongodb';
 import { fromUTF8Array, toUTF8Array } from '@/app/lib/dbhelper/utf_encoder';
+import { Are_You_Serious } from 'next/font/google';
 
 export async function GET(request: NextRequest)
 {
@@ -14,6 +15,7 @@ export async function GET(request: NextRequest)
       ...customer,
 
       email: fromUTF8Array(customer.email),
+      password: customer.password ? fromUTF8Array(customer.password) : null,
       name: fromUTF8Array(customer.name),
       surname: fromUTF8Array(customer.surname),
       birth_date: fromUTF8Array(customer.birth_date),
@@ -42,6 +44,7 @@ export async function POST(request: NextRequest)
     const newCustomer = {
       ...body,
       email: toUTF8Array(body.email),
+      password: body.password ? toUTF8Array(body.password) : null,
       name: toUTF8Array(body.name),
       surname: toUTF8Array(body.surname),
       birth_date: toUTF8Array(body.birth_date),

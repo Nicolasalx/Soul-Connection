@@ -33,7 +33,7 @@ export async function update_db_employees()
                 const fullEmployee = new Employees(
                     fullData.id,
                     fullData.email,
-                    "_",
+                    null,
                     fullData.name,
                     fullData.surname,
                     fullData.birth_date,

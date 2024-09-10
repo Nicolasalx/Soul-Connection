@@ -14,6 +14,7 @@ export default class Customers
     constructor(
         public id: number,
         public email: string,
+        public password: string | null,
         public name: string,
         public surname: string,
         public birth_date: string,

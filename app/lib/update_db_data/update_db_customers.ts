@@ -33,6 +33,7 @@ export async function update_db_customers()
                 const fullCustomer = new Customers(
                     fullData.id,
                     fullData.email,
+                    null,
                     fullData.name,
                     fullData.surname,
                     fullData.birth_date,
