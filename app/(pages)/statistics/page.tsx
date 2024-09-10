@@ -105,6 +105,7 @@ function Statistics() {
   if (hasRights === null) {
     return null
   }
+
   if (hasRights === false) {
     return <Forbidden />
   }
