@@ -1,12 +1,13 @@
 'use client';
 
 import type { FormProps } from 'antd';
-import { Button, Form, Input, DatePicker, message } from 'antd';
+import { Form, Input, DatePicker, message } from 'antd';
 import React from 'react';
 import { createEmployee } from '../../lib/dbhelper/employees';
 import Employees from "@/app/back/models/employees";
 import dayjs from 'dayjs';
 import bcrypt from 'bcryptjs';
+import { Button } from '@nextui-org/react';
 
 type FieldType = {
   email: string;
@@ -146,7 +147,7 @@ const EmployeeForm: React.FC = () => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 10, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+          <Button color="primary" type="submit">
             Submit
           </Button>
         </Form.Item>

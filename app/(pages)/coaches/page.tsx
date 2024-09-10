@@ -1,5 +1,5 @@
 'use client'
-import { Button, Divider, Modal, Select, Table } from 'antd';
+import { Divider, Modal, Select, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import type { SelectProps, TableColumnsType } from 'antd';
 import { getEmployees } from '../../lib/dbhelper/employees';
@@ -8,6 +8,7 @@ import { ObjectId } from 'mongodb';
 import If from '@/components/If';
 import { isManager } from '../../lib/user';
 import EmployeeForm from './employeeForm';
+import { Button } from '@nextui-org/react';
 
 var mongoose = require('mongoose');
 
@@ -159,7 +160,7 @@ function Coaches() {
         <Divider style={{ borderColor: '#d3d3d3' }} />
       </h1>
       <If condition={hasRights}>
-        <Button type="primary" onClick={showModal} className="mb-6 w-full">
+        <Button color='primary' onClick={showModal} className="mb-6 w-full">
           Add Employee
         </Button>
       </If>
