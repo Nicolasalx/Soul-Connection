@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/back/services/database.service';
 import { ObjectId } from 'mongodb';
 import { fromUTF8Array, toUTF8Array } from '@/app/lib/dbhelper/utf_encoder';
-import { Are_You_Serious } from 'next/font/google';
 
 export async function GET(request: NextRequest)
 {
