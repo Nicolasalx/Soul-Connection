@@ -1,4 +1,4 @@
-name: my_c_action
+name: my_next_action
 
 on:
   push:
@@ -9,10 +9,19 @@ on:
 jobs:
   check_all:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 20
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: install node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: install dependency
+      run: |
+        npm ci
 
     - name: check compilation
       run: |
