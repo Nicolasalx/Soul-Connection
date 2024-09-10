@@ -5,7 +5,7 @@ import { Image, Divider, Table, Select, Typography, Empty } from 'antd';
 import type { TableColumnsType, SelectProps } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPerson, faLocationDot, faCakeCandles, faPhone, faComment } from '@fortawesome/free-solid-svg-icons';
-import { getCoachCustomers, getCustomerEncounters, getCustomerPayments } from '../../lib/dbhelper/customers';
+import { getCoachCustomers, getCustomerEncounters, getCustomerPayments, getCustomers } from '../../lib/dbhelper/customers';
 import Customers from "@/app/back/models/customers";
 import Payments from "@/app/back/models/payments";
 import Encounters from "@/app/back/models/encounters";
@@ -74,7 +74,8 @@ function ClientProfile() {
   const [hasRights, setHasRights] = useState(false)
 
   useEffect(() => {
-    async function fetchCustomerData() {
+    async function fetchCoachData() {
+      console.log("ENTER COACH");
       try {
         const selfIdCoach = await getSelfId();
         const response = await getCoachCustomers(selfIdCoach);
@@ -88,9 +89,34 @@ function ClientProfile() {
         console.error('Failed to fetch customer data:', error);
       }
     }
-    fetchCustomerData();
-    isManager().then(val => setHasRights(val))
-  }, []);
+
+    async function fetchManagerData() {
+      console.log("ENTER MANAGER");
+      try {
+        const response = await getCustomers();
+        console.log("RESPONSE MANAGER", response);
+        setCustomerData(response);
+        const formattedOptions = response.map((customer: Customers) => ({
+          value: customer.id.toString(),
+          label: customer.name,
+        }));
+        setOptions(formattedOptions);
+      } catch (error) {
+        console.error('Failed to fetch customer data:', error);
+      }
+    }
+
+    async function selectRoleView() {
+      isManager().then(val => setHasRights(val))
+      if (await isManager()) {
+        fetchManagerData();
+      } else {
+        fetchCoachData();
+      }
+    }
+
+    selectRoleView();
+  }, [hasRights]);
 
   const [urlCustomer, setCustomerUrl] = useState('');
 
