@@ -1,16 +1,17 @@
 import { getEmployee } from "@/app/lib/user"
-import { saveToken } from "@/app/lib/token"
-import { updateEmployee } from "@/app/lib/dbhelper/employees"
-import Employees from "@/app/back/models/employees"
-import bcrypt from 'bcryptjs'
 import { checkDBForEmployee, connectEmployee } from "@/app/lib/connection"
 
 export async function POST(req: Request) {
-    const { email, password } = await req.json()
+    const { email, password, callAPI = false } = await req.json()
 
-    if (await checkDBForEmployee(email as string, password as string)) {
-        return Response.json('OK', { status: 200 })
+    if (!callAPI) {
+        if (await checkDBForEmployee(email as string, password as string)) {
+            return Response.json('OK', { status: 200 })
+        } else {
+            return Response.json({ error: 'Unauthorized' }, { status: 401 })
+        }
     }
+
     const api_token = process.env.API_TOKEN
     if (!api_token) {
         console.error("Missing API token.")

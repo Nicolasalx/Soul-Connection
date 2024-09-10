@@ -13,6 +13,7 @@ export default function Login() {
     const formData = new FormData(event.currentTarget)
     const email = formData.get('email')
     const password = formData.get('password')
+
     setIsLoading(true)
     try {
       const response = await fetch('/api/employees/login', {

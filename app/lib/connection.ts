@@ -21,7 +21,7 @@ export async function isConnected() {
     return false
 }
 
-export async function connectEmployee(employee: Employees, access_token: string, password: string) {
+export async function connectEmployee(employee: Employees, access_token: string | null, password: string) {
     let partialEmployee: Partial<Employees> = {
         last_connection: new Date()
     }
@@ -31,7 +31,7 @@ export async function connectEmployee(employee: Employees, access_token: string,
     await updateEmployee(employee._id!.toString(), partialEmployee)
     employee.last_connection = partialEmployee.last_connection as Date
     employee.password = null
-    await saveToken(employee, access_token)
+    await saveToken(employee, access_token ? access_token : '')
 }
 
 export async function checkDBForEmployee(email: string, password: string) {
@@ -40,6 +40,6 @@ export async function checkDBForEmployee(email: string, password: string) {
     if (!employee || !employee._id || !employee.password || !bcrypt.compareSync(password, employee.password as string)) {
         return false
     }
-    await connectEmployee(employee, '', password)
+    await connectEmployee(employee, null, password)
     return true
 }
