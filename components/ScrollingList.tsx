@@ -21,7 +21,6 @@ const infoStyles: Record<string, InfoStyle> = {
 };
 
 const prefixes: Record<string, string> = {
-  name: 'Name:',
   date: 'Date:',
   location_name: 'Location:',
   max_participants: 'Max Participants:',
