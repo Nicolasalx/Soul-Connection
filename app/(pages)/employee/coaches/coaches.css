@@ -1,0 +1,123 @@
+/* Style for the profile image icon */
+.profile-icon {
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    border-radius: 50%; /* Make the image round */
+    object-fit: cover; /* Ensure the image covers the container without distortion */
+  }
+  
+  /* Style for the default profile icon container */
+  .default-profile-icon {
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    border-radius: 50%; /* Make the icon round */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0; /* Light background color */
+  }
+  
+  /* Style for the default profile icon */
+  .default-icon {
+    font-size: 24px; /* Adjust size as needed */
+    color: #ccc; /* Icon color */
+  }
+  
+  /* Style for the container of the coach's name and profile image */
+  .coach-profile-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-icon-container {
+    margin-right: 8px; /* Space between the profile icon and the coach's name */
+  }
+  
+  .coach-name {
+    font-size: 16px; /* Adjust font size as needed */
+  }
+
+  /* Style for the table header */
+  .ant-table-thead .ant-table-cell {
+    background-color: white !important;
+  }
+  
+  .custom-table-header .ant-table-cell {
+    color: gray; /* Adjust the gray color as needed */
+    font-weight: bold; /* Make text bold */
+  }
+  
+  .custom-table-header .ant-table-thead > tr > th {
+    color: gray; /* Adjust the gray color as needed */
+    font-weight: bold; /* Keep the column headers normal weight */
+  }
+  
+  /* Style for the Actions icon container */
+  .actions-container {
+    text-align: right; /* Align content to the right */
+  }
+  
+  /* Increase the size of the Actions icon */
+  .actions-icon {
+    font-size: 20px; /* Adjust the size as needed */
+    display: inline-block; /* Ensure proper alignment */
+  }
+  
+  /* Container for the header elements */
+  .header-container {
+    display: flex;
+    justify-content: space-between; /* Space between left and right-aligned sections */
+    align-items: center;
+    margin-bottom: 16px; /* Space below the header */
+  }
+  
+  /* Left-aligned header elements */
+  .left-header {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Space between select and button */
+  }
+  
+  /* Styles for the bulk action select */
+  .bulk-action-select {
+    margin-right: 8px; /* Space between select and button */
+  }
+  
+  /* Styles for the apply button */
+  .apply-button {
+    background-color: gray; /* Gray color for the button */
+    color: white; /* Text color for better visibility on gray */
+    border: none; /* Remove default border */
+  }
+  
+  /* Right-aligned header elements */
+  .right-header {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Space between elements */
+  }
+  
+  /* Container for search icon and input */
+  .search-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and input */
+  }
+  
+  /* Styles for search icon */
+  .search-icon {
+    font-size: 16px; /* Adjust size as needed */
+    cursor: pointer; /* Indicate that it is clickable */
+  }
+  
+  /* Styles for search input */
+  .search-input {
+    width: 200px; /* Adjust width as needed */
+    display: none; /* Initially hidden */
+  }
+  
+  /* Show the search input when visible */
+  .search-container .search-input {
+    display: inline-block; /* Show input when visible */
+  }
+  

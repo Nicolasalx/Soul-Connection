@@ -80,6 +80,26 @@ const SideBarItems = (handleLogout: () => Promise<void>, openDBPopup: () => void
             <p>Chat client</p>
           </Link>
         </li>
+        <li>
+          <Link href="/employee/coach-advices">
+            <p>Coach Advices</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/employee/customer-advices">
+            <p>Customer Advices</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/employee/coach-notes">
+            <p>Coach Notes</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/employee/customer-notes">
+            <p>Customer Notes</p>
+          </Link>
+        </li>
       </ul>
       <div className="absolute left-[25%] bottom-4 w-[50%] flex flex-col justify-center gap-4 lg:left-0 lg:w-full lg:flex lg:flex-row lg:justify-center">
         <Button className="font-bold" color="primary" onClick={handleLogout}>
