@@ -250,8 +250,6 @@ const CoachAdvices: React.FC = () => {
             const advices = await getAdvice(customer.id.toString());
             if (advices) {
               setListAdvices(advices);
-              console.log("PLEASE!!!");
-              console.log(advices);
             } else {
               const newAdvices: Advices[] = [];
               await createAdvice(customer.id.toString(), newAdvices);
