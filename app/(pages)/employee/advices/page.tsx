@@ -1,9 +1,14 @@
 'use client'
 
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import type { GetRef, InputRef, TableProps } from 'antd';
-import { Button, Form, Input, Popconfirm, Table, Modal } from 'antd';
+import type { GetRef, InputRef, SelectProps, TableProps } from 'antd';
+import { Button, Form, Input, Popconfirm, Table, Modal, Select } from 'antd';
 import { Typography } from 'antd';
+import Customers from '@/app/back/models/customers';
+import { getSelfId, isManager } from '@/app/lib/user';
+import { getCoachCustomers, getCustomers } from '@/app/lib/dbhelper/customers';
+import { createAdvice, getAdvice, updateAdvice } from '@/app/lib/dbhelper/advices';
+import Advices from '@/app/back/models/advices';
 
 type FormInstance<T> = GetRef<typeof Form<T>>;
 
@@ -106,67 +111,57 @@ interface DataType {
 type ColumnTypes = Exclude<TableProps['columns'], undefined>;
 
 const CoachAdvices: React.FC = () => {
-  const [dataSource, setDataSource] = useState<DataType[]>([
-    {
-      key: '0',
-      name: 'Edward King 0',
-      description: 'Description 0',
-    },
-    {
-      key: '1',
-      name: 'Edward King 1',
-      description: 'Description 1',
-    },
-  ]);
-
+  const [dataSource, setDataSource] = useState<DataType[]>([]);
   const { Title } = Typography;
-
   const [count, setCount] = useState(2);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-  
-  const handleDelete = (key: React.Key) => {
-    const newData = dataSource.filter((item) => item.key !== key);
-    setDataSource(newData);
-  };
+  const [listAdvices, setListAdvices] = useState<Advices[]>([]);
 
   const defaultColumns: (ColumnTypes[number] & { editable?: boolean; dataIndex: string })[] = [
     {
-      title: 'name',
-      dataIndex: 'name',
-      width: '30%',
+      title: 'title',
+      dataIndex: 'title',
+      key: 'title',
       editable: true,
     },
     {
       title: 'description',
       dataIndex: 'description',
+      key: 'description',
       editable: true,
-    },
-    {
-      title: 'operation',
-      dataIndex: 'operation',
-      render: (_, record) =>
-        dataSource.length >= 1 ? (
-          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
-            <a>Delete</a>
-          </Popconfirm>
-        ) : null,
-    },
+    }
   ];
+
 
   const handleAdd = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
+  const handleOk = async () => {
     form
       .validateFields()
-      .then(values => {
+      .then(async (values) => {
+        if (selectedCustomer) {
+          const customer = customerData.find(cust => cust.id.toString() === selectedCustomer);
+          if (customer) {
+            const newListAdvices: Advices[] = listAdvices;
+            const newAdvice: Advices = {
+              title: values.name,
+              description: values.description
+            };
+            newListAdvices.push(newAdvice);
+            setListAdvices(newListAdvices);
+            await updateAdvice(customer.id.toString(), newListAdvices);
+          }
+        }
+  
         const newData: DataType = {
           key: count,
           name: values.name,
           description: values.description,
         };
+  
         setDataSource([...dataSource, newData]);
         setCount(count + 1);
         setIsModalVisible(false);
@@ -176,6 +171,7 @@ const CoachAdvices: React.FC = () => {
         console.log('Validate Failed:', info);
       });
   };
+  
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -216,14 +212,79 @@ const CoachAdvices: React.FC = () => {
     };
   });
 
+  const [options, setOptions] = useState<SelectProps['options']>([]);
+  const [customerData, setCustomerData] = useState<Customers[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    async function fetchCoachData() {
+      try {
+        const selfIdCoach = await getSelfId();
+
+        var response;
+        if (await isManager()) {
+          response = await getCustomers();
+        } else {
+          response = await getCoachCustomers(selfIdCoach);
+          
+        }
+        setCustomerData(response);
+        const formattedOptions = response.map((customer: Customers) => ({
+          value: customer.id.toString(),
+          label: customer.name,
+        }));
+        setOptions(formattedOptions);
+      } catch (error) {
+        console.error('Failed to fetch customer data:', error);
+      }
+    }
+    fetchCoachData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchAdvicesData() {
+      try {
+        if (selectedCustomer) {
+          const customer = customerData.find(cust => cust.id.toString() === selectedCustomer);
+          if (customer) {
+            const advices = await getAdvice(customer.id.toString());
+            if (advices) {
+              setListAdvices(advices);
+              console.log("PLEASE!!!");
+              console.log(advices);
+            } else {
+              const newAdvices: Advices[] = [];
+              await createAdvice(customer.id.toString(), newAdvices);
+            }
+          }
+        }
+      } catch (error) {
+   
+      }
+    }
+    fetchAdvicesData();
+  }, [selectedCustomer]);
+
+  const handleChange = (value: string | string[]) => {
+    setSelectedCustomer(value as string);
+  };
+
   return (
     <div>
       <Title>Coach Advices</Title>
+      <Select
+        size="large"
+        placeholder="Select a customer"
+        onChange={handleChange}
+        style={{ width: '100%' }}
+        options={options}
+        value={selectedCustomer}
+      />
       <Table
         components={components}
         rowClassName={() => 'editable-row'}
         bordered
-        dataSource={dataSource}
+        dataSource={listAdvices}
         columns={columns as ColumnTypes}
       />
       <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>

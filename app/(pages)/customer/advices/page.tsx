@@ -47,7 +47,7 @@ const data: DataType[] = [
   },
 ];
 
-export default function Advices()
+export default function CustomerAdvices()
 {
   return (
     <>

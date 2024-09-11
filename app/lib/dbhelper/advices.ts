@@ -8,13 +8,12 @@ export async function getAdvice(id: string): Promise<any | null>
       throw new Error('Failed to fetch advices');
     }
     const advicesData = await response.json();
-    
+
     if (!advicesData || !advicesData.advices) {
       throw new Error('Advices data is missing');
     }
     return await advicesData.advices;
   } catch (error) {
-    console.error('Error fetching advices:', error);
     return null;
   }
 }
