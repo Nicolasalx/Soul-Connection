@@ -1,57 +1,61 @@
 'use client';
 
-import React from 'react';
-import { Divider, Table } from 'antd';
-import type { TableColumnsType } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Table } from 'antd';
+import { createAdvice, getAdvice } from '@/app/lib/dbhelper/advices';
+import { getSelfIdCustomer } from '@/app/lib/user';
+import Advices from '@/app/back/models/advices';
 
-interface DataType {
-  key: React.Key;
-  name: string;
-  age: number;
-  address: string;
-}
-
-const columns: TableColumnsType<DataType> = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-  },
-];
-
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-  },
-];
-
-export default function Advices()
+export default function AdvicesPage()
 {
+  const [advices, setAdvices] = useState<Advices[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetchAdvices();
+  }, []);
+
+  const fetchAdvices = async () => {
+    try {
+      const customerId = (await getSelfIdCustomer()).toString();
+      const data = await getAdvice(customerId);
+
+      if (data) {
+        setAdvices(data.advices);
+      } else {
+        const newAdvices: Advices[] = [];
+        await createAdvice(customerId, newAdvices);
+        setAdvices(newAdvices);
+      }
+    } catch (error) {
+      console.error('Error fetching advices:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const columns = [
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+    },
+  ];
+
   return (
     <>
-      <Table columns={columns} dataSource={data} size="middle" />
+      <Table
+        columns={columns}
+        dataSource={advices}
+        loading={loading}
+        size="middle"
+        rowKey={(record) => record.title}
+      />
     </>
   );
 }
