@@ -41,7 +41,7 @@ export default function Advices() {
       <Accordion>
         {currentTips.map((tip) => (
           <AccordionItem
-            key={tip._id}
+            key={tip.id}
             aria-label={`Accordion ${tip.id}`}
             subtitle="Press to expand"
             title={tip.title}
