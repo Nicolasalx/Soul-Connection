@@ -1,5 +1,6 @@
 import { getCustomers } from "@/app/lib/dbhelper/customers";
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ensureUserLoggedIn } from "./authUtils";
 
 export const data = new SlashCommandBuilder()
   .setName("getdatacustomer")
@@ -13,6 +14,10 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction: CommandInteraction) {
   try {
+    if (!(await ensureUserLoggedIn(interaction))) {
+      return;
+    }
+
     const customerIdStr = interaction.options.get("customer_id")?.value as string;
     if (!customerIdStr) {
       await interaction.reply('❌ Please provide a valid customer ID.');

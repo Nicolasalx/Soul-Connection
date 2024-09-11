@@ -1,10 +1,15 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { fillCoachStatistic } from "@/app/lib/dbhelper/statistics_data";
+import { ensureUserLoggedIn } from "./authUtils";
 
 export const data = new SlashCommandBuilder().setName("getastrosigndistribution").setDescription("Get Astrological Sign Distribution");
 
 export async function execute(interaction: CommandInteraction) {
   try {
+    if (!(await ensureUserLoggedIn(interaction))) {
+      return;
+    }
+
     const coachsStatistics = await fillCoachStatistic();
     
     const astrologicalSignRepartition = coachsStatistics.data_astrological_sign.name_astro_sign

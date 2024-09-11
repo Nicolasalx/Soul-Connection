@@ -1,5 +1,6 @@
 import { assignCoachToCustomer } from "@/app/lib/dbhelper/customers";
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ensureUserLoggedIn } from "./authUtils";
 
 var mongoose = require('mongoose');
 
@@ -21,6 +22,10 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction: CommandInteraction) {
   try {
+    if (!(await ensureUserLoggedIn(interaction))) {
+      return;
+    }
+
     const customerId = interaction.options.get("customer_id")?.value as string;
     const coachId = Number(interaction.options.get("coach_id")?.value);
 
