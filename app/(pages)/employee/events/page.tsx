@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { Divider } from 'antd';
-// import Map from '@/components/Map';
 import Events from '../../../back/models/events';
 import { getEvents } from '../../../lib/dbhelper/events';
 import { Card, CardBody, CardFooter, CardHeader, Listbox, ListboxItem } from '@nextui-org/react';
