@@ -5,6 +5,9 @@ import { getEmployees } from "./dbhelper/employees";
 
 export async function isManager() {
     const employeeInfos = await verifyToken()
+    if (employeeInfos && employeeInfos.role !== 'employee') {
+        return false
+    }
     return employeeInfos ? (employeeInfos.infos as Employees).work !== 'Coach' : false
 }
 

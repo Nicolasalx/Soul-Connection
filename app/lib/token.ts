@@ -8,7 +8,7 @@ export async function deleteToken() {
     cookies().delete('token')
 }
 
-export async function saveToken(infos: Employees | Customers, access_token: string | null = null, role: string = 'employee') {
+export async function saveToken(infos: Employees | Customers, role: string = 'employee', access_token: string | null = null) {
     const expiresAt = new Date(Date.now())
     expiresAt.setHours(expiresAt.getHours() + 24)   // wait 24 hours before token expiration in cookies
     let token: string = ''

@@ -114,35 +114,35 @@ export default function Login() {
   return (
     <>
     <div className="flex flex-col md:flex-row gap-4 h-full w-[500px] justify-center p-14">
-      <form className='bg-white border border-gray-300 flex flex-col items-center p-14 rounded-lg shadow-lg' onSubmit={isEmployee ? handleSubmitEmployee : handleSubmitCustomer}>
-        <h1 className='text-center m-6 text-5xl md:text-6xl'>
+      <form className='bg-white border border-color flex flex-col items-center p-14 rounded-[2px]' onSubmit={isEmployee ? handleSubmitEmployee : handleSubmitCustomer}>
+        <h1 className='text-gray-600 text-foreground text-center m-6 text-5xl md:text-6xl'>
           {isEmployee ? "Employee Login" : "Customer Login"}
-          <Divider style={{ borderColor: '#d3d3d3' }} />
+          <Divider className='border-color' />
         </h1>
         {loginError && <div className='text-red-500'>{loginError}</div>}
-        <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="email" name="email" aria-label="email" placeholder="Email" required />
-        <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="password" name="password" aria-label="password" placeholder="Password" required />
+        <input className='bg-primary-50 placeholder-secondary-foreground/50 p-2 shadow-inner rounded m-2' type="email" name="email" aria-label="email" placeholder="Email" required />
+        <input className='bg-primary-50 placeholder-secondary-foreground/50 p-2 shadow-inner rounded m-2' type="password" name="password" aria-label="password" placeholder="Password" required />
         <Button color='primary' className='rounded-full m-6 text-lg font-bold' type="submit" disabled={isLoginLoading}>
           {isLoginLoading ? <CircularProgress size='sm' aria-label='Loading...' /> : 'Login'}
         </Button>
       </form>
       <If condition={!isEmployee}>
-        <form className='bg-white border border-gray-300 flex flex-col items-center p-14 rounded-lg shadow-lg' onSubmit={handleRegisterCustomer}>
-          <h1 className='text-center m-6 text-5xl md:text-6xl'>
+        <form className='bg-white border border-color flex flex-col items-center p-14 rounded-[2px]' onSubmit={handleRegisterCustomer}>
+          <h1 className='text-gray-600 text-foreground text-center m-6 text-5xl md:text-6xl'>
             Register Password
-            <Divider style={{ borderColor: '#d3d3d3' }} />
+            <Divider className='border-color' />
           </h1>
           {registerError && <div className='text-red-500'>{registerError}</div>}
-          <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="email" name="email" aria-label="email" placeholder="Email" required />
-          <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="password" name="password" aria-label="password" placeholder="Password" required />
-          <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="password" name="confirm-password" aria-label="confirm password" placeholder="Confirm Password" required />
+          <input className='bg-primary-50 placeholder-secondary-foreground/50 p-2 shadow-inner rounded m-2' type="email" name="email" aria-label="email" placeholder="Email" required />
+          <input className='bg-primary-50 placeholder-secondary-foreground/50 p-2 shadow-inner rounded m-2' type="password" name="password" aria-label="password" placeholder="Password" required />
+          <input className='bg-primary-50 placeholder-secondary-foreground/50 p-2 shadow-inner rounded m-2' type="password" name="confirm-password" aria-label="confirm password" placeholder="Confirm Password" required />
           <Button color='primary' className='rounded-full m-6 text-lg font-bold' type="submit" disabled={isRegisteredLoading}>
             {isRegisteredLoading ? <CircularProgress size='sm' aria-label='Loading...' /> : 'Register'}
           </Button>
         </form>
       </If>
     </div>
-    <div className="fixed bottom-4 mt-4 text-center">
+    <div className="fixed bottom-4 right-4 md:right-auto mt-4 text-center">
       <p className="text-lg text-blue-500 underline cursor-pointer" onClick={() => setIsEmployee(!isEmployee)}>
         {isEmployee ? "I'm a customer" : "I'm an employee"}
       </p>
