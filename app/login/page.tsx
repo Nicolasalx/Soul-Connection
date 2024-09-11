@@ -115,7 +115,7 @@ export default function Login() {
     <>
     <div className="flex flex-col md:flex-row gap-4 h-full w-[500px] justify-center p-14">
       <form className='bg-white border border-color flex flex-col items-center p-14 rounded-[2px]' onSubmit={isEmployee ? handleSubmitEmployee : handleSubmitCustomer}>
-        <h1 className='text-gray-600 text-foreground text-center m-6 text-5xl md:text-6xl'>
+        <h1 className='text-foreground text-center m-6 text-5xl md:text-6xl'>
           {isEmployee ? "Employee Login" : "Customer Login"}
           <Divider className='border-color' />
         </h1>
@@ -128,7 +128,7 @@ export default function Login() {
       </form>
       <If condition={!isEmployee}>
         <form className='bg-white border border-color flex flex-col items-center p-14 rounded-[2px]' onSubmit={handleRegisterCustomer}>
-          <h1 className='text-gray-600 text-foreground text-center m-6 text-5xl md:text-6xl'>
+          <h1 className='text-foreground text-center m-6 text-5xl md:text-6xl'>
             Register Password
             <Divider className='border-color' />
           </h1>

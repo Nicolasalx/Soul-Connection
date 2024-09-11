@@ -334,12 +334,12 @@ function HomeDashboard() {
 
   return (
     <>
-      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-center text-5xl md:text-6xl">
-        SOUL CONNECTION
-      </h1>
-      <h2 className="text-gray-400 mb-5 text-center text-xl" style={{ fontSize: "2rem" }}>
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl">
         Dashboard
-      </h2>
+      </h1>
+        <h2 className="text-gray-400 mb-5 text-xl" style={{ fontSize: "1rem" }}>
+          Welcome!
+        </h2>
       <Divider style={{ borderColor: '#d3d3d3' }} />
 
       <div className="flex space-x-4 mb-6">

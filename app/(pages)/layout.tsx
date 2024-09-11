@@ -7,12 +7,12 @@ export default function RootLayout({
   }>) {
     return (
       <>
-        <div className="flex-none w-0 md:flex-2 md:w-[20%]">
+        <div className=" w-0 mt-2 md:flex-2 ">
           <NavBar />
         </div>
-        <div className="flex flex-auto md:flex-3 justify-center w-full md:w-[80%]">
+        <div className="flex justify-center w-full h-full mt-32">
           <div className="flex flex-col h-full w-full p-6">
-            <div className="bg-white border border-gray-300 p-12 rounded-lg">
+            <div className="bg-white border text-black rounded-small p-12">
               {children}
             </div>
           </div>
