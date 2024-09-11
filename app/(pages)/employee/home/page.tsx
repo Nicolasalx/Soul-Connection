@@ -11,8 +11,8 @@ import { getCustomers, getCustomerPayments } from '../../../lib/dbhelper/custome
 import { getEncounters } from '../../../lib/dbhelper/encounters';
 import VerticalBarChart from "@/components/VerticalBarChart";
 import ScrollingList from "@/components/ScrollingList";
-import { update_full_db } from "@/app/lib/update_db_data/update_full_db";
-import cron from 'node-cron';
+//import cron from "node-cron";
+
 
 async function AverageRatingsByCustomer() {
   try {
@@ -207,14 +207,14 @@ interface CustomerData {
 }
 
 function HomeDashboard() {
-  cron.schedule('0 0 * * *', async () => {
-    try {
-      await update_full_db();
-      console.log("DB updated !!!");
-    } catch (error) {
-      console.error(error);
-    }
-  });
+  // cron.schedule('0 0 * * *', async () => {
+  //   try {
+  //     await update_full_db();
+  //     console.log("DB updated !!!");
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // });
   const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
   const [nbGainByCoach, setNbGainByCoach] = useState<{ coach: string; value: number }[]>([]);
@@ -344,12 +344,12 @@ function HomeDashboard() {
 
   return (
     <>
-      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-center text-5xl md:text-6xl">
-        SOUL CONNECTION
-      </h1>
-      <h2 className="text-gray-400 mb-5 text-center text-xl" style={{ fontSize: "2rem" }}>
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl">
         Dashboard
-      </h2>
+      </h1>
+        <h2 className="text-gray-400 mb-5 text-xl" style={{ fontSize: "1rem" }}>
+          Welcome!
+        </h2>
       <Divider style={{ borderColor: '#d3d3d3' }} />
 
       <div className="flex space-x-4 mb-6">

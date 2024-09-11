@@ -6,7 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  @apply h-auto bg-grey
+  @apply h-auto bg-[#F5F6FA]
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,6 +34,10 @@ h2 {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.border-color {
+  color: #dde1eb,
 }
 
 .btn {
