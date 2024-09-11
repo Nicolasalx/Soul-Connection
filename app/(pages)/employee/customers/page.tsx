@@ -75,7 +75,6 @@ function ClientProfile() {
 
   useEffect(() => {
     async function fetchCoachData() {
-      console.log("ENTER COACH");
       try {
         const selfIdCoach = await getSelfId();
         const response = await getCoachCustomers(selfIdCoach);
@@ -91,10 +90,8 @@ function ClientProfile() {
     }
 
     async function fetchManagerData() {
-      console.log("ENTER MANAGER");
       try {
         const response = await getCustomers();
-        console.log("RESPONSE MANAGER", response);
         setCustomerData(response);
         const formattedOptions = response.map((customer: Customers) => ({
           value: customer.id.toString(),

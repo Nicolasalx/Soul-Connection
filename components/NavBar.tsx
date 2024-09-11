@@ -165,18 +165,17 @@ export default function NavBar() {
     }
   }
 
+  useEffect(() => {
+    const checkUserType = async () =>{
+      const userType = await isCustomer();
+      setCustomerType(userType);
+    }
+    checkUserType();
+  }, []);
+
   if (pathname === '/login') {
     return null;
   }
-
-  const checkUserType = async () =>{
-    const userType = await isCustomer();
-    setCustomerType(userType);
-  }
-
-  useEffect(() => {
-    checkUserType();
-  });
 
   return (
     <div>

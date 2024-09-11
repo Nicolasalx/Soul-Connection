@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Divider } from 'antd';
-import { getSelfId, isManager } from "../../../lib/user";
+import { getSelfId, getSelfIdCustomer, isManager } from "../../../lib/user";
 import { getCustomerEncounters } from '../../../lib/dbhelper/customers';
 import ScrollingListApt from "@/components/ScrollingListApt";
 import Encounters from "@/app/back/models/encounters";
@@ -22,7 +22,7 @@ function EncountersPage() {
     useEffect(() => {
       const fetchData = async () => {
         const managerRights = await isManager();
-        const userID = 68
+        const userID = await getSelfIdCustomer();
         setHasRights(managerRights);
         
         if (managerRights) {
