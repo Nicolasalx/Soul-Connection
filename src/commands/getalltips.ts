@@ -1,6 +1,7 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { getTips } from "@/app/lib/dbhelper/tips";
 import Tips from "@/app/back/models/tips";
+import { ensureUserLoggedIn } from "./authUtils";
 
 export const data = new SlashCommandBuilder().setName("getalltips").setDescription("Get All Tips");
 
@@ -9,6 +10,10 @@ const TIPS_PER_MESSAGE = 10;
 
 export async function execute(interaction: CommandInteraction) {
   try {
+    if (!(await ensureUserLoggedIn(interaction))) {
+      return;
+    }
+
     const tips: Tips[] = await getTips();
 
     let i = 0;

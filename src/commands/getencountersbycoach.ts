@@ -1,10 +1,15 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { fillCoachStatistic } from "@/app/lib/dbhelper/statistics_data";
+import { ensureUserLoggedIn } from "./authUtils";
 
 export const data = new SlashCommandBuilder().setName("getencountersbycoach").setDescription("Get All Encounters");
 
 export async function execute(interaction: CommandInteraction) {
   try {
+    if (!(await ensureUserLoggedIn(interaction))) {
+      return;
+    }
+
     const coachsStatistics = await fillCoachStatistic();
     const nbEncounters = coachsStatistics.coach_list
         .map((coach, index) => ({

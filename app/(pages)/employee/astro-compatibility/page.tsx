@@ -8,6 +8,7 @@ import heart from "../../../../public/heart.svg"
 import stars from "../../../../public/stars.jpg"
 import { astroComps } from "./compatibilities";
 import { Divider } from 'antd';
+import Customers from "@/app/back/models/customers";
 
 
 class Client {
@@ -24,50 +25,14 @@ class Client {
   }
 }
 
-class ClientInfos {
-  id: number;
-  email: string;
-  name: string;
-  surname: string;
-  birth_date: string;
-  gender: string;
-  description: string;
-  astrological_sign: string;
-  phone_number: string;
-  address: string;
-
-  constructor(
-    id: number,
-    email: string,
-    name: string,
-    surname: string,
-    birth_date: string,
-    gender: string,
-    description: string,
-    astrological_sign: string,
-    phone_number: string,
-    address: string) {
-    this.id = id;
-    this.email = email;
-    this.name = name;
-    this.surname = surname;
-    this.birth_date = birth_date;
-    this.gender = gender;
-    this.description = description;
-    this.astrological_sign = astrological_sign;
-    this.phone_number = phone_number;
-    this.address = address;
-  }
-}
-
 async function getClientInfos(client: number | null) {
   if (client === null) {
     return null
   }
   try {
-    const res = await fetch(`/api/customers/${client}`, { method: 'GET' })
+    const res = await fetch(`/api/back/customers/${client}`, { method: 'GET' })
     if (res.ok) {
-      const clientInfos = await res.json() as ClientInfos
+      const clientInfos = await res.json() as Customers
       return clientInfos
     }
   } catch(err) {
@@ -93,8 +58,8 @@ export default function AstroCompatibility() {
   const [isLoading, setIsLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [validated, setValidated] = useState(false)
-  const [clientInfos1, setClientInfos1] = useState<ClientInfos|null>(null)
-  const [clientInfos2, setClientInfos2] = useState<ClientInfos|null>(null)
+  const [clientInfos1, setClientInfos1] = useState<Customers|null>(null)
+  const [clientInfos2, setClientInfos2] = useState<Customers|null>(null)
 
   useEffect(() => {
     try {

@@ -3,7 +3,7 @@ import { connectToDatabase } from '@/app/back/services/database.service';
 import { ObjectId } from 'mongodb';
 import { fromUTF8Array, toUTF8Array } from '@/app/lib/dbhelper/utf_encoder';
 
-function convertCustomerFields(customer: any)
+export function convertCustomerFields(customer: any)
 {
   return {
     ...customer,
@@ -25,24 +25,10 @@ export async function GET(request: NextRequest)
     const db = await connectToDatabase();
     const customersCollection = db.collection('customers');
 
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get('id');
+    const customers = await customersCollection.find({}).toArray();
 
-    if (id) {
-      const customer = await customersCollection.findOne({ id: id });
-
-      if (!customer) {
-        return NextResponse.json({ message: 'Customer not found' }, { status: 404 });
-      }
-
-      const convertedCustomer = convertCustomerFields(customer);
-      return NextResponse.json(convertedCustomer, { status: 200 });
-    } else {
-      const customers = await customersCollection.find({}).toArray();
-
-      const convertedCustomers = customers.map(convertCustomerFields);
-      return NextResponse.json(convertedCustomers, { status: 200 });
-    }
+    const convertedCustomers = customers.map(convertCustomerFields);
+    return NextResponse.json(convertedCustomers, { status: 200 });
   } catch (error) {
     console.error('Error fetching customers:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
@@ -56,7 +42,7 @@ export async function POST(request: NextRequest)
     const customersCollection = db.collection('customers');
 
     const body = await request.json();
-    
+
     const newCustomer = {
       ...body,
       email: toUTF8Array(body.email),
@@ -69,7 +55,7 @@ export async function POST(request: NextRequest)
       phone_number: toUTF8Array(body.phone_number),
       address: toUTF8Array(body.address)
     };
-    
+
     const result = await customersCollection.insertOne(newCustomer);
     return NextResponse.json(result, { status: 201 });
   } catch (error) {

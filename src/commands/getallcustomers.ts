@@ -1,6 +1,7 @@
 import Customers from "@/app/back/models/customers";
 import { getCustomers } from "@/app/lib/dbhelper/customers";
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ensureUserLoggedIn } from "./authUtils";
 
 export const data = new SlashCommandBuilder().setName("getallcustomers").setDescription("Get All Customers");
 
@@ -9,6 +10,10 @@ const CUSTOMERS_PER_MESSAGE = 30;
 
 export async function execute(interaction: CommandInteraction) {
   try {
+    if (!(await ensureUserLoggedIn(interaction))) {
+      return;
+    }
+
     const customers: Customers[] = await getCustomers();
 
     let i = 0;

@@ -44,7 +44,7 @@ function Coaches() {
     const dataEmployees = await getEmployees();
     const dataCustomers = await getCustomers();
 
-    const formattedData = dataEmployees.filter(e => e.work === 'Coach').map((employee: any) => {
+    const formattedData = dataEmployees.filter(e => e.work === 'Coach').map(employee => {
       const coachCustomers = dataCustomers
         .filter((customer: CustomerType) => customer.coach_id === employee.id)
         .map((customer: CustomerType) => customer._id ? customer._id.toString() : '');
@@ -55,11 +55,11 @@ function Coaches() {
         name: `${employee.name} ${employee.surname}`,
         birthDate: employee.birth_date || 'N/A',
         customers: coachCustomers,
-        lastConnection: 'N/A',
+        lastConnection: employee.last_connection ? new Date(employee.last_connection).toLocaleString() : 'N/A',
       };
     }).sort((a, b) => a.id < b.id ? -1 : 1);
 
-    setData(formattedData);
+    setData(formattedData as any);
 
     setPrevSelections(
       formattedData.reduce((acc, employee) => {

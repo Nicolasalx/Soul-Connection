@@ -1,9 +1,12 @@
 'use client'
 
+import { Button, CircularProgress } from '@nextui-org/react'
 import { Divider } from 'antd'
-import { FormEvent } from 'react'
+import { FormEvent, useState } from 'react'
 
 export default function Login() {
+  const [isLoading, setIsLoading] = useState(false)
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
@@ -11,20 +14,22 @@ export default function Login() {
     const email = formData.get('email')
     const password = formData.get('password')
 
+    setIsLoading(true)
     try {
-        const response = await fetch('/api/employees/login', {
-            method: 'POST',
-            body: JSON.stringify({ email, password }),
-        })
+      const response = await fetch('/api/employees/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+      })
+      setIsLoading(false)
 
-        if (response.ok) {
-            window.location.reload()
-        } else {
-            console.error(`code ${response.status}: ${response.statusText}`)
-        }
-
+      if (response.ok) {
+        window.location.reload()
+      } else {
+        console.error(`code ${response.status}: ${response.statusText} ${await response.text()}`)
+      }
     } catch(err) {
-        console.error(err)
+      setIsLoading(false)
+      console.error(err)
     }
   }
 
@@ -37,7 +42,9 @@ export default function Login() {
         </h1>
         <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="email" name="email" aria-label="email" placeholder="Email" required />
         <input className='bg-gray-200 p-2 shadow-inner rounded m-2' type="password" name="password" aria-label="password" placeholder="Password" required />
-        <button className='btn btn-primary text-white m-6' type="submit">Login</button>
+        <Button color='primary' className='rounded-full m-6 text-lg font-bold' type="submit">
+          {isLoading ? <CircularProgress size='sm' aria-label='Loading...' /> : 'Login'}
+        </Button>
       </form>
     </div>
   )
