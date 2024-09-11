@@ -1,14 +1,15 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Card, Col, Row, Divider, Pagination } from 'antd';
+import { Divider, Pagination } from 'antd';
 import { getTips } from '../../../lib/dbhelper/tips';
 import Tips from '@/app/back/models/tips';
-import AccordionComponent from '@/components/Accordion';
+import { Accordion, AccordionItem } from '@nextui-org/react';
 
 export default function Advices() {
   const [allTips, setAllTips] = useState<Tips[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const tipsPerPage = 12;
+  const tipsPerPage = 5;
 
   useEffect(() => {
     const fetchTips = async () => {
@@ -22,21 +23,34 @@ export default function Advices() {
     fetchTips();
   }, []);
 
-  const indexOfLastTip = currentPage * tipsPerPage;
-  const indexOfFirstTip = indexOfLastTip - tipsPerPage;
-  const currentTips = allTips.slice(indexOfFirstTip, indexOfLastTip);
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
+  const indexOfLastTip = currentPage * tipsPerPage;
+  const indexOfFirstTip = indexOfLastTip - tipsPerPage;
+  const currentTips = allTips.slice(indexOfFirstTip, indexOfLastTip);
+
   return (
     <>
       <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-6xl">
-        Tips for Coaches
+        Tips
         <Divider style={{ borderColor: '#d3d3d3' }} />
       </h1>
-      <AccordionComponent/>
+
+      <Accordion>
+        {currentTips.map((tip) => (
+          <AccordionItem
+            key={tip._id}
+            aria-label={`Accordion ${tip.id}`}
+            subtitle="Press to expand"
+            title={tip.title}
+          >
+            {tip.tip}
+          </AccordionItem>
+        ))}
+      </Accordion>
+
       {allTips.length > tipsPerPage && (
         <Pagination
           current={currentPage}
