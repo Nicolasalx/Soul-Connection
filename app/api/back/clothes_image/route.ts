@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/back/services/database.service';
-import { ObjectId, Binary } from 'mongodb';
 
 export async function POST(request: NextRequest) {
     try {
