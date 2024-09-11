@@ -15,7 +15,7 @@ interface DataTypeEncounters {
     source: string;
   }
 
-function Encounters() {
+function EncountersPage() {
     const [encountersDetails, setEncountersDetails] = useState<DataTypeEncounters[]>([]);
     const [hasRights, setHasRights] = useState(false);
     
@@ -88,4 +88,4 @@ function Encounters() {
   );
 }
 
-export default Encounters;
+export default EncountersPage;
