@@ -3,7 +3,7 @@ import { connectToDatabase } from '@/app/back/services/database.service';
 import { ObjectId } from 'mongodb';
 import { fromUTF8Array, toUTF8Array } from '@/app/lib/dbhelper/utf_encoder';
 
-export function convertCustomerFields(customer: any)
+function convertCustomerFields(customer: any)
 {
   return {
     ...customer,
