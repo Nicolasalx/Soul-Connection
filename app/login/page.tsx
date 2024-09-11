@@ -112,9 +112,10 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col h-full w-[500px] justify-center p-14">
+    <>
+    <div className="flex flex-col md:flex-row gap-4 h-full w-[500px] justify-center p-14">
       <form className='bg-white border border-gray-300 flex flex-col items-center p-14 rounded-lg shadow-lg' onSubmit={isEmployee ? handleSubmitEmployee : handleSubmitCustomer}>
-        <h1 className='m-6 text-5xl md:text-6xl'>
+        <h1 className='text-center m-6 text-5xl md:text-6xl'>
           {isEmployee ? "Employee Login" : "Customer Login"}
           <Divider style={{ borderColor: '#d3d3d3' }} />
         </h1>
@@ -127,7 +128,7 @@ export default function Login() {
       </form>
       <If condition={!isEmployee}>
         <form className='bg-white border border-gray-300 flex flex-col items-center p-14 rounded-lg shadow-lg' onSubmit={handleRegisterCustomer}>
-          <h1 className='m-6 text-5xl md:text-6xl'>
+          <h1 className='text-center m-6 text-5xl md:text-6xl'>
             Register Password
             <Divider style={{ borderColor: '#d3d3d3' }} />
           </h1>
@@ -140,13 +141,12 @@ export default function Login() {
           </Button>
         </form>
       </If>
-      <div className="mt-4 text-center">
-        <p className="text-lg text-grey">
-          <a href="" className="text-blue-500 underline" onClick={() => setIsEmployee(!isEmployee)}>
-            {isEmployee ? "I'm a customer" : "I'm an employee"}
-          </a>.
-        </p>
-      </div>
     </div>
+    <div className="fixed bottom-4 mt-4 text-center">
+      <p className="text-lg text-blue-500 underline cursor-pointer" onClick={() => setIsEmployee(!isEmployee)}>
+        {isEmployee ? "I'm a customer" : "I'm an employee"}
+      </p>
+    </div>
+    </>
   )
 }

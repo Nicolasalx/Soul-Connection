@@ -52,7 +52,7 @@ export async function registerCustomer(customer: Customers, password: string) {
     }
     await updateCustomer(customer._id!.toString(), partialCustomer)
     customer.password = null
-    await saveToken(customer)
+    await saveToken(customer, 'customer')
 }
 
 export async function connectCustomer(customer: Customers, password: string) {
@@ -62,6 +62,6 @@ export async function connectCustomer(customer: Customers, password: string) {
     if (!bcrypt.compareSync(password, customer.password as string)) {
         return false
     }
-    await saveToken(customer)
+    await saveToken(customer, 'customer')
     return true
 }
