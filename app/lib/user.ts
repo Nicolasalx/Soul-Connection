@@ -1,3 +1,4 @@
+import Customers from "../back/models/customers";
 import Employees from "../back/models/employees";
 import { verifyToken } from "./dal";
 import { getCustomers } from "./dbhelper/customers";
@@ -9,6 +10,24 @@ export async function isManager() {
         return false
     }
     return employeeInfos ? (employeeInfos.infos as Employees).work !== 'Coach' : false
+}
+
+export async function isEmployee() {
+    const infos = await verifyToken()
+    return infos?.role === 'employee'
+}
+
+export async function isCustomer() {
+    const infos = await verifyToken()
+    return infos?.role === 'customer'
+}
+
+export async function getSelfIdCustomer() {
+    const infos = await verifyToken()
+    if (!infos || infos.role !== 'customer') {
+        return -1
+    }
+    return (infos.infos as Customers).id
 }
 
 export async function getSelfId()
