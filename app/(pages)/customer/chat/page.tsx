@@ -2,6 +2,7 @@
 
 import Msg from '@/app/back/models/conv';
 import { createConv, getConv, updateConv } from '@/app/lib/dbhelper/conv';
+import { getCustomer, getSelfIdCustomer } from '@/app/lib/user';
 import React, { useState, useEffect, useRef } from 'react';
 
 const ChatPage = () => {
@@ -19,12 +20,12 @@ const ChatPage = () => {
 
   const fetchMessages = async () => {
     try {
-        const data = await getConv("1"); // ! to change
+        const data = await getConv((await getSelfIdCustomer()).toString());
         if (data) {
           setMessages(data);
         } else {
           const newConv: Msg[] = [];
-          await createConv("1", newConv); // ! to change
+          await createConv((await getSelfIdCustomer()).toString(), newConv);
         }
       } catch (error) {
       }
@@ -34,16 +35,16 @@ const ChatPage = () => {
     if (input.trim() === '') return;
 
     try {
-      const newMsg: Msg = new Msg(input, new Date(), true); // ! false means coach sent the message
+      const newMsg: Msg = new Msg(input, new Date(), true);
 
       setMessages((prevMessages) => [...prevMessages, newMsg]);
       setInput('');
 
-      const conversation = await getConv("1");
+      const conversation = await getConv((await getSelfIdCustomer()).toString());
 
       conversation.push(newMsg);
 
-      await updateConv("1", conversation); // ! to change
+      await updateConv((await getSelfIdCustomer()).toString(), conversation);
 
     } catch (error) {
       console.error('Error sending message:', error);
@@ -64,12 +65,11 @@ const ChatPage = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>CLIENT</h1>
-      <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', marginBottom: '20px' }}>
+      <div style={{ height: '500px', overflowY: 'scroll', border: '1px solid #ccc', marginBottom: '20px' }}>
         {messages.map((msg, index) => (
           <div
             key={index}
-            ref={index === messages.length - 1 ? lastMessageRef : null} // Set ref on the last message
+            ref={index === messages.length - 1 ? lastMessageRef : null}
             style={{
               textAlign: !msg.client_sender ? 'left' : 'right',
               marginBottom: '10px',
