@@ -85,7 +85,7 @@ const ChatPage = () => {
 
   return (
     <div style={{ display: 'flex', padding: '20px' }}>
-      <div style={{ width: '20%', borderRight: '1px solid #ccc', paddingRight: '10px', height: '400px', overflowY: 'scroll' }}>
+      <div style={{ width: '20%', borderRight: '1px solid #ccc', paddingRight: '10px', height: '500px', overflowY: 'scroll' }}>
         <h3>Customers</h3>
         <ul style={{ listStyleType: 'none', padding: 0 }}>
           {customers.map((customer) => (
@@ -107,7 +107,7 @@ const ChatPage = () => {
 
       <div style={{ width: '80%', paddingLeft: '20px' }}>
         <h1>{selectedCustomer ? selectedCustomer.name + ' ' + selectedCustomer.surname : 'Select a customer'}</h1>
-        <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', marginBottom: '20px' }}>
+        <div style={{ height: '500px', overflowY: 'scroll', border: '1px solid #ccc', marginBottom: '20px' }}>
           {messages.map((msg, index) => (
             <div
               key={index}
