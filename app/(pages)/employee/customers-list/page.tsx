@@ -3,7 +3,8 @@ import { Divider, Dropdown, Menu, Table, Select, Button, Input } from 'antd';
 import React, { useState } from 'react';
 import type { TableColumnsType } from 'antd';
 import { EllipsisOutlined, EyeOutlined, DeleteOutlined, SearchOutlined, FilterOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import './coaches.css';
+import './customers-list.css';
+import Image from 'next/image';
 
 function Coaches() {
   interface DataType {
@@ -34,10 +35,10 @@ function Coaches() {
         <div className="coach-profile-container">
           <div className="profile-icon-container">
             {record.profileImage ? (
-              <img 
-                src="https://wordpress-content.vroomly.com/wp-content/uploads/2023/03/koenigsegg.jpg" 
-                alt="Profile" 
-                className="profile-icon" 
+              <Image
+                src="https://wordpress-content.vroomly.com/wp-content/uploads/2023/03/koenigsegg.jpg"
+                alt="Profile"
+                className="profile-icon"
               />
             ) : (
               <UserOutlined className="default-icon" />
