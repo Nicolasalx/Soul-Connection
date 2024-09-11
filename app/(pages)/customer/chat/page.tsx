@@ -2,7 +2,7 @@
 
 import Msg from '@/app/back/models/conv';
 import { createConv, getConv, updateConv } from '@/app/lib/dbhelper/conv';
-import { getCustomer, getSelfIdCustomer } from '@/app/lib/user';
+import { getSelfIdCustomer } from '@/app/lib/user';
 import React, { useState, useEffect, useRef } from 'react';
 
 const ChatPage = () => {

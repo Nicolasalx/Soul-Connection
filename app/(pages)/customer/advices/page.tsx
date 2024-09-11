@@ -21,7 +21,7 @@ export default function AdvicesPage()
       const data = await getAdvice(customerId);
 
       if (data) {
-        setAdvices(data.advices);
+        setAdvices(data);
       } else {
         const newAdvices: Advices[] = [];
         await createAdvice(customerId, newAdvices);
