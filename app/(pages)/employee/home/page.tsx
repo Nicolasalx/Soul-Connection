@@ -1,15 +1,123 @@
-'use client'
+'use client';
+
 import React, { useEffect, useState } from "react";
 import { Divider, Table } from 'antd';
 import { fillCoachStatistic } from "../../../lib/dbhelper/statistics_data";
-import { isManager } from "../../../lib/user";
+import { getSelfId, isManager } from "../../../lib/user";
 import { DonutChart } from "@/components/DonutChart";
 import { getEvents } from '../../../lib/dbhelper/events';
 import { getEmployees } from '../../../lib/dbhelper/employees';
+import { getCustomers, getCustomerPayments } from '../../../lib/dbhelper/customers';
+import { getEncounters } from '../../../lib/dbhelper/encounters';
 import VerticalBarChart from "@/components/VerticalBarChart";
 import ScrollingList from "@/components/ScrollingList";
 
-export async function mergeEventsAndEmployees() {
+async function mergeEventsAndCoachData() {
+  try {
+    const events = await getEvents();
+    const employees = await getEmployees();
+    const userId = await getSelfId();
+
+    const userEmployee = employees.filter(employee => employee.id === userId);
+
+    const mergedData = userEmployee.map(employee => {
+      const {
+        _id,
+        birth_date,
+        gender,
+        last_connection,
+        password,
+        ...employeeDataWithoutSensitiveInfo
+      } = employee;
+
+      const eventForEmployee = events.find(event => event.employee_id === userId);
+
+      if (eventForEmployee) {
+        const { _id, location_x, location_y, ...eventDataWithoutLocation } = eventForEmployee;
+        return {
+          ...employeeDataWithoutSensitiveInfo,
+          ...eventDataWithoutLocation
+        };
+      }
+
+      return employeeDataWithoutSensitiveInfo;
+    });
+
+    return mergedData;
+  } catch (error) {
+    throw new Error('Échec de la fusion des données');
+  }
+}
+
+async function mergeCustomerPayments() {
+  try {
+    const customers = await getCustomers();
+    const userId = await getSelfId();
+
+    const filteredCustomers = customers.filter(customer => customer.coach_id === userId);
+
+    const customerPaymentsData = await Promise.all(
+      filteredCustomers.map(async (customer) => {
+        const customerPayments = await getCustomerPayments(customer.id);
+        const totalAmount = customerPayments.reduce((sum, payment) => sum + payment.amount, 0);
+
+        return {
+          coach: customer.name,
+          value: parseFloat(totalAmount.toFixed(2)),
+        };
+      })
+    );
+    const sortedCustomerPayments = customerPaymentsData.sort((a, b) => b.value - a.value);
+    return sortedCustomerPayments;
+  } catch (error) {
+    console.error("Échec de la récupération des paiements clients :", error);
+    throw new Error('Échec de la récupération des paiements clients');
+  }
+}
+
+async function mergeCustomersAndEncountersData() {
+  try {
+    const customers = await getCustomers();
+    const encounters = await getEncounters();
+    const userId = await getSelfId();
+
+    const filteredCustomers = customers.filter(customer => customer.coach_id === userId);
+
+    const filteredCustomerIds = filteredCustomers.map(customer => customer.id);
+    const filteredEncounters = encounters.filter(encounter => filteredCustomerIds.includes(encounter.customer_id));
+
+    const encounterCounts = filteredEncounters.reduce((acc, encounter) => {
+      if (!acc[encounter.customer_id]) {
+        acc[encounter.customer_id] = { count: 0, amount: 0 };
+      }
+      acc[encounter.customer_id].count += 1;
+      return acc;
+    }, {} as Record<string, { count: number; amount: number }>);
+
+    const CustomersNbEncountersMoney = await Promise.all(filteredCustomers.map(async customer => {
+      const encountersData = encounterCounts[customer.id] || { count: 0, amount: 0 };
+
+      const customerPayments = await getCustomerPayments(customer.id);
+      const totalAmountPaid = customerPayments.reduce((sum, payment) => sum + payment.amount, 0);
+
+      return {
+        userId: userId,
+        coachId: customer.coach_id,
+        customerId: customer.id,
+        customerName: customer.name,
+        numberOfEncounters: encountersData.count,
+        amount: parseFloat(totalAmountPaid.toFixed(2))
+      };
+    }));
+
+    return CustomersNbEncountersMoney;
+  } catch (error) {
+    console.error("Échec de la fusion des données :", error);
+    throw new Error('Échec de la fusion des données');
+  }
+}
+
+async function mergeEventsAndEmployeesData() {
   try {
     const events = await getEvents();
     const employees = await getEmployees();
@@ -39,25 +147,42 @@ export async function mergeEventsAndEmployees() {
       return employeeDataWithoutSensitiveInfo;
     });
 
-    //console.log("Event+Employees list:", mergedData);
     return mergedData;
   } catch (error) {
-    //console.error("Failed to merge events and employees:", error);
-    throw new Error('Failed to merge data');
+    throw new Error('Échec de la fusion des données');
   }
+}
+
+interface CoachData {
+  index: number;
+  coach: string;
+  encounterCount: number;
+  ca: number;
+}
+
+interface CustomerData {
+  userId: number,
+  coachId: number,
+  customerId: number,
+  customerName: string,
+  numberOfEncounters: number,
+  amount: number,
 }
 
 function HomeDashboard() {
   const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);
   const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
   const [nbGainByCoach, setNbGainByCoach] = useState<{ coach: string; value: number }[]>([]);
-  const [CoachNamesNbEncountersCA, setCoachNamesNbEncountersCA] = useState<
-    { index: number; coach: string; encounterCount: number; ca: number }[]>([]);
-  const [scrollingListData, setScrollingListData] = useState<{ [key: string]: any }[]>([]);
+  const [CoachNamesNbEncountersCA, setCoachNamesNbEncountersCA] = useState<CoachData[]>([]);
+  const [scrollingListManagerData, setScrollingListManagerData] = useState<{ [key: string]: any }[]>([]);
+  const [CustomersNbEncountersMoney, setCustomersNbEncountersMoney] = useState<CustomerData[]>([]);
+  const [customerPaymentsData, setMergeCustomerPaymentsData] = useState<{ coach: string; value: number }[]>([]);
+  const [scrollingListCoachesData, setscrollingListCoachesData] = useState<{ [key: string]: any }[]>([]);
   const [hasRights, setHasRights] = useState(false);
 
   useEffect(() => {
-    const checkManagerRights = async () => {
+    console.log("useEffect triggered");
+    const fetchData = async () => {
       const managerRights = await isManager();
       setHasRights(managerRights);
 
@@ -102,30 +227,170 @@ function HomeDashboard() {
           setNbGainByCoach(nbGainData);
 
           try {
-            const mergedData = await mergeEventsAndEmployees();
-            setScrollingListData(mergedData);
+            const scrollingListManagerData = await mergeEventsAndEmployeesData();
+            setScrollingListManagerData(scrollingListManagerData);
           } catch (error) {
-            console.error("Erreur lors de la récupération des données fusionnées :", error);
+            console.error("Erreur de récupération :", error);
           }
+          
+          const customerPaymentsData = await mergeCustomerPayments();
+          setMergeCustomerPaymentsData(customerPaymentsData);
         };
-
+        
         makeStatistics();
+      } else {
+        try {
+          const customerPaymentsData = await mergeCustomerPayments();
+          setMergeCustomerPaymentsData(customerPaymentsData);
+        } catch (error) {
+          console.error("Erreur de récupération :", error);
+        }
+
+        try {
+          const CustomersNbEncountersMoney = await mergeCustomersAndEncountersData();
+          setCustomersNbEncountersMoney(CustomersNbEncountersMoney);
+        } catch (error) {
+          console.error("Erreur de récupération :", error);
+        }
+
+        try {
+          const scrollingListCoachesData = await mergeEventsAndCoachData();
+          setscrollingListCoachesData(scrollingListCoachesData);
+        } catch (error) {
+          console.error("Erreur de récupération :", error);
+        }
       }
     };
 
-    checkManagerRights();
+    fetchData();
   }, []);
 
-  if (!hasRights) {
-    return null;
-  }
+function HomeDashboard() {
+  const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);
+  const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
+  const [nbGainByCoach, setNbGainByCoach] = useState<{ coach: string; value: number }[]>([]);
+  const [CoachNamesNbEncountersCA, setCoachNamesNbEncountersCA] = useState<CoachData[]>([]);
+  const [scrollingListManagerData, setScrollingListManagerData] = useState<{ [key: string]: any }[]>([]);
+  const [CustomersNbEncountersMoney, setCustomersNbEncountersMoney] = useState<CustomerData[]>([]);
+  const [customerPaymentsData, setMergeCustomerPaymentsData] = useState<{ coach: string; value: number }[]>([]);
+  const [scrollingListCoachesData, setscrollingListCoachesData] = useState<{ [key: string]: any }[]>([]);
+  const [hasRights, setHasRights] = useState(false);
 
-  const columns = [
+  useEffect(() => {
+    console.log("useEffect triggered");
+    const fetchData = async () => {
+      const managerRights = await isManager();
+      setHasRights(managerRights);
+
+      if (managerRights) {
+        const makeStatistics = async () => {
+          const coachsStatistics = await fillCoachStatistic();
+
+          const nbCustomerData = coachsStatistics.coach_list
+            .map((coach, index) => ({
+              coach,
+              value: coachsStatistics.coach_nb_client[index],
+            }))
+            .sort((a, b) => b.value - a.value)
+            .slice(0, 5);
+          setNbCustomersByCoach(nbCustomerData);
+
+          const colorPalette = ['#1f2a38', '#4b545f', '#787f87', '#a5a9af', '#e8e9eb'];
+
+          const config = nbCustomerData.reduce((configAcc, item, index) => {
+            configAcc[item.coach] = { color: colorPalette[index] };
+            return configAcc;
+          }, {} as Record<string, { color: string }>);
+
+          setChartConfigCustomers(config);
+
+          const encounterData = coachsStatistics.coach_list.map((coach, index) => ({
+            index,
+            coach,
+            encounterCount: coachsStatistics.coach_encounter[index],
+            ca: coachsStatistics.coach_gain[index],
+          }));
+          setCoachNamesNbEncountersCA(encounterData);
+
+          const nbGainData = coachsStatistics.coach_list
+            .map((coach, index) => ({
+              coach,
+              value: coachsStatistics.coach_gain[index],
+            }))
+            .sort((a, b) => b.value - a.value)
+            .slice(0, 5)
+            .reverse();
+          setNbGainByCoach(nbGainData);
+
+          
+          try {
+            const scrollingListManagerData = await mergeEventsAndEmployeesData();
+            setScrollingListManagerData(scrollingListManagerData);
+          } catch (error) {
+            console.error("Fetch error:", error);
+          }
+          
+          const customerPaymentsData = await mergeCustomerPayments();
+          setMergeCustomerPaymentsData(customerPaymentsData);
+         
+        };
+        
+        makeStatistics();
+      } else {
+
+        try {
+          const customerPaymentsData = await mergeCustomerPayments();
+          setMergeCustomerPaymentsData(customerPaymentsData);
+        } catch (error) {
+          console.error("Fetch error:", error);
+
+        }
+
+        try {
+          const CustomersNbEncountersMoney = await mergeCustomersAndEncountersData();
+          setCustomersNbEncountersMoney(CustomersNbEncountersMoney);
+        } catch (error) {
+          console.error("Fetch error:", error);
+        }
+
+        try {
+          const scrollingListCoachesData = await mergeEventsAndCoachData();
+          setscrollingListCoachesData(scrollingListCoachesData);
+        } catch (error) {
+          console.error("Fetch error:", error);
+        }
+      }
+
+      };
+
+      fetchData();
+  }, []);
+}
+
+
+  const managerColumns = [
     { title: 'Index', dataIndex: 'index', key: 'index' },
     { title: 'Coach', dataIndex: 'coach', key: 'coach' },
     { title: 'Encounters', dataIndex: 'encounterCount', key: 'encounterCount' },
     { title: 'CA', dataIndex: 'ca', key: 'ca' },
   ];
+
+  const coachColumns = [
+    { title: 'Index', dataIndex: 'index', key: 'index' },
+    { title: 'Client', dataIndex: 'coach', key: 'customerName' },
+    { title: 'Encounters', dataIndex: 'encounterCount', key: 'encounterCount' },
+    { title: 'Total Payments', dataIndex: 'ca', key: 'ca' },
+  ];
+
+
+  const convertCustomerDataToCoachData = (data: CustomerData[]): CoachData[] => {
+    return data.map((item, index) => ({
+      index,
+      coach: item.customerName,
+      encounterCount: item.numberOfEncounters,
+      ca: item.amount,
+    }));
+  };
 
   return (
     <>
@@ -139,32 +404,52 @@ function HomeDashboard() {
 
       <div className="flex space-x-4 mb-6">
         <div className="w-1/3 h-100">
-          <DonutChart
-            data={nbCustomersByCoach}
-            title="Number of customers by coach"
-            description=""
-            dataKey="value"
-            nameKey="coach"
-            config={chartConfigCustomers}
-            observation="Top 5 Coaches by Customer Count"
-          />
+          {hasRights ? (
+            <DonutChart
+              data={nbCustomersByCoach}
+              title="Number of customers by coach"
+              description=""
+              dataKey="value"
+              nameKey="coach"
+              config={chartConfigCustomers}
+              observation="Top 5 Coaches by Customer Count"
+            />
+          ) : (
+            <VerticalBarChart 
+              data={nbGainByCoach}
+              title="Number of encounters by coach"
+              yAxisKey="coach"
+              barKey="value"
+            />
+          )}
         </div>
         <div className="w-1/3 h-100">
-          <VerticalBarChart
-            data={nbGainByCoach}
-            title="Number of encounters by coach"
-            yAxisKey="coach"
-            barKey="value"
-          />
+          {hasRights ? (
+            <VerticalBarChart
+              data={nbGainByCoach}
+              title="Number of encounters by coach"
+              yAxisKey="coach"
+              barKey="value"
+            />
+          ) : (
+            <VerticalBarChart
+              data={customerPaymentsData}
+              title="Each client total paid amount"
+              yAxisKey="coach"
+              barKey="value"
+            />
+          )}
         </div>
         <div className="w-1/3 h-100">
-          <ScrollingList data={scrollingListData} />
+            <ScrollingList 
+            data={hasRights ? scrollingListManagerData : scrollingListCoachesData}
+            /> 
         </div>
       </div>
       <div className="mt-2">
         <Table
-          columns={columns}
-          dataSource={CoachNamesNbEncountersCA}
+          columns={hasRights ? managerColumns : coachColumns}
+          dataSource={hasRights ? CoachNamesNbEncountersCA : convertCustomerDataToCoachData(CustomersNbEncountersMoney)}
           rowKey="index"
           pagination={{ pageSize: 8 }}
         />
