@@ -11,6 +11,8 @@ import * as getastrosigndistribution from "./getastrosigndistribution";
 import * as assigncustomertocoach from "./assigncustomertocoach";
 import * as getdatacustomer from "./getdatacustomer";
 import * as getdataemployee from "./getdataemployee";
+import * as login from "./login";
+import * as logout from "./logout";
 
 export const commands = {
   getalltips,
@@ -25,5 +27,7 @@ export const commands = {
   getastrosigndistribution,
   assigncustomertocoach,
   getdatacustomer,
-  getdataemployee
+  getdataemployee,
+  login,
+  logout
 };

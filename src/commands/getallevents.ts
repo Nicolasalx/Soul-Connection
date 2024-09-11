@@ -1,6 +1,7 @@
 import Events from "@/app/back/models/events";
 import { getEvents } from "@/app/lib/dbhelper/events";
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ensureUserLoggedIn } from "./authUtils";
 
 export const data = new SlashCommandBuilder().setName("getallevents").setDescription("Get All Events");
 
@@ -9,6 +10,10 @@ const EVENTS_PER_MESSAGE = 30;
 
 export async function execute(interaction: CommandInteraction) {
   try {
+    if (!(await ensureUserLoggedIn(interaction))) {
+      return;
+    }
+
     const events: Events[] = await getEvents();
 
     let i = 0;

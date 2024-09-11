@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import Msg from '@/app/back/models/conv';
 import { createConv, getConv, updateConv } from '@/app/lib/dbhelper/conv';
@@ -10,7 +10,7 @@ const ChatPage = () => {
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const fetchMessagesInterval = setInterval(fetchMessages, 10000);
+    const fetchMessagesInterval = setInterval(fetchMessages, 10_000);
 
     fetchMessages();
 
@@ -19,31 +19,32 @@ const ChatPage = () => {
 
   const fetchMessages = async () => {
     try {
-      const data = await getConv('1'); // ! to change
-      if (data) {
-        setMessages(data);
-      } else {
-        const newConv: Msg[] = [];
-        await createConv('1', newConv); // ! to change
+        const data = await getConv("1"); // ! to change
+        if (data) {
+          setMessages(data);
+        } else {
+          const newConv: Msg[] = [];
+          await createConv("1", newConv); // ! to change
+        }
+      } catch (error) {
       }
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
   };
 
   const handleSendMessage = async () => {
     if (input.trim() === '') return;
 
     try {
-      const newMsg: Msg = new Msg(input, new Date(), false);
+      const newMsg: Msg = new Msg(input, new Date(), true); // ! false means coach sent the message
 
       setMessages((prevMessages) => [...prevMessages, newMsg]);
       setInput('');
 
-      const conversation = await getConv("1"); // ! to change
+      const conversation = await getConv("1");
+
       conversation.push(newMsg);
 
       await updateConv("1", conversation); // ! to change
+
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -63,20 +64,20 @@ const ChatPage = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>COACH</h1>
+      <h1>CLIENT</h1>
       <div style={{ height: '400px', overflowY: 'scroll', border: '1px solid #ccc', marginBottom: '20px' }}>
         {messages.map((msg, index) => (
           <div
             key={index}
-            ref={index === messages.length - 1 ? lastMessageRef : null}
+            ref={index === messages.length - 1 ? lastMessageRef : null} // Set ref on the last message
             style={{
-              textAlign: msg.client_sender ? 'left' : 'right',
+              textAlign: !msg.client_sender ? 'left' : 'right',
               marginBottom: '10px',
               padding: '10px',
-              backgroundColor: msg.client_sender ? '#e0f7fa' : '#f1f8e9',
+              backgroundColor: !msg.client_sender ? '#e0f7fa' : '#f1f8e9',
               borderRadius: '8px',
               maxWidth: '60%',
-              marginLeft: msg.client_sender ? '0' : 'auto',
+              marginLeft: !msg.client_sender ? '0' : 'auto',
             }}
           >
             <p>{msg.msg}</p>

@@ -9,7 +9,6 @@ import { sc_db_api } from "./db_api_instance";
 export async function getCustomers(): Promise<Customers[]> {
   try {
     const response = await sc_db_api.get('/customers');
-    console.log('getCustomers response', response.data)
     return response.data;
   } catch (error) {
     throw new Error('Failed to fetch customers');

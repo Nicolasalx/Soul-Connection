@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        apiUrl: 'https://soul-connection.fr/',
+        apiUrl: 'https://soul-connection.fr',
     },
 };
 
