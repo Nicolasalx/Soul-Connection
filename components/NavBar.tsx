@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import If from "./If";
 import { isCustomer, isManager } from "@/app/lib/user";
 
-const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
+const SideBarCustomer = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
   const [hasRights, setHasRights] = useState(false);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => v
   );
 }
 
-const SideBarCustomer = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
+const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
   const [hasRights, setHasRights] = useState(false);
 
   useEffect(() => {
@@ -117,28 +117,13 @@ const SideBarCustomer = (handleLogout: () => Promise<void>, openDBPopup: () => v
           </Link>
         </li>
         <li>
-          <Link href="/employee/all-encounters">
-            <p>All Encounters</p>
+          <Link href="/employee/advices">
+            <p>Advices</p>
           </Link>
         </li>
         <li>
-          <Link href="/employee/coach-advices">
-            <p>Coach Advices</p>
-          </Link>
-        </li>
-        <li>
-          <Link href="/employee/customer-advices">
-            <p>Customer Advices</p>
-          </Link>
-        </li>
-        <li>
-          <Link href="/employee/coach-notes">
-            <p>Coach Notes</p>
-          </Link>
-        </li>
-        <li>
-          <Link href="/employee/customer-notes">
-            <p>Customer Notes</p>
+          <Link href="/employee/notes">
+            <p>Notes</p>
           </Link>
         </li>
       </ul>
@@ -198,11 +183,11 @@ export default function NavBar() {
       <div className="fixed w-full h-24 bg-white text-black flex items-center justify-between px-6 border-b border-color">
         {isCustomerType ? (
           <>
-            { SideBarEmployee(handleLogout, openDBPopup) }
+            { SideBarCustomer(handleLogout, openDBPopup) }
           </>
           ) : (
           <>
-            { SideBarCustomer(handleLogout, openDBPopup) }
+            { SideBarEmployee(handleLogout, openDBPopup) }
           </>
         )}
       </div>
