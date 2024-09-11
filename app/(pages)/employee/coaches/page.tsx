@@ -55,7 +55,7 @@ function Coaches() {
         name: `${employee.name} ${employee.surname}`,
         birthDate: employee.birth_date || 'N/A',
         customers: coachCustomers,
-        lastConnection: employee.last_connection ? employee.last_connection : 'N/A',
+        lastConnection: employee.last_connection ? new Date(employee.last_connection).toLocaleString() : 'N/A',
       };
     }).sort((a, b) => a.id < b.id ? -1 : 1);
 
