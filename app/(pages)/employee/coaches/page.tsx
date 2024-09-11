@@ -12,7 +12,7 @@ function Coaches() {
     email: string;
     phone: string;
     nbCustomers: string;
-    profileImage?: string; // Optional profile image URL
+    profileImage?: string;
   }
 
   const items = (
@@ -88,7 +88,7 @@ function Coaches() {
       email: 'john.brown@example.com',
       phone: '123-456-7890',
       nbCustomers: '10',
-      profileImage: 'path-to-profile-image1.jpg', // Replace with actual image URL
+      profileImage: 'path-to-profile-image1.jpg',
     },
     {
       key: '2',
@@ -96,7 +96,7 @@ function Coaches() {
       email: 'jane.smith@example.com',
       phone: '987-654-3210',
       nbCustomers: '15',
-      profileImage: 'path-to-profile-image2.jpg', // Replace with actual image URL
+      profileImage: 'path-to-profile-image2.jpg',
     },
     {
       key: '3',
@@ -104,7 +104,7 @@ function Coaches() {
       email: 'emily.johnson@example.com',
       phone: '555-555-5555',
       nbCustomers: '8',
-      profileImage: 'path-to-profile-image3.jpg', // Replace with actual image URL
+      profileImage: 'path-to-profile-image3.jpg',
     },
   ];
 
@@ -123,14 +123,9 @@ function Coaches() {
     setSearchVisible(!searchVisible);
   };
 
-  const handleSearch = () => {
-    // Implement search functionality here
-  };
-
   return (
     <>
       <div className="header-container">
-        {/* Left-aligned elements */}
         <div className="left-header">
           <Select defaultValue="Bulk Action" className="bulk-action-select" style={{ width: 120 }} placeholder="Bulk Action">
             <Select.Option value="1">1</Select.Option>
@@ -142,7 +137,6 @@ function Coaches() {
           </Button>
         </div>
 
-        {/* Right-aligned elements */}
         <div className="right-header">
           <div className="search-container">
             <SearchOutlined className="search-icon" onClick={handleSearchClick} />
@@ -156,19 +150,15 @@ function Coaches() {
             )}
           </div>
 
-          {/* Divider */}
           <Divider type="vertical" className="header-divider" />
 
-          {/* Filter and settings icons */}
           <FilterOutlined className="filter-icon" />
           <SettingOutlined className="settings-icon" />
         </div>
       </div>
 
-      {/* Divider between the header and the table */}
       <Divider style={{ margin: 0 }} />
 
-      {/* Table */}
       <Table 
         className="custom-table-header"
         columns={columnsNewPage} 

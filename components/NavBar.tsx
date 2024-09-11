@@ -5,9 +5,59 @@ import Link from "next/link";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/react";
 import { usePathname } from 'next/navigation';
 import If from "./If";
-import { isManager } from "@/app/lib/user";
+import { isCustomer, isManager } from "@/app/lib/user";
 
-const SideBarItems = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
+const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
+  const [hasRights, setHasRights] = useState(false);
+
+  useEffect(() => {
+    isManager().then(val => setHasRights(val));
+  }, []);
+
+  return (
+    <div className="w-full h-24 bg-white px-4 flex items-center border-b border-color">
+      <ul className="flex flex-grow gap-x-6 text-black text-l items-center justify-center">
+        <li>
+          <Link href="/customer/home">
+            <p>Dashboard</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/customer/chat">
+            <p>Chat</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/customer/advices">
+            <p>Advices</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/customer/notes">
+            <p>Notes</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/customer/encounters">
+            <p>Encounters</p>
+          </Link>
+        </li>
+      </ul>
+      <div className="flex gap-4">
+        <Button className="font-bold" color="primary" onClick={handleLogout}>
+          Log Out
+        </Button>
+        <If condition={hasRights}>
+          <Button className="font-bold" color="primary" onClick={openDBPopup}>
+            DataBase
+          </Button>
+        </If>
+      </div>
+    </div>
+  );
+}
+
+const SideBarCustomer = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
   const [hasRights, setHasRights] = useState(false);
 
   useEffect(() => {
@@ -109,6 +159,7 @@ const SideBarItems = (handleLogout: () => Promise<void>, openDBPopup: () => void
 export default function NavBar() {
   const pathname = usePathname();
   const [isDBPopupOpen, setIsDBPopupOpen] = useState(false);
+  const [isCustomerType, setCustomerType] = useState(false);
 
   const openDBPopup = () => {
     setIsDBPopupOpen(true);
@@ -133,10 +184,27 @@ export default function NavBar() {
     return null;
   }
 
+  const checkUserType = async () =>{
+    const userType = await isCustomer();
+    setCustomerType(userType);
+  }
+
+  useEffect(() => {
+    checkUserType();
+  });
+
   return (
     <div>
       <div className="fixed w-full h-24 bg-white text-black flex items-center justify-between px-6 border-b border-color">
-        { SideBarItems(handleLogout, openDBPopup) }
+        {isCustomerType ? (
+          <>
+            { SideBarEmployee(handleLogout, openDBPopup) }
+          </>
+          ) : (
+          <>
+            { SideBarCustomer(handleLogout, openDBPopup) }
+          </>
+        )}
       </div>
     </div>
   );
