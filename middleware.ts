@@ -8,18 +8,19 @@ const protectedRoutes = ['/employee/statistics', '/employee/coaches']
 export default async function middleware(req: NextRequest) {
     const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname)
     const isProtectedRoute = protectedRoutes.includes(req.nextUrl.pathname)
-    const userConnected = await verifyToken() !== null
+    const userPayload = await verifyToken()
 
-    if (!isPublicRoute && !userConnected) {
+    if (!isPublicRoute && !userPayload) {
         return NextResponse.redirect(new URL('/login', req.nextUrl))
     }
-    if (isPublicRoute && userConnected) {
-        return NextResponse.redirect(new URL('/employee/home', req.nextUrl))
+    if (isPublicRoute && userPayload) {
+        return NextResponse.redirect(new URL(`/${userPayload.role as string}/home`, req.nextUrl))
     }
-    if (req.nextUrl.pathname === '/' && !userConnected) {
+    if (req.nextUrl.pathname === '/' && !userPayload) {
         return NextResponse.redirect(new URL('/login', req.nextUrl))
     }
-    if (isProtectedRoute && !(await isManager())) {
+    if ((isProtectedRoute && !(await isManager())) ||
+        (!isPublicRoute && userPayload && !req.nextUrl.toString().includes(userPayload.role as string))) {
         return NextResponse.rewrite(new URL('/forbidden', req.nextUrl), { status: 403 })
     }
     return NextResponse.next()

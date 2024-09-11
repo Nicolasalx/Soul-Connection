@@ -2,11 +2,12 @@
 
 import Msg from '@/app/back/models/conv';
 import { createConv, getConv, updateConv } from '@/app/lib/dbhelper/conv';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const ChatPage = () => {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState<string>('');
+  const lastMessageRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const fetchMessagesInterval = setInterval(fetchMessages, 10_000);
@@ -55,6 +56,12 @@ const ChatPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   return (
     <div style={{ padding: '20px' }}>
       <h1>CLIENT</h1>
@@ -62,6 +69,7 @@ const ChatPage = () => {
         {messages.map((msg, index) => (
           <div
             key={index}
+            ref={index === messages.length - 1 ? lastMessageRef : null} // Set ref on the last message
             style={{
               textAlign: !msg.client_sender ? 'left' : 'right',
               marginBottom: '10px',

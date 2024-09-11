@@ -7,6 +7,7 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import type { SelectProps } from 'antd/es/select';
 import { getClothesImage } from '@/app/lib/dbhelper/clothes_image';
 import { getCustomers } from '@/app/lib/dbhelper/customers';
+import Image from 'next/image';
 
 type Direction = 'Left' | 'Right';
 
@@ -216,7 +217,7 @@ const Clothing: React.FC = () => {
                 className='text-4xl cursor-pointer'
                 onClick={() => handleArrowClick('Left', 'hat')}
               />
-              <img
+              <Image
                 src={currentHatUrl}
                 alt="Hat Image"
                 width={150}
@@ -241,7 +242,7 @@ const Clothing: React.FC = () => {
                 className='text-4xl cursor-pointer'
                 onClick={() => handleArrowClick('Left', 'top')}
               />
-              <img
+              <Image
                 src={currentTopUrl}
                 alt="Top Image"
                 width={150}
@@ -266,7 +267,7 @@ const Clothing: React.FC = () => {
                 className='text-4xl cursor-pointer'
                 onClick={() => handleArrowClick('Left', 'bottom')}
               />
-              <img
+              <Image
                 src={currentBottomUrl}
                 alt="Bottom Image"
                 width={150}
@@ -291,7 +292,7 @@ const Clothing: React.FC = () => {
                 className='text-4xl cursor-pointer'
                 onClick={() => handleArrowClick('Left', 'shoes')}
               />
-              <img
+              <Image
                 src={currentShoesUrl}
                 alt="Shoes Image"
                 width={150}
