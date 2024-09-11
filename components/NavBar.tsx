@@ -71,6 +71,26 @@ const SideBarItems = (handleLogout: () => Promise<void>, openDBPopup: () => void
             <p>All Encounters</p>
           </Link>
         </li>
+        <li>
+          <Link href="/employee/coach-advices">
+            <p>Coach Advices</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/employee/customer-advices">
+            <p>Customer Advices</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/employee/coach-notes">
+            <p>Coach Notes</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/employee/customer-notes">
+            <p>Customer Notes</p>
+          </Link>
+        </li>
       </ul>
       <div className="flex gap-4">
         <Button className="font-bold" color="primary" onClick={handleLogout}>
