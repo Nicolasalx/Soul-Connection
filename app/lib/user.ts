@@ -1,5 +1,6 @@
 import Employees from "../back/models/employees";
 import { verifyToken } from "./dal";
+import { getCustomers } from "./dbhelper/customers";
 import { getEmployees } from "./dbhelper/employees";
 
 export async function isManager() {
@@ -15,4 +16,8 @@ export async function getSelfId()
 
 export async function getEmployee(email: string) {
     return (await getEmployees()).find(e => e.email === email)
+}
+
+export async function getCustomer(email: string) {
+    return (await getCustomers()).find(e => e.email === email)
 }
