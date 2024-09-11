@@ -12,6 +12,42 @@ import { getEncounters } from '../../../lib/dbhelper/encounters';
 import VerticalBarChart from "@/components/VerticalBarChart";
 import ScrollingList from "@/components/ScrollingList";
 
+
+async function AverageRatingsByCustomer() {
+  try {
+    const userId = await getSelfId();
+    const customers = await getCustomers();
+    const encounters = await getEncounters();
+
+    const coachClients = customers.filter(customer => customer.coach_id === userId);
+    const clientIds = coachClients.map(client => client.id);
+    const clientEncounters = encounters.filter(encounter => clientIds.includes(encounter.customer_id));
+
+    const ratings = clientEncounters.reduce((acc, encounter) => {
+      if (!acc[encounter.customer_id]) {
+        acc[encounter.customer_id] = { total: 0, count: 0 };
+      }
+      acc[encounter.customer_id].total += encounter.rating; 
+      acc[encounter.customer_id].count += 1;
+      return acc;
+    }, {} as Record<string, { total: number; count: number }>);
+
+    const averageRatings = coachClients.map(client => {
+      const ratingData = ratings[client.id] || { total: 0, count: 0 };
+      return {
+        coach: client.name,
+        value: ratingData.count ? ratingData.total / ratingData.count : 0
+      };
+    });
+
+    return averageRatings;
+  } catch (error) {
+    console.error("error: ", error);
+    throw new Error();
+  }
+}
+
+
 async function mergeEventsAndCoachData() {
   try {
     const events = await getEvents();
@@ -45,7 +81,7 @@ async function mergeEventsAndCoachData() {
 
     return mergedData;
   } catch (error) {
-    throw new Error('Échec de la fusion des données');
+    throw new Error();
   }
 }
 
@@ -70,8 +106,8 @@ async function mergeCustomerPayments() {
     const sortedCustomerPayments = customerPaymentsData.sort((a, b) => b.value - a.value);
     return sortedCustomerPayments;
   } catch (error) {
-    console.error("Échec de la récupération des paiements clients :", error);
-    throw new Error('Échec de la récupération des paiements clients');
+    console.error("error: ", error);
+    throw new Error();
   }
 }
 
@@ -112,8 +148,8 @@ async function mergeCustomersAndEncountersData() {
 
     return CustomersNbEncountersMoney;
   } catch (error) {
-    console.error("Échec de la fusion des données :", error);
-    throw new Error('Échec de la fusion des données');
+    console.error("error: ", error);
+    throw new Error();
   }
 }
 
@@ -149,7 +185,7 @@ async function mergeEventsAndEmployeesData() {
 
     return mergedData;
   } catch (error) {
-    throw new Error('Échec de la fusion des données');
+    throw new Error('error: ');
   }
 }
 
@@ -178,10 +214,10 @@ function HomeDashboard() {
   const [CustomersNbEncountersMoney, setCustomersNbEncountersMoney] = useState<CustomerData[]>([]);
   const [customerPaymentsData, setMergeCustomerPaymentsData] = useState<{ coach: string; value: number }[]>([]);
   const [scrollingListCoachesData, setscrollingListCoachesData] = useState<{ [key: string]: any }[]>([]);
+  const [averageRatingsByCustomer, setAverageRatingsByCustomer] = useState<{ coach: string; value: number }[]>([]);
   const [hasRights, setHasRights] = useState(false);
 
   useEffect(() => {
-    console.log("useEffect triggered");
     const fetchData = async () => {
       const managerRights = await isManager();
       setHasRights(managerRights);
@@ -230,7 +266,7 @@ function HomeDashboard() {
             const scrollingListManagerData = await mergeEventsAndEmployeesData();
             setScrollingListManagerData(scrollingListManagerData);
           } catch (error) {
-            console.error("Erreur de récupération :", error);
+            console.error("error: ", error);
           }
           
           const customerPaymentsData = await mergeCustomerPayments();
@@ -243,129 +279,34 @@ function HomeDashboard() {
           const customerPaymentsData = await mergeCustomerPayments();
           setMergeCustomerPaymentsData(customerPaymentsData);
         } catch (error) {
-          console.error("Erreur de récupération :", error);
+          console.error("error: ", error);
         }
 
         try {
           const CustomersNbEncountersMoney = await mergeCustomersAndEncountersData();
           setCustomersNbEncountersMoney(CustomersNbEncountersMoney);
         } catch (error) {
-          console.error("Erreur de récupération :", error);
+          console.error("error: ", error);
         }
 
         try {
           const scrollingListCoachesData = await mergeEventsAndCoachData();
           setscrollingListCoachesData(scrollingListCoachesData);
         } catch (error) {
-          console.error("Erreur de récupération :", error);
+          console.error("error: ", error);
+        }
+
+        try {
+          const averageRatings = await AverageRatingsByCustomer();
+          setAverageRatingsByCustomer(averageRatings);
+        } catch (error) {
+          console.error("Fetch error:", error);
         }
       }
     };
 
     fetchData();
   }, []);
-
-function HomeDashboard() {
-  const [nbCustomersByCoach, setNbCustomersByCoach] = useState<{ coach: string; value: number }[]>([]);
-  const [chartConfigCustomers, setChartConfigCustomers] = useState<Record<string, { color: string }>>({});
-  const [nbGainByCoach, setNbGainByCoach] = useState<{ coach: string; value: number }[]>([]);
-  const [CoachNamesNbEncountersCA, setCoachNamesNbEncountersCA] = useState<CoachData[]>([]);
-  const [scrollingListManagerData, setScrollingListManagerData] = useState<{ [key: string]: any }[]>([]);
-  const [CustomersNbEncountersMoney, setCustomersNbEncountersMoney] = useState<CustomerData[]>([]);
-  const [customerPaymentsData, setMergeCustomerPaymentsData] = useState<{ coach: string; value: number }[]>([]);
-  const [scrollingListCoachesData, setscrollingListCoachesData] = useState<{ [key: string]: any }[]>([]);
-  const [hasRights, setHasRights] = useState(false);
-
-  useEffect(() => {
-    console.log("useEffect triggered");
-    const fetchData = async () => {
-      const managerRights = await isManager();
-      setHasRights(managerRights);
-
-      if (managerRights) {
-        const makeStatistics = async () => {
-          const coachsStatistics = await fillCoachStatistic();
-
-          const nbCustomerData = coachsStatistics.coach_list
-            .map((coach, index) => ({
-              coach,
-              value: coachsStatistics.coach_nb_client[index],
-            }))
-            .sort((a, b) => b.value - a.value)
-            .slice(0, 5);
-          setNbCustomersByCoach(nbCustomerData);
-
-          const colorPalette = ['#1f2a38', '#4b545f', '#787f87', '#a5a9af', '#e8e9eb'];
-
-          const config = nbCustomerData.reduce((configAcc, item, index) => {
-            configAcc[item.coach] = { color: colorPalette[index] };
-            return configAcc;
-          }, {} as Record<string, { color: string }>);
-
-          setChartConfigCustomers(config);
-
-          const encounterData = coachsStatistics.coach_list.map((coach, index) => ({
-            index,
-            coach,
-            encounterCount: coachsStatistics.coach_encounter[index],
-            ca: coachsStatistics.coach_gain[index],
-          }));
-          setCoachNamesNbEncountersCA(encounterData);
-
-          const nbGainData = coachsStatistics.coach_list
-            .map((coach, index) => ({
-              coach,
-              value: coachsStatistics.coach_gain[index],
-            }))
-            .sort((a, b) => b.value - a.value)
-            .slice(0, 5)
-            .reverse();
-          setNbGainByCoach(nbGainData);
-
-          
-          try {
-            const scrollingListManagerData = await mergeEventsAndEmployeesData();
-            setScrollingListManagerData(scrollingListManagerData);
-          } catch (error) {
-            console.error("Fetch error:", error);
-          }
-          
-          const customerPaymentsData = await mergeCustomerPayments();
-          setMergeCustomerPaymentsData(customerPaymentsData);
-         
-        };
-        
-        makeStatistics();
-      } else {
-
-        try {
-          const customerPaymentsData = await mergeCustomerPayments();
-          setMergeCustomerPaymentsData(customerPaymentsData);
-        } catch (error) {
-          console.error("Fetch error:", error);
-
-        }
-
-        try {
-          const CustomersNbEncountersMoney = await mergeCustomersAndEncountersData();
-          setCustomersNbEncountersMoney(CustomersNbEncountersMoney);
-        } catch (error) {
-          console.error("Fetch error:", error);
-        }
-
-        try {
-          const scrollingListCoachesData = await mergeEventsAndCoachData();
-          setscrollingListCoachesData(scrollingListCoachesData);
-        } catch (error) {
-          console.error("Fetch error:", error);
-        }
-      }
-
-      };
-
-      fetchData();
-  }, []);
-}
 
 
   const managerColumns = [
@@ -416,8 +357,8 @@ function HomeDashboard() {
             />
           ) : (
             <VerticalBarChart 
-              data={nbGainByCoach}
-              title="Number of encounters by coach"
+              data={averageRatingsByCustomer}
+              title="Average encounters rating by each client"
               yAxisKey="coach"
               barKey="value"
             />
