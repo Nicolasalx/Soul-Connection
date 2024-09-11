@@ -11,7 +11,6 @@ const config: Config = {
   ],
   theme: {
   	extend: {
-  		
 		backgroundColor: {
 			grey: '#d3d3d3'
 		},
@@ -32,12 +31,12 @@ const config: Config = {
   				foreground: 'hsl(var(--popover-foreground))'
   			},
   			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
+  				DEFAULT: '#2263b3',
+  				foreground: '#ffffff'
   			},
   			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
+  				DEFAULT: '#ffffff',
+  				foreground: '#223861'
   			},
   			muted: {
   				DEFAULT: 'hsl(var(--muted))',

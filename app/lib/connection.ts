@@ -1,4 +1,6 @@
+import Customers from '../back/models/customers';
 import Employees from '../back/models/employees';
+import { updateCustomer } from './dbhelper/customers';
 import { updateEmployee } from './dbhelper/employees';
 import { deleteToken, saveToken } from './token'
 import { getEmployee } from './user';
@@ -21,7 +23,7 @@ export async function isConnected() {
     return false
 }
 
-export async function connectEmployee(employee: Employees, access_token: string | null, password: string) {
+export async function connectEmployee(employee: Employees, password: string) {
     let partialEmployee: Partial<Employees> = {
         last_connection: new Date()
     }
@@ -31,7 +33,7 @@ export async function connectEmployee(employee: Employees, access_token: string 
     await updateEmployee(employee._id!.toString(), partialEmployee)
     employee.last_connection = partialEmployee.last_connection as Date
     employee.password = null
-    await saveToken(employee, access_token ? access_token : '')
+    await saveToken(employee)
 }
 
 export async function checkDBForEmployee(email: string, password: string) {
@@ -40,6 +42,26 @@ export async function checkDBForEmployee(email: string, password: string) {
     if (!employee || !employee._id || !employee.password || !bcrypt.compareSync(password, employee.password as string)) {
         return false
     }
-    await connectEmployee(employee, null, password)
+    await connectEmployee(employee, password)
+    return true
+}
+
+export async function registerCustomer(customer: Customers, password: string) {
+    let partialCustomer: Partial<Customers> = {
+        password: await bcrypt.hash(password as string, 10)
+    }
+    await updateCustomer(customer._id!.toString(), partialCustomer)
+    customer.password = null
+    await saveToken(customer, 'customer')
+}
+
+export async function connectCustomer(customer: Customers, password: string) {
+    if (!customer.password) {
+        return false
+    }
+    if (!bcrypt.compareSync(password, customer.password as string)) {
+        return false
+    }
+    await saveToken(customer, 'customer')
     return true
 }
