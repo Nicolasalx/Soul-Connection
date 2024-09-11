@@ -1,15 +1,16 @@
-'use client'
+'use client';
 
 import Msg from '@/app/back/models/conv';
 import { createConv, getConv, updateConv } from '@/app/lib/dbhelper/conv';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const ChatPage = () => {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState<string>('');
+  const lastMessageRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const fetchMessagesInterval = setInterval(fetchMessages, 10_000);
+    const fetchMessagesInterval = setInterval(fetchMessages, 10000);
 
     fetchMessages();
 
@@ -18,16 +19,16 @@ const ChatPage = () => {
 
   const fetchMessages = async () => {
     try {
-        const data = await getConv("1"); // ! to change
-        if (data) {
-          setMessages(data);
-        } else {
-          const newConv: Msg[] = [];
-          await createConv("1", newConv); // ! to change
-        }
-      } catch (error) {
-        console.error('Error fetching messages:', error);
+      const data = await getConv('1'); // ! to change
+      if (data) {
+        setMessages(data);
+      } else {
+        const newConv: Msg[] = [];
+        await createConv('1', newConv); // ! to change
       }
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
   };
 
   const handleSendMessage = async () => {
@@ -40,11 +41,9 @@ const ChatPage = () => {
       setInput('');
 
       const conversation = await getConv("1"); // ! to change
-
       conversation.push(newMsg);
 
       await updateConv("1", conversation); // ! to change
-
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -56,6 +55,12 @@ const ChatPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   return (
     <div style={{ padding: '20px' }}>
       <h1>COACH</h1>
@@ -63,6 +68,7 @@ const ChatPage = () => {
         {messages.map((msg, index) => (
           <div
             key={index}
+            ref={index === messages.length - 1 ? lastMessageRef : null}
             style={{
               textAlign: msg.client_sender ? 'left' : 'right',
               marginBottom: '10px',

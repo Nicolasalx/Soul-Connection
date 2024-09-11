@@ -1,5 +1,6 @@
 import { getEmployees } from "@/app/lib/dbhelper/employees";
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ensureUserLoggedIn } from "./authUtils";
 
 export const data = new SlashCommandBuilder()
   .setName("getdataemployee")
@@ -13,6 +14,10 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction: CommandInteraction) {
   try {
+    if (!(await ensureUserLoggedIn(interaction))) {
+      return;
+    }
+
     const employeeIdStr = interaction.options.get("employee_id")?.value as string;
     if (!employeeIdStr) {
       await interaction.reply('❌ Please provide a valid employee ID.');
