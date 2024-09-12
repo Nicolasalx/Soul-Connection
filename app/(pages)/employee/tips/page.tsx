@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Divider, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import { getTips } from '../../../lib/dbhelper/tips';
 import Tips from '@/app/back/models/tips';
 import { Accordion, AccordionItem } from '@nextui-org/react';

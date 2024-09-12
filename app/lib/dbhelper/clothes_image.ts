@@ -11,7 +11,6 @@ export async function getClothesImage(id: string): Promise<any | null> {
     }
     return imageData;
   } catch (error) {
-    // console.error('Error fetching image:', error);
     return null;
   }
 }
