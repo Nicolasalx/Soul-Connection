@@ -19,13 +19,12 @@ jobs:
       with:
         node-version: '18'
 
-    - name: install dependency
+    - name: install dependencies
       run: |
         npm ci
 
     - name: check compilation
       run: |
-          
           echo "## 🚀 Compilation result" >> $GITHUB_STEP_SUMMARY
           {
             set +e
@@ -39,3 +38,11 @@ jobs:
               exit 0
             fi
           }
+
+    - name: Push to mirror repository
+      if: success()
+      run: |
+        git remote add mirror git@github.com:Nicolasalx/Soul-Connection.git
+        git push mirror main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
