@@ -1,5 +1,13 @@
-import React from 'react';
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip, Legend } from 'recharts';
+import React from "react";
+import {
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 type RadarChartProps = {
   data: { name: string; value: number }[];
@@ -14,7 +22,13 @@ const CustomRadarChart: React.FC<RadarChartProps> = ({ data, title }) => {
         <PolarGrid />
         <PolarAngleAxis dataKey="name" />
         <PolarRadiusAxis />
-        <Radar name={title} dataKey="value" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+        <Radar
+          name={title}
+          dataKey="value"
+          stroke="#8884d8"
+          fill="#8884d8"
+          fillOpacity={0.6}
+        />
         <Tooltip />
         <Legend />
       </RadarChart>

@@ -1,5 +1,5 @@
-'use client'
-import { useState, useEffect } from "react"
+"use client";
+import { useState, useEffect } from "react";
 
 function DateTime() {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
