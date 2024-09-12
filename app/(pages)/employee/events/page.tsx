@@ -1,15 +1,21 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Divider } from 'antd';
-import Events from '../../../back/models/events';
-import { getEvents } from '../../../lib/dbhelper/events';
-import { Card, CardBody, CardFooter, CardHeader, Listbox, ListboxItem } from '@nextui-org/react';
-import location from '../../../../public/location.svg';
-import Image from 'next/image';
-import dynamic from 'next/dynamic';
+import { useEffect, useState } from "react";
+import Events from "../../../back/models/events";
+import { getEvents } from "../../../lib/dbhelper/events";
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Listbox,
+  ListboxItem,
+} from "@nextui-org/react";
+import location from "../../../../public/location.svg";
+import Image from "next/image";
+import dynamic from "next/dynamic";
 
-const Map = dynamic(() => import("@/components/Map"), { 
+const Map = dynamic(() => import("@/components/Map"), {
   ssr: false,
 });
 
@@ -17,8 +23,8 @@ export default function EventsPage() {
   const [events, setEvents] = useState<Events[]>([]);
 
   useEffect(() => {
-    getEvents().then(res => setEvents(res.sort().reverse()))
-  }, [])
+    getEvents().then((res) => setEvents(res.sort().reverse()));
+  }, []);
 
   return (
     <>
@@ -32,16 +38,21 @@ export default function EventsPage() {
         <Listbox
           className="flex flex-col overflow-y-scroll h-[305px] md:h-full"
           items={events}
-          aria-label='events'>
-          {event => (
-            <ListboxItem key={event.id} textValue={event.name} aria-label={event.name}>
+          aria-label="events"
+        >
+          {(event) => (
+            <ListboxItem
+              key={event.id}
+              textValue={event.name}
+              aria-label={event.name}
+            >
               <Card className="shadow-none bg-transparent">
                 <CardHeader className="flex flex-row justify-between">
                   <h2>{event.name}</h2>
                   <p>{event.date}</p>
                 </CardHeader>
-                <CardBody className='inline-block align-middle'>
-                  <div className='flex flex-row justify-start gap-2'>
+                <CardBody className="inline-block align-middle">
+                  <div className="flex flex-row justify-start gap-2">
                     <Image src={location} alt="Location icon" />
                     {event.location_name}
                   </div>
@@ -55,5 +66,5 @@ export default function EventsPage() {
         </Listbox>
       </div>
     </>
-  )
+  );
 }

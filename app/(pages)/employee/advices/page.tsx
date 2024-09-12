@@ -2,7 +2,7 @@
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import type { GetRef, InputRef, SelectProps, TableProps } from "antd";
-import { Button, Form, Input, Popconfirm, Table, Modal, Select } from "antd";
+import { Button, Form, Input, Table, Modal, Select } from "antd";
 import { Typography } from "antd";
 import Customers from "@/app/back/models/customers";
 import { getSelfId, isManager } from "@/app/lib/user";

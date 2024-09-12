@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Pagination } from 'antd';
-import { getTips } from '../../../lib/dbhelper/tips';
-import Tips from '@/app/back/models/tips';
-import { Accordion, AccordionItem } from '@nextui-org/react';
+import React, { useState, useEffect } from "react";
+import { Pagination } from "antd";
+import { getTips } from "../../../lib/dbhelper/tips";
+import Tips from "@/app/back/models/tips";
+import { Accordion, AccordionItem } from "@nextui-org/react";
 
 export default function Advices() {
   const [allTips, setAllTips] = useState<Tips[]>([]);
@@ -17,7 +17,7 @@ export default function Advices() {
         const tips: Tips[] = await getTips();
         setAllTips(tips);
       } catch (error) {
-        console.error('Error fetching tips:', error);
+        console.error("Error fetching tips:", error);
       }
     };
     fetchTips();
@@ -56,7 +56,7 @@ export default function Advices() {
           total={allTips.length}
           pageSize={tipsPerPage}
           onChange={handlePageChange}
-          style={{ marginTop: '20px', textAlign: 'center' }}
+          style={{ marginTop: "20px", textAlign: "center" }}
         />
       )}
     </>
