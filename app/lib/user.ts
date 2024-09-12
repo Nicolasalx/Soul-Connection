@@ -2,7 +2,9 @@ import Customers from "../back/models/customers";
 import Employees from "../back/models/employees";
 import { verifyToken } from "./dal";
 import { getCustomers } from "./dbhelper/customers";
+import { getCustomersImage } from "./dbhelper/customers_image";
 import { getEmployees } from "./dbhelper/employees";
+import { getEmployeesImage } from "./dbhelper/employees_image";
 
 export async function isManager() {
     const employeeInfos = await verifyToken()
@@ -42,4 +44,16 @@ export async function getEmployee(email: string) {
 
 export async function getCustomer(email: string) {
     return (await getCustomers()).find(e => e.email === email)
+}
+
+export async function getProfilePicture() {
+    const payload = await verifyToken()
+    if (payload) {
+        if (payload.role === 'customer') {
+            return await getCustomersImage((payload.infos as Customers).id.toString())
+        } else {
+            return await getEmployeesImage((payload.infos as Employees).id.toString())
+        }
+    }
+    return null
 }

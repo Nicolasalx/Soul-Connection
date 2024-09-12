@@ -15,6 +15,8 @@ const config: Config = {
 			grey: '#d3d3d3'
 		},
   		borderRadius: {
+  			xxl: 'calc(var(--radius) + 4px)',
+  			xl: 'calc(var(--radius) + 2px)',
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'

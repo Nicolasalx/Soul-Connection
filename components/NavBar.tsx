@@ -3,53 +3,65 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleUser, faMessage } from '@fortawesome/free-solid-svg-icons'
-import { DropdownItem, DropdownTrigger, Dropdown, DropdownMenu } from "@nextui-org/react";
+import { faMessage } from '@fortawesome/free-solid-svg-icons'
+import { DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, CircularProgress } from "@nextui-org/react";
 import ReactCountryFlag from "react-country-flag"
 import { usePathname } from 'next/navigation';
-import If from "./If";
-import { isCustomer, isManager } from "@/app/lib/user";
+import { getProfilePicture, isCustomer, isManager } from "@/app/lib/user";
+import { verifyToken } from "@/app/lib/dal";
+import Customers from "@/app/back/models/customers";
+import Employees from "@/app/back/models/employees";
 
-const SideBarCustomer = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
+const customerPages = [{url: 'home', name: 'Dashboard'}, {url: 'chat', name: 'Chat'}, {url: 'advices', name: 'Advices'}, {url: 'notes', name: 'Notes'}, {url: 'encounters', name: 'Encounters'}]
+const employeePages = [{url: 'home', name: 'Dashboard'}, {url: 'coaches', name: 'Coaches'}, {url: 'customers', name: 'Customers'}, {url: 'statistics', name: 'Statistics'}, {url: 'tips', name: 'Tips'}, {url: 'events', name: 'Events'}, {url: 'astro-compatibility', name: 'Astrology'}, {url: 'clothing', name: 'Clothing'}, {url: 'advices', name: 'Advices'}, {url: 'notes', name: 'Notes'}, {url: 'coaches-list', name: 'Coaches List'}]
+const employeeReservedPages = ['statistics', 'coaches']
+
+type UserInfos = {
+  name: string;
+  email: string;
+  role: string;
+}
+
+const BarItems = (handleLogout: () => Promise<void>, pages: { url: string, name: string }[], reservedPages: string[]) => {
   const [hasRights, setHasRights] = useState(false);
+  const [userInfos, setUserInfos] = useState<UserInfos | null>(null)
+  const [imageUrl, setImageUrl] = useState('')
   const pathname = usePathname();
 
   useEffect(() => {
     isManager().then(val => setHasRights(val));
+    verifyToken().then(payload => {
+      if (payload) {
+        const infos = payload.role === 'customer' ? payload.infos as Customers : payload.infos as Employees
+        setUserInfos({name: infos.name + ' ' + infos.surname, email: infos.email, role: payload.role as string})
+      }
+    })
+    getProfilePicture().then(res => {
+      if (res) {
+        setImageUrl(res.image)
+      }
+    })
   }, []);
 
   return (
-    <div className="w-full h-24 bg-white px-4 flex items-center border-b border-color global-outfit">
-      Soul Connection
-      <ul className="flex flex-grow gap-x-6 text-black text-l items-center justify-center global-outfit">
-        <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/customer/home">
-            <p>Home</p>
-          </Link>
-        </li>
-        <li className={pathname === "/customer/chat" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/customer/chat">
-            <p>Chat</p>
-          </Link>
-        </li>
-        <li className={pathname === "/customer/advices" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/customer/advices">
-            <p>Advices</p>
-          </Link>
-        </li>
-        <li className={pathname === "/customer/notes" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/customer/notes">
-            <p>Notes</p>
-          </Link>
-        </li>
-        <li className={pathname === "/customer/encounters" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/customer/encounters">
-            <p>Encounters</p>
-          </Link>
-        </li>
+    <div className="w-full h-24 bg-white px-4 flex flex-row gap-6 items-center justify-between border-b border-color outfit-font">
+      <h1 className="bg-transparent">Soul Connection</h1>
+      <ul className="flex flex-row gap-x-6 items-center m-auto overflow-x-scroll h-20">
+        {pages.map(page => {
+          if ((reservedPages.includes(page.url) && hasRights) ||
+              !reservedPages.includes(page.url)) {
+            return (
+              <li className={pathname.includes(page.url) ? "border-b-2 border-[#005bc1] text-[#005bc1]" : ""}>
+                <Link href={`/${userInfos?.role}/${page.url}`}>
+                  <p>{page.name}</p>
+                </Link>
+              </li>
+            )
+          }
+        })}
       </ul>
-      <div className="flex justify-end cursor-pointer space-x-3">
-        <Link href="/customer/chat">
+      <div className="flex justify-end cursor-pointer space-x-3 items-center">
+        <Link href={`/${userInfos?.role}/chat`}>
           <FontAwesomeIcon
             icon={faMessage}
             style={{color: "#5c8db2"}}
@@ -57,136 +69,22 @@ const SideBarCustomer = (handleLogout: () => Promise<void>, openDBPopup: () => v
           />
         </Link>
         <ReactCountryFlag
-          className="emojiFlag"
-          countryCode="FR"
+          countryCode="US"
           style={{
             fontSize: '1.9em',
             lineHeight: '0.8em',
+            borderRadius: '9999px',
           }}
-          aria-label="France" />
+          aria-label="English United States" />
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
-            <FontAwesomeIcon
-              icon={faCircleUser}
-              style={{color: "#5c8db2"}}
-              size="2x"
-             />
+            <Avatar showFallback src={imageUrl} fallback={<CircularProgress />}/>
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-semibold">Signed in as</p>  {/*replace with customer user name here */}
-              <p className="font-semibold">zoey@example.com</p> {/*replace with customer user email here */}
+              <p className="font-semibold">Signed in as {userInfos?.name}</p>
+              <p className="font-semibold">({userInfos?.email})</p>
             </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
-            <DropdownItem key="logout" color="danger" onClick={ handleLogout}>
-              Log Out
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </div>
-    </div>
-  );
-};
-
-const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
-  const [hasRights, setHasRights] = useState(false);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    isManager().then(val => setHasRights(val));
-  }, []);
-
-  return (
-    <div className="w-full h-24 bg-white px-4 flex gap-6 items-center border-b border-color outfit-font">
-      Soul Connection
-      <ul className="flex flex-grow gap-x-6 text-black text-l items-center  overflow-x-auto h-20">
-        <li className={pathname === "/employee/home" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/employee/home">
-            <p>Dashboard</p>
-          </Link>
-        </li>
-        {hasRights && (
-          <li className={pathname === "/employee/coaches" ? "border-b-2 border-blue-500" : ""}>
-            <Link href="/employee/coaches">
-              <p>Coaches</p>
-            </Link>
-          </li>
-        )}
-        <li className={pathname === "/employee/customers" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/employee/customers">
-            <p>Customers</p>
-          </Link>
-        </li>
-        {hasRights && (
-          <li className={pathname === "/employee/statistics" ? "border-b-2 border-blue-500" : ""}>
-            <Link href="/employee/statistics">
-              <p>Statistics</p>
-            </Link>
-          </li>
-        )}
-        <li className={pathname === "/employee/tips" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/employee/tips">
-            <p>Tips</p>
-          </Link>
-        </li>
-        <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/employee/events">
-            <p>Events</p>
-          </Link>
-        </li>
-        <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/employee/astro-compatibility">
-            <p>Astrology</p>
-          </Link>
-        </li>
-        <li className={pathname === "/employee/clothing" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/employee/clothing">
-            <p>Clothing</p>
-          </Link>
-        </li>
-        <li className={pathname === "/employee/advices" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/employee/advices">
-            <p>Advices</p>
-          </Link>
-        </li>
-        <li className={pathname === "/employee/notes" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/employee/notes">
-            <p>Notes</p>
-          </Link>
-        </li>
-      </ul>
-      <div className="flex justify-end cursor-pointer space-x-3">
-        <Link href="/employee/chat">
-          <FontAwesomeIcon
-            icon={faMessage}
-            style={{color: "#5c8db2"}}
-            size="2x"
-          />
-        </Link>
-        <ReactCountryFlag
-          className="emojiFlag"
-          countryCode="FR"
-          style={{
-            fontSize: '1.9em',
-            lineHeight: '0.8em',
-          }}
-          aria-label="France" />
-        <Dropdown placement="bottom-end">
-          <DropdownTrigger>
-            <FontAwesomeIcon
-              icon={faCircleUser}
-              style={{color: "#5c8db2"}}
-              size="2x"
-             />
-          </DropdownTrigger>
-          <DropdownMenu aria-label="Profile Actions" variant="flat">
-            <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-semibold">Signed in as</p>  {/*replace with employee user name here */}
-              <p className="font-semibold">zoey@example.com</p> {/*replace with employee user email here */}
-            </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
-            <DropdownItem key="system">System</DropdownItem>
             <DropdownItem key="logout" color="danger" onClick={ handleLogout }>
               Log Out
             </DropdownItem>
@@ -235,15 +133,7 @@ export default function NavBar() {
 
   return (
     <div className="fixed top-0 z-50 w-full h-24 bg-white text-black flex items-center justify-between px-6 border-b border-color">
-      {isCustomerType ? (
-        <>
-          { SideBarCustomer(handleLogout, openDBPopup) }
-        </>
-        ) : (
-        <>
-          { SideBarEmployee(handleLogout, openDBPopup) }
-        </>
-      )}
+      {BarItems(handleLogout, isCustomerType ? customerPages : employeePages, isCustomerType ? [] : employeeReservedPages)}
     </div>
   );
 }
