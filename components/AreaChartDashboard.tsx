@@ -53,7 +53,7 @@ const AreaChartDashboard = () => {
     <div className="container mx-auto p-4">
       <div className="stats flex justify-around mb-4">
         <NumberStat title="Customers" value={totalCustomers} />
-        <NumberStat title="Doing Meetings" value={meetingPercentage}/>
+        <NumberStat title="Doing Meetings" value={meetingPercentage} />
         <NumberStat title="Customers by Coach" value={averageClientsPerCoach} />
       </div>
 

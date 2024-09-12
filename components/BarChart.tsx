@@ -1,7 +1,14 @@
 "use client";
 
 import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
 import {
   Card,
   CardContent,
@@ -26,8 +33,17 @@ const chartConfig = {
   },
 };
 
-export function BarrChart({ data, title, yAxisKey, barKey }: {
-  data: any, title: string, yAxisKey: string, barKey: string}) {
+export function BarrChart({
+  data,
+  title,
+  yAxisKey,
+  barKey,
+}: {
+  data: any;
+  title: string;
+  yAxisKey: string;
+  barKey: string;
+}) {
   return (
     <Card>
       <CardHeader>
@@ -40,7 +56,7 @@ export function BarrChart({ data, title, yAxisKey, barKey }: {
             height={200}
             data={data}
             layout="vertical"
-            margin={{bottom: 20}}
+            margin={{ bottom: 20 }}
             barSize={30}
           >
             <CartesianGrid horizontal={false} />
@@ -57,11 +73,7 @@ export function BarrChart({ data, title, yAxisKey, barKey }: {
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
-            <Bar
-              dataKey={barKey}
-              fill={chartConfig.person.color}
-              radius={4}
-            >
+            <Bar dataKey={barKey} fill={chartConfig.person.color} radius={4}>
               <LabelList
                 dataKey={yAxisKey}
                 position="insideLeft"
@@ -83,4 +95,3 @@ export function BarrChart({ data, title, yAxisKey, barKey }: {
     </Card>
   );
 }
-

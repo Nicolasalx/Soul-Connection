@@ -1,6 +1,6 @@
-'use client'
-import {TrendingUp} from "lucide-react"
-import {CartesianGrid, Line, LineChart, XAxis} from "recharts"
+"use client";
+import { TrendingUp } from "lucide-react";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import {
   Card,
   CardContent,
@@ -8,16 +8,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 
-export const description = "A line chart with dots"
+export const description = "A line chart with dots";
 
 const chartConfig = {
   desktop: {
@@ -28,10 +28,23 @@ const chartConfig = {
     label: "Mobile",
     color: "hsl(var(--chart-2))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
-export function DotChart({data, title, description, xAxisKey, lineKey, observation}: { 
-  data: any, title: string, description: string, xAxisKey: string, lineKey: string, observation: string}) {
+export function DotChart({
+  data,
+  title,
+  description,
+  xAxisKey,
+  lineKey,
+  observation,
+}: {
+  data: any;
+  title: string;
+  description: string;
+  xAxisKey: string;
+  lineKey: string;
+  observation: string;
+}) {
   return (
     <Card>
       <CardHeader>
@@ -79,9 +92,8 @@ export function DotChart({data, title, description, xAxisKey, lineKey, observati
         <div className="flex gap-2 font-medium leading-none">
           {observation} <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
-        </div>
+        <div className="leading-none text-muted-foreground"></div>
       </CardFooter>
     </Card>
-  )
+  );
 }

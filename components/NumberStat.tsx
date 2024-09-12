@@ -1,8 +1,8 @@
-'use client'
-import React from 'react';
-import {Col, Row, Statistic} from 'antd';
-import CountUp from 'react-countup';
-import { valueType } from 'antd/es/statistic/utils';
+"use client";
+import React from "react";
+import { Col, Row, Statistic } from "antd";
+import CountUp from "react-countup";
+import { valueType } from "antd/es/statistic/utils";
 
 interface NumberStatProps {
   title: string;
@@ -10,8 +10,10 @@ interface NumberStatProps {
 }
 
 function NumberStat({ title, value }: NumberStatProps) {
-  const formatter: (value: valueType) => React.ReactNode = (value: valueType) => {
-    if (typeof value === 'number') {
+  const formatter: (value: valueType) => React.ReactNode = (
+    value: valueType
+  ) => {
+    if (typeof value === "number") {
       return <CountUp end={value} separator="," />;
     }
     return value;

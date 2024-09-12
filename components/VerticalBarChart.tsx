@@ -11,8 +11,8 @@ interface VerticalBarChartProps {
 const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
   data,
   title,
-  yAxisKey = 'coach',
-  barKey = 'value'
+  yAxisKey = "coach",
+  barKey = "value",
 }) => {
   if (!data || data.length === 0) {
     return <div>No data available</div>;
@@ -27,16 +27,11 @@ const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
     <div className="bg-white border border-gray-300 p-4 rounded-lg overflow-hidden">
       <h2 className="font-bold text-gray-600 text-xl">{title}</h2>
       <div className="w-full h-72">
-        <BarChart
-          width={400}
-          height={280}
-          data={data}
-          margin={{ bottom: 50 }}
-        >
+        <BarChart width={400} height={280} data={data} margin={{ bottom: 50 }}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis 
+          <XAxis
             dataKey={yAxisKey}
-            tick={{ textAnchor: 'end', fontSize: 12 }}
+            tick={{ textAnchor: "end", fontSize: 12 }}
             interval={0}
           />
           <YAxis />
