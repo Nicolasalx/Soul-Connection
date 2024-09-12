@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { getSelfIdCustomer } from "../../../lib/user";
 import { getCustomers } from "@/app/lib/dbhelper/customers";
+import { update_full_db } from "@/app/lib/update_db_data/update_full_db";
 
 async function getCustomerUserName() {
   const customerUserId = await getSelfIdCustomer();

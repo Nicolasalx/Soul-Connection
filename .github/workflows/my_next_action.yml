@@ -19,13 +19,12 @@ jobs:
       with:
         node-version: '18'
 
-    - name: install dependency
+    - name: install dependencies
       run: |
         npm ci
 
     - name: check compilation
       run: |
-          
           echo "## 🚀 Compilation result" >> $GITHUB_STEP_SUMMARY
           {
             set +e
