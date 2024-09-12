@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useContext, useEffect, useRef, useState } from "react";
-import type { GetRef, InputRef, SelectProps, TableProps } from "antd";
-import { Button, Form, Input, Table, Modal, Select } from "antd";
+import type { GetRef, InputRef, TableProps } from "antd";
+import { Button, Form, Input, Table, Modal } from "antd";
 import { Typography } from "antd";
-import Customers from "@/app/back/models/customers";
-import { getSelfId, isManager } from "@/app/lib/user";
-import { getCoachCustomers, getCustomers } from "@/app/lib/dbhelper/customers";
 import Advices from "@/app/back/models/advices";
 import { createNote, getNote, updateNote } from "@/app/lib/dbhelper/notes";
+import { getSelfIdCustomer } from "@/app/lib/user";
 
 type FormInstance<T> = GetRef<typeof Form<T>>;
 
@@ -110,7 +108,7 @@ interface DataType {
 
 type ColumnTypes = Exclude<TableProps["columns"], undefined>;
 
-const CustomerNotes: React.FC = () => {
+const CoachNotes: React.FC = () => {
   const [dataSource, setDataSource] = useState<DataType[]>([]);
   const { Title } = Typography;
   const [count, setCount] = useState(2);
@@ -144,20 +142,15 @@ const CustomerNotes: React.FC = () => {
     form
       .validateFields()
       .then(async (values) => {
-        if (selectedCustomer) {
-          const customer = customerData.find(
-            (cust) => cust.id.toString() === selectedCustomer
-          );
-          if (customer) {
-            const newListNotes: Advices[] = listNotes;
-            const newAdvice: Advices = {
-              title: values.name,
-              description: values.description,
-            };
-            newListNotes.push(newAdvice);
-            setListNotes(newListNotes);
-            await updateNote(customer.id.toString(), newListNotes);
-          }
+        if (await getSelfIdCustomer()) {
+          const newListNotes: Advices[] = listNotes;
+          const newAdvice: Advices = {
+            title: values.name,
+            description: values.description,
+          };
+          newListNotes.push(newAdvice);
+          setListNotes(newListNotes);
+          await updateNote((await getSelfIdCustomer()).toString(), newListNotes);
         }
 
         const newData: DataType = {
@@ -215,75 +208,30 @@ const CustomerNotes: React.FC = () => {
     };
   });
 
-  const [options, setOptions] = useState<SelectProps["options"]>([]);
-  const [customerData, setCustomerData] = useState<Customers[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<string | undefined>(
-    undefined
-  );
-
   useEffect(() => {
-    async function fetchCoachData() {
+    async function fetchData() {
       try {
-        const selfIdCoach = await getSelfId();
+        const selfCustomerId = await getSelfIdCustomer();
+        const advices = await getNote(selfCustomerId.toString());
 
-        var response;
-        if (await isManager()) {
-          response = await getCustomers();
+        if (advices) {
+          setListNotes(advices);
         } else {
-          response = await getCoachCustomers(selfIdCoach);
+          const newNotes: Advices[] = [];
+          await createNote(selfCustomerId.toString(), newNotes);
         }
-        setCustomerData(response);
-        const formattedOptions = response.map((customer: Customers) => ({
-          value: customer.id.toString(),
-          label: customer.name,
-        }));
-        setOptions(formattedOptions);
       } catch (error) {
-        console.error("Failed to fetch customer data:", error);
+        console.error("Failed to fetch customer data or notes:", error);
       }
     }
-    fetchCoachData();
+    fetchData();
   }, []);
-
-  useEffect(() => {
-    async function fetchNotesData() {
-      try {
-        if (selectedCustomer) {
-          const customer = customerData.find(
-            (cust) => cust.id.toString() === selectedCustomer
-          );
-          if (customer) {
-            const advices = await getNote(customer.id.toString());
-            if (advices) {
-              setListNotes(advices);
-            } else {
-              const newNotes: Advices[] = [];
-              await createNote(customer.id.toString(), newNotes);
-            }
-          }
-        }
-      } catch (error) {}
-    }
-    fetchNotesData();
-  }, [customerData, selectedCustomer]);
-
-  const handleChange = (value: string | string[]) => {
-    setSelectedCustomer(value as string);
-  };
 
   return (
     <div>
       <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-12">
-        Coach Notes
+        Your notes
       </h1>
-      <Select
-        size="large"
-        placeholder="Select a customer"
-        onChange={handleChange}
-        style={{ width: "100%" }}
-        options={options}
-        value={selectedCustomer}
-      />
       <Table
         components={components}
         rowClassName={() => "editable-row"}
@@ -306,7 +254,7 @@ const CustomerNotes: React.FC = () => {
           <Form.Item
             name="name"
             label="Name"
-            rules={[{ required: true, message: "Please input the name!" }]}
+            rules={[{ required: true, message: "Please input the name !" }]}
           >
             <Input />
           </Form.Item>
@@ -314,7 +262,7 @@ const CustomerNotes: React.FC = () => {
             name="description"
             label="Description"
             rules={[
-              { required: true, message: "Please input the description!" },
+              { required: true, message: "Please input the description !" },
             ]}
           >
             <Input />
@@ -325,4 +273,4 @@ const CustomerNotes: React.FC = () => {
   );
 };
 
-export default CustomerNotes;
+export default CoachNotes;
