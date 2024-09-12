@@ -51,7 +51,7 @@ const BarItems = (handleLogout: () => Promise<void>, pages: { url: string, name:
           if ((reservedPages.includes(page.url) && hasRights) ||
               !reservedPages.includes(page.url)) {
             return (
-              <li className={pathname.includes(page.url) ? "border-b-2 border-[#005bc1] text-[#005bc1]" : ""}>
+              <li key={page.url} aria-label={page.name} className={pathname.includes(page.url) ? "border-b-2 border-[#005bc1] text-[#005bc1]" : ""}>
                 <Link href={`/${userInfos?.role}/${page.url}`}>
                   <p>{page.name}</p>
                 </Link>
