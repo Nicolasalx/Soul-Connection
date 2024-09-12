@@ -101,31 +101,31 @@ const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => v
     <div className="w-full h-24 bg-white px-4 flex items-center border-b border-color outfit-font">
       Soul Connection
       <ul className="flex flex-grow gap-x-6 text-black text-l items-center justify-center">
-        <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
+        <li className={pathname === "/employee/home" ? "border-b-2 border-blue-500" : ""}>
           <Link href="/employee/home">
             <p>Dashboard</p>
           </Link>
         </li>
         {hasRights && (
-          <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
+          <li className={pathname === "/employee/coaches" ? "border-b-2 border-blue-500" : ""}>
             <Link href="/employee/coaches">
               <p>Coaches</p>
             </Link>
           </li>
         )}
-        <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
+        <li className={pathname === "/employee/customers" ? "border-b-2 border-blue-500" : ""}>
           <Link href="/employee/customers">
             <p>Customers</p>
           </Link>
         </li>
         {hasRights && (
-          <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
+          <li className={pathname === "/employee/statistics" ? "border-b-2 border-blue-500" : ""}>
             <Link href="/employee/statistics">
               <p>Statistics</p>
             </Link>
           </li>
         )}
-        <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
+        <li className={pathname === "/employee/tips" ? "border-b-2 border-blue-500" : ""}>
           <Link href="/employee/tips">
             <p>Tips</p>
           </Link>
@@ -140,17 +140,17 @@ const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => v
             <p>Astrology</p>
           </Link>
         </li>
-        <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
+        <li className={pathname === "/employee/clothing" ? "border-b-2 border-blue-500" : ""}>
           <Link href="/employee/clothing">
             <p>Clothing</p>
           </Link>
         </li>
-        <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
+        <li className={pathname === "/employee/advices" ? "border-b-2 border-blue-500" : ""}>
           <Link href="/employee/advices">
             <p>Advices</p>
           </Link>
         </li>
-        <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
+        <li className={pathname === "/employee/notes" ? "border-b-2 border-blue-500" : ""}>
           <Link href="/employee/notes">
             <p>Notes</p>
           </Link>
