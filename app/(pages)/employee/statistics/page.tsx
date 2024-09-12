@@ -136,7 +136,7 @@ function Statistics() {
         Statistics
       </h1>
 
-      <div className="grid grid-cols-3 gap-6 mb-8">
+      <div className="flex flex-col justify-center md:grid md:grid-cols-2 lg:grid-cols-3 md:justify-items-stretch gap-6 mb-8">
         <div className="bg-white shadow-lg rounded-lg p-6">
           <p className="text-lg font-semibold text-gray-700 mb-4">
             Number of customers by coach
@@ -177,9 +177,7 @@ function Statistics() {
             barKey="value"
           />
         </div>
-      </div>
 
-      <div className="grid grid-cols-3 gap-6 mb-8">
         <div className="bg-white shadow-lg rounded-lg p-6">
           <p className="text-lg font-semibold text-gray-700 mb-4">
             Number of events by coach
@@ -211,7 +209,9 @@ function Statistics() {
           <p className="text-lg font-semibold text-gray-700 mb-4">
             Astrological Sign Distribution
           </p>
-          <RadarChart data={astrologicalData} title="" />
+          <div className="flex flex-row justify-center">
+            <RadarChart data={astrologicalData} title="" />
+          </div>
         </div>
       </div>
 
