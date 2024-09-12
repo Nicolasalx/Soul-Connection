@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getSelfIdCustomer } from "../../../lib/user";
 import { getCustomers } from "@/app/lib/dbhelper/customers";
 
-export async function getCustomerUserName() {
+async function getCustomerUserName() {
   const customerUserId = await getSelfIdCustomer();
   const allCustomers = await getCustomers();
   

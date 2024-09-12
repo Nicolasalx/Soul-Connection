@@ -261,7 +261,7 @@ const CoachAdvices: React.FC = () => {
       }
     }
     fetchAdvicesData();
-  }, [selectedCustomer]);
+  }, [customerData, selectedCustomer]);
 
   const handleChange = (value: string | string[]) => {
     setSelectedCustomer(value as string);
