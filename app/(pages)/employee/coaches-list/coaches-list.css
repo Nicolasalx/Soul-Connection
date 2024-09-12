@@ -38,12 +38,12 @@
 }
 
 .custom-table-header .ant-table-cell {
-  color: gray;
+  color: #607d8b;
   font-weight: bold;
 }
 
 .custom-table-header .ant-table-thead > tr > th {
-  color: gray;
+  color: #607d8b;
   font-weight: bold;
 }
 
@@ -103,4 +103,15 @@
 
 .search-container .search-input {
   display: inline-block;
+}
+
+.bordered-header-container {
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.text-gray-blue {
+  color: #607d8b;
 }

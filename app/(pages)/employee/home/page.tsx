@@ -46,7 +46,6 @@
 //   }
 // }
 
-
 // async function mergeEventsAndCoachData() {
 //   try {
 //     const events = await getEvents();
@@ -307,7 +306,6 @@
 //     fetchData();
 //   }, []);
 
-
 //   const managerColumns = [
 //     { title: 'Index', dataIndex: 'index', key: 'index' },
 //     { title: 'Coach', dataIndex: 'coach', key: 'coach' },
@@ -321,7 +319,6 @@
 //     { title: 'Encounters', dataIndex: 'encounterCount', key: 'encounterCount' },
 //     { title: 'Total Payments', dataIndex: 'ca', key: 'ca' },
 //   ];
-
 
 //   const convertCustomerDataToCoachData = (data: CustomerData[]): CoachData[] => {
 //     return data.map((item, index) => ({
@@ -405,15 +402,18 @@
 
 // export default HomeDashboard;
 
-'use client';
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { fillCoachStatistic } from "../../../lib/dbhelper/statistics_data";
 import { getSelfId, isManager } from "../../../lib/user";
-import { getEvents } from '../../../lib/dbhelper/events';
-import { getEmployees } from '../../../lib/dbhelper/employees';
-import { getCustomers, getCustomerPayments } from '../../../lib/dbhelper/customers';
-import { getEncounters } from '../../../lib/dbhelper/encounters';
+import { getEvents } from "../../../lib/dbhelper/events";
+import { getEmployees } from "../../../lib/dbhelper/employees";
+import {
+  getCustomers,
+  getCustomerPayments,
+} from "../../../lib/dbhelper/customers";
+import { getEncounters } from "../../../lib/dbhelper/encounters";
 import VerticalBarChartDashboard from "@/components/VerticalBarChartDashboard";
 import AreaChartDashboard from "@/components/AreaChartDashboard";
 import { DonutChart } from "@/components/DonutChart";
@@ -431,14 +431,13 @@ function HomeDashboard() {
         const makeStatistics = async () => {
           const coachsStatistics = await fillCoachStatistic();
 
-        makeStatistics();
+          makeStatistics();
+        };
       }
     };
-  }
 
     fetchData();
   }, []);
-
 
   return (
     <>
@@ -451,7 +450,9 @@ function HomeDashboard() {
 
       <div className="flex space-x-6 mb-8">
         <div className="w-1/3 bg-white shadow-lg rounded-lg p-6 w-[100%]">
-          <p className="text-lg font-semibold text-gray-700 ">Customers Overview</p>
+          <p className="text-lg font-semibold text-gray-700 ">
+            Customers Overview
+          </p>
           <AreaChartDashboard />
           {/* au moment de mettre la data pour TOUS LES CHARTS, {hasRights ? managerDataChart : coachDataChart , mettre les deux options, je mettrais des idées de graphs sur discord*/}
         </div>
@@ -465,12 +466,17 @@ function HomeDashboard() {
 
       <div className="flex space-x-6 mb-8">
         <div className="w-1/3 bg-white shadow-lg rounded-lg p-6 w-[100%]">
-          <p className="text-lg font-semibold text-gray-700 ">Most Customers Countries</p>
-          <VerticalBarChartDashboard /> {/* changer la couleur de la barre en fonction du pays jeudi soir lié après liaison avec la db*/}
+          <p className="text-lg font-semibold text-gray-700 ">
+            Most Customers Countries
+          </p>
+          <VerticalBarChartDashboard />{" "}
+          {/* changer la couleur de la barre en fonction du pays jeudi soir lié après liaison avec la db*/}
         </div>
         <div className="w-1/3 bg-white shadow-lg rounded-lg p-6 w-[70%]">
           <div className="mb-4">
-            <p className="text-lg font-semibold text-gray-700">Meeting Top Sources (DonutChart, voir code comments!)</p>
+            <p className="text-lg font-semibold text-gray-700">
+              Meeting Top Sources (DonutChart, voir code comments!)
+            </p>
           </div>
           {/* <DonutChart /> sur le mockup, meeting top sources mais je suis pas sure qu'on ai l'info, on peut mettre autre chose, si vous avez des idées */}
         </div>
@@ -479,13 +485,16 @@ function HomeDashboard() {
       <If condition={hasRights}>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-500">
-            For more details, visit the <a href="/employee/statistics" className="text-blue-500 underline">Statistics</a> page.
+            For more details, visit the{" "}
+            <a href="/employee/statistics" className="text-blue-500 underline">
+              Statistics
+            </a>{" "}
+            page.
           </p>
         </div>
       </If>
     </>
   );
-};
+}
 
 export default HomeDashboard;
-

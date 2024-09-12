@@ -85,6 +85,124 @@ const BarItems = (handleLogout: () => Promise<void>, pages: { url: string, name:
               <p className="font-semibold">Signed in as {userInfos?.name}</p>
               <p className="font-semibold">({userInfos?.email})</p>
             </DropdownItem>
+<<<<<<< HEAD
+=======
+            <DropdownItem key="settings">My Settings</DropdownItem>
+            <DropdownItem key="system">System</DropdownItem>
+            <DropdownItem key="logout" color="danger" onClick={ handleLogout}>
+              Log Out
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+    </div>
+  );
+};
+
+const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
+  const [hasRights, setHasRights] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    isManager().then(val => setHasRights(val));
+  }, []);
+
+  return (
+    <div className="w-full h-24 bg-white px-4 flex gap-6 items-center border-b border-color outfit-font">
+      Soul Connection
+      <ul className="flex flex-grow gap-x-6 text-black text-l items-center  overflow-x-auto h-20">
+        <li className={pathname === "/employee/home" ? "border-b-2 border-blue-500" : ""}>
+          <Link href="/employee/home">
+            <p>Dashboard</p>
+          </Link>
+        </li>
+        {hasRights && (
+          <li className={pathname === "/employee/coaches" ? "border-b-2 border-blue-500" : ""}>
+            <Link href="/employee/coaches">
+              <p>Coaches</p>
+            </Link>
+          </li>
+        )}
+        <li className={pathname === "/employee/customers-list" ? "border-b-2 border-blue-500" : ""}>
+          <Link href="/employee/coaches-list">
+            <p>Coaches List</p>
+          </Link>
+        </li>
+        <li className={pathname === "/employee/customers" ? "border-b-2 border-blue-500" : ""}>
+          <Link href="/employee/customers">
+            <p>Customers</p>
+          </Link>
+        </li>
+        {hasRights && (
+          <li className={pathname === "/employee/statistics" ? "border-b-2 border-blue-500" : ""}>
+            <Link href="/employee/statistics">
+              <p>Statistics</p>
+            </Link>
+          </li>
+        )}
+        <li className={pathname === "/employee/tips" ? "border-b-2 border-blue-500" : ""}>
+          <Link href="/employee/tips">
+            <p>Tips</p>
+          </Link>
+        </li>
+        <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
+          <Link href="/employee/events">
+            <p>Events</p>
+          </Link>
+        </li>
+        <li className={pathname === "/customer/home" ? "border-b-2 border-blue-500" : ""}>
+          <Link href="/employee/astro-compatibility">
+            <p>Astrology</p>
+          </Link>
+        </li>
+        <li className={pathname === "/employee/clothing" ? "border-b-2 border-blue-500" : ""}>
+          <Link href="/employee/clothing">
+            <p>Clothing</p>
+          </Link>
+        </li>
+        <li className={pathname === "/employee/advices" ? "border-b-2 border-blue-500" : ""}>
+          <Link href="/employee/advices">
+            <p>Advices</p>
+          </Link>
+        </li>
+        <li className={pathname === "/employee/notes" ? "border-b-2 border-blue-500" : ""}>
+          <Link href="/employee/notes">
+            <p>Notes</p>
+          </Link>
+        </li>
+      </ul>
+      <div className="flex justify-end cursor-pointer space-x-3">
+        <Link href="/employee/chat">
+          <FontAwesomeIcon
+            icon={faMessage}
+            style={{color: "#5c8db2"}}
+            size="2x"
+          />
+        </Link>
+        <ReactCountryFlag
+          className="emojiFlag"
+          countryCode="FR"
+          style={{
+            fontSize: '1.9em',
+            lineHeight: '0.8em',
+          }}
+          aria-label="France" />
+        <Dropdown placement="bottom-end">
+          <DropdownTrigger>
+            <FontAwesomeIcon
+              icon={faCircleUser}
+              style={{color: "#5c8db2"}}
+              size="2x"
+             />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownItem key="profile" className="h-14 gap-2">
+              <p className="font-semibold">Signed in as</p>  {/*replace with employee user name here */}
+              <p className="font-semibold">zoey@example.com</p> {/*replace with employee user email here */}
+            </DropdownItem>
+            <DropdownItem key="settings">My Settings</DropdownItem>
+            <DropdownItem key="system">System</DropdownItem>
+>>>>>>> f51fa0ffe5e475a6a58726af381b7b804df1fda1
             <DropdownItem key="logout" color="danger" onClick={ handleLogout }>
               Log Out
             </DropdownItem>

@@ -1,16 +1,21 @@
-'use client'
-import { Divider, Modal, Select, Table } from 'antd';
-import React, { useEffect, useState } from 'react';
-import type { SelectProps, TableColumnsType } from 'antd';
-import { getEmployees } from '../../../lib/dbhelper/employees';
-import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '../../../lib/dbhelper/customers';
-import { ObjectId } from 'mongodb';
-import { isManager } from '../../../lib/user';
-import EmployeeForm from './employeeForm';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSquarePlus } from '@fortawesome/free-solid-svg-icons'
+"use client";
 
-var mongoose = require('mongoose');
+import { Modal, Select, Table } from "antd";
+import React, { useEffect, useState } from "react";
+import type { SelectProps, TableColumnsType } from "antd";
+import { getEmployees } from "../../../lib/dbhelper/employees";
+import {
+  assignCoachToCustomer,
+  getCustomers,
+  unassignCoachToCustomer,
+} from "../../../lib/dbhelper/customers";
+import { ObjectId } from "mongodb";
+import { isManager } from "../../../lib/user";
+import EmployeeForm from "./employeeForm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+
+var mongoose = require("mongoose");
 
 interface DataTypeCoaches {
   key: React.Key;
@@ -32,9 +37,13 @@ interface CustomerType {
 function Coaches() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState<DataTypeCoaches[]>([]);
-  const [customerOptions, setCustomerOptions] = useState<SelectProps['options']>([]);
-  const [prevSelections, setPrevSelections] = useState<{ [key: string]: string[] }>({});
-  const [hasRights, setHasRights] = useState(false)
+  const [customerOptions, setCustomerOptions] = useState<
+    SelectProps["options"]
+  >([]);
+  const [prevSelections, setPrevSelections] = useState<{
+    [key: string]: string[];
+  }>({});
+  const [hasRights, setHasRights] = useState(false);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -44,20 +53,27 @@ function Coaches() {
     const dataEmployees = await getEmployees();
     const dataCustomers = await getCustomers();
 
-    const formattedData = dataEmployees.filter(e => e.work === 'Coach').map(employee => {
-      const coachCustomers = dataCustomers
-        .filter((customer: CustomerType) => customer.coach_id === employee.id)
-        .map((customer: CustomerType) => customer._id ? customer._id.toString() : '');
+    const formattedData = dataEmployees
+      .filter((e) => e.work === "Coach")
+      .map((employee) => {
+        const coachCustomers = dataCustomers
+          .filter((customer: CustomerType) => customer.coach_id === employee.id)
+          .map((customer: CustomerType) =>
+            customer._id ? customer._id.toString() : ""
+          );
 
-      return {
-        key: employee.id,
-        id: employee.id,
-        name: `${employee.name} ${employee.surname}`,
-        birthDate: employee.birth_date || 'N/A',
-        customers: coachCustomers,
-        lastConnection: employee.last_connection ? new Date(employee.last_connection).toLocaleString() : 'N/A',
-      };
-    }).sort((a, b) => a.id < b.id ? -1 : 1);
+        return {
+          key: employee.id,
+          id: employee.id,
+          name: `${employee.name} ${employee.surname}`,
+          birthDate: employee.birth_date || "N/A",
+          customers: coachCustomers,
+          lastConnection: employee.last_connection
+            ? new Date(employee.last_connection).toLocaleString()
+            : "N/A",
+        };
+      })
+      .sort((a, b) => (a.id < b.id ? -1 : 1));
 
     setData(formattedData as any);
 
@@ -73,23 +89,30 @@ function Coaches() {
     const dataCustomers = await getCustomers();
     const formattedCustomers = dataCustomers.map((customer: CustomerType) => ({
       label: `${customer.name} ${customer.surname}`,
-      value: `${customer._id ? customer._id.toString() : ''}`,
+      value: `${customer._id ? customer._id.toString() : ""}`,
     }));
 
     setCustomerOptions(formattedCustomers);
   };
 
   useEffect(() => {
-    isManager().then(val => setHasRights(val))
+    isManager().then((val) => setHasRights(val));
     fetchEmployeesData();
     fetchCustomersData();
   }, []);
 
-  const handleCustomerChange = async (values: string[], record: DataTypeCoaches) => {
+  const handleCustomerChange = async (
+    values: string[],
+    record: DataTypeCoaches
+  ) => {
     const coachId = Number(record.id);
     const previousValues = prevSelections[record.id] || [];
-    const addedValues = values.filter(value => !previousValues.includes(value));
-    const removedValues = previousValues.filter(value => !values.includes(value));
+    const addedValues = values.filter(
+      (value) => !previousValues.includes(value)
+    );
+    const removedValues = previousValues.filter(
+      (value) => !values.includes(value)
+    );
 
     for (const value of addedValues) {
       try {
@@ -109,9 +132,9 @@ function Coaches() {
       }
     }
 
-    setPrevSelections(prev => ({
+    setPrevSelections((prev) => ({
       ...prev,
-      [record.id]: values
+      [record.id]: values,
     }));
 
     fetchCustomersData();
@@ -119,25 +142,25 @@ function Coaches() {
 
   const columns: TableColumnsType<DataTypeCoaches> = [
     {
-      title: '#',
-      dataIndex: 'id',
+      title: "#",
+      dataIndex: "id",
     },
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: "Name",
+      dataIndex: "name",
     },
     {
-      title: 'Birth Date',
-      dataIndex: 'birthDate',
+      title: "Birth Date",
+      dataIndex: "birthDate",
     },
     {
-      title: hasRights ? 'Customers' : '',
-      dataIndex: 'customers',
+      title: hasRights ? "Customers" : "",
+      dataIndex: "customers",
       render: (_, record) => (
         <Select
           mode="multiple"
           allowClear
-          style={{ width: '100%' }}
+          style={{ width: "100%" }}
           placeholder="Select customers"
           defaultValue={record.customers}
           onChange={(value) => handleCustomerChange(value, record)}
@@ -146,8 +169,8 @@ function Coaches() {
       ),
     },
     {
-      title: 'Last Connection',
-      dataIndex: 'lastConnection',
+      title: "Last Connection",
+      dataIndex: "lastConnection",
     },
   ];
 
@@ -161,11 +184,11 @@ function Coaches() {
       </h2>
 
       <div className="flex justify-end mb-6">
-        <FontAwesomeIcon 
-        icon={faSquarePlus} 
-        style={{color: "#3f72ca",}}
-        onClick={showModal}
-        size="3x"
+        <FontAwesomeIcon
+          icon={faSquarePlus}
+          style={{ color: "#3f72ca" }}
+          onClick={showModal}
+          size="3x"
         />
       </div>
       <div>
@@ -175,19 +198,19 @@ function Coaches() {
           size="large"
           rowKey="id"
           pagination={{ pageSize: 6 }}
-          scroll={{ x: '100%' }}
+          scroll={{ x: "100%" }}
         />
         <Modal
           title="Add Employee"
           open={isModalOpen}
-          okButtonProps={{hidden: true}}
+          okButtonProps={{ hidden: true }}
           onCancel={() => setIsModalOpen(false)}
         >
-        <EmployeeForm />
-      </Modal>
-    </div>
+          <EmployeeForm />
+        </Modal>
+      </div>
     </>
   );
 }
 
-  export default Coaches;
+export default Coaches;
