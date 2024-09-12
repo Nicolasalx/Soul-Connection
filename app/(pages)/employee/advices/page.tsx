@@ -1,14 +1,18 @@
-'use client'
+"use client";
 
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import type { GetRef, InputRef, SelectProps, TableProps } from 'antd';
-import { Button, Form, Input, Popconfirm, Table, Modal, Select } from 'antd';
-import { Typography } from 'antd';
-import Customers from '@/app/back/models/customers';
-import { getSelfId, isManager } from '@/app/lib/user';
-import { getCoachCustomers, getCustomers } from '@/app/lib/dbhelper/customers';
-import { createAdvice, getAdvice, updateAdvice } from '@/app/lib/dbhelper/advices';
-import Advices from '@/app/back/models/advices';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import type { GetRef, InputRef, SelectProps, TableProps } from "antd";
+import { Button, Form, Input, Popconfirm, Table, Modal, Select } from "antd";
+import { Typography } from "antd";
+import Customers from "@/app/back/models/customers";
+import { getSelfId, isManager } from "@/app/lib/user";
+import { getCoachCustomers, getCustomers } from "@/app/lib/dbhelper/customers";
+import {
+  createAdvice,
+  getAdvice,
+  updateAdvice,
+} from "@/app/lib/dbhelper/advices";
+import Advices from "@/app/back/models/advices";
 
 type FormInstance<T> = GetRef<typeof Form<T>>;
 
@@ -73,7 +77,7 @@ const EditableCell: React.FC<React.PropsWithChildren<EditableCellProps>> = ({
       toggleEdit();
       handleSave({ ...record, ...values });
     } catch (errInfo) {
-      console.log('Save failed:', errInfo);
+      console.log("Save failed:", errInfo);
     }
   };
 
@@ -108,7 +112,7 @@ interface DataType {
   description: string;
 }
 
-type ColumnTypes = Exclude<TableProps['columns'], undefined>;
+type ColumnTypes = Exclude<TableProps["columns"], undefined>;
 
 const CoachAdvices: React.FC = () => {
   const [dataSource, setDataSource] = useState<DataType[]>([]);
@@ -118,21 +122,23 @@ const CoachAdvices: React.FC = () => {
   const [form] = Form.useForm();
   const [listAdvices, setListAdvices] = useState<Advices[]>([]);
 
-  const defaultColumns: (ColumnTypes[number] & { editable?: boolean; dataIndex: string })[] = [
+  const defaultColumns: (ColumnTypes[number] & {
+    editable?: boolean;
+    dataIndex: string;
+  })[] = [
     {
-      title: 'title',
-      dataIndex: 'title',
-      key: 'title',
+      title: "title",
+      dataIndex: "title",
+      key: "title",
       editable: true,
     },
     {
-      title: 'description',
-      dataIndex: 'description',
-      key: 'description',
+      title: "description",
+      dataIndex: "description",
+      key: "description",
       editable: true,
-    }
+    },
   ];
-
 
   const handleAdd = () => {
     setIsModalVisible(true);
@@ -143,35 +149,36 @@ const CoachAdvices: React.FC = () => {
       .validateFields()
       .then(async (values) => {
         if (selectedCustomer) {
-          const customer = customerData.find(cust => cust.id.toString() === selectedCustomer);
+          const customer = customerData.find(
+            (cust) => cust.id.toString() === selectedCustomer
+          );
           if (customer) {
             const newListAdvices: Advices[] = listAdvices;
             const newAdvice: Advices = {
               title: values.name,
-              description: values.description
+              description: values.description,
             };
             newListAdvices.push(newAdvice);
             setListAdvices(newListAdvices);
             await updateAdvice(customer.id.toString(), newListAdvices);
           }
         }
-  
+
         const newData: DataType = {
           key: count,
           name: values.name,
           description: values.description,
         };
-  
+
         setDataSource([...dataSource, newData]);
         setCount(count + 1);
         setIsModalVisible(false);
         form.resetFields();
       })
-      .catch(info => {
-        console.log('Validate Failed:', info);
+      .catch((info) => {
+        console.log("Validate Failed:", info);
       });
   };
-  
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -212,9 +219,11 @@ const CoachAdvices: React.FC = () => {
     };
   });
 
-  const [options, setOptions] = useState<SelectProps['options']>([]);
+  const [options, setOptions] = useState<SelectProps["options"]>([]);
   const [customerData, setCustomerData] = useState<Customers[]>([]);
-  const [selectedCustomer, setSelectedCustomer] = useState<string | undefined>(undefined);
+  const [selectedCustomer, setSelectedCustomer] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     async function fetchCoachData() {
@@ -226,7 +235,6 @@ const CoachAdvices: React.FC = () => {
           response = await getCustomers();
         } else {
           response = await getCoachCustomers(selfIdCoach);
-          
         }
         setCustomerData(response);
         const formattedOptions = response.map((customer: Customers) => ({
@@ -235,7 +243,7 @@ const CoachAdvices: React.FC = () => {
         }));
         setOptions(formattedOptions);
       } catch (error) {
-        console.error('Failed to fetch customer data:', error);
+        console.error("Failed to fetch customer data:", error);
       }
     }
     fetchCoachData();
@@ -245,7 +253,9 @@ const CoachAdvices: React.FC = () => {
     async function fetchAdvicesData() {
       try {
         if (selectedCustomer) {
-          const customer = customerData.find(cust => cust.id.toString() === selectedCustomer);
+          const customer = customerData.find(
+            (cust) => cust.id.toString() === selectedCustomer
+          );
           if (customer) {
             const advices = await getAdvice(customer.id.toString());
             if (advices) {
@@ -256,9 +266,7 @@ const CoachAdvices: React.FC = () => {
             }
           }
         }
-      } catch (error) {
-   
-      }
+      } catch (error) {}
     }
     fetchAdvicesData();
   }, [customerData, selectedCustomer]);
@@ -270,19 +278,19 @@ const CoachAdvices: React.FC = () => {
   return (
     <div>
       <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-12">
-          Coach Advices
+        Coach Advices
       </h1>
       <Select
         size="large"
         placeholder="Select a customer"
         onChange={handleChange}
-        style={{ width: '100%' }}
+        style={{ width: "100%" }}
         options={options}
         value={selectedCustomer}
       />
       <Table
         components={components}
-        rowClassName={() => 'editable-row'}
+        rowClassName={() => "editable-row"}
         bordered
         dataSource={listAdvices}
         columns={columns as ColumnTypes}
@@ -302,14 +310,16 @@ const CoachAdvices: React.FC = () => {
           <Form.Item
             name="name"
             label="Name"
-            rules={[{ required: true, message: 'Please input the name!' }]}
+            rules={[{ required: true, message: "Please input the name!" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="description"
             label="Description"
-            rules={[{ required: true, message: 'Please input the description!' }]}
+            rules={[
+              { required: true, message: "Please input the description!" },
+            ]}
           >
             <Input />
           </Form.Item>
