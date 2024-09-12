@@ -113,14 +113,14 @@ const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => v
             </Link>
           </li>
         )}
+        <li className={pathname === "/employee/customers-list" ? "border-b-2 border-blue-500" : ""}>
+          <Link href="/employee/coaches-list">
+            <p>Coaches List</p>
+          </Link>
+        </li>
         <li className={pathname === "/employee/customers" ? "border-b-2 border-blue-500" : ""}>
           <Link href="/employee/customers">
             <p>Customers</p>
-          </Link>
-        </li>
-        <li className={pathname === "/employee/customers-list" ? "border-b-2 border-blue-500" : ""}>
-          <Link href="/employee/customers-list">
-            <p>Customers List</p>
           </Link>
         </li>
         {hasRights && (

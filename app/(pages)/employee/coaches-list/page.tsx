@@ -3,8 +3,7 @@ import { Divider, Dropdown, Menu, Table, Select, Button, Input } from 'antd';
 import React, { useState } from 'react';
 import type { TableColumnsType } from 'antd';
 import { EllipsisOutlined, EyeOutlined, DeleteOutlined, SearchOutlined, FilterOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import './customers-list.css';
-import Image from 'next/image';
+import './coaches-list.css';
 
 function Coaches() {
   interface DataType {
