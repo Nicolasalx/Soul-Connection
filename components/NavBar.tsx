@@ -1,17 +1,22 @@
-'use client';
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Button, Modal, ModalBody, ModalContent, ModalFooter } from "@nextui-org/react";
-import { usePathname } from 'next/navigation';
+import {
+  Button,
+} from "@nextui-org/react";
+import { usePathname } from "next/navigation";
 import If from "./If";
 import { isCustomer, isManager } from "@/app/lib/user";
 
-const SideBarCustomer = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
+const SideBarCustomer = (
+  handleLogout: () => Promise<void>,
+  openDBPopup: () => void
+) => {
   const [hasRights, setHasRights] = useState(false);
 
   useEffect(() => {
-    isManager().then(val => setHasRights(val));
+    isManager().then((val) => setHasRights(val));
   }, []);
 
   return (
@@ -55,13 +60,16 @@ const SideBarCustomer = (handleLogout: () => Promise<void>, openDBPopup: () => v
       </div>
     </div>
   );
-}
+};
 
-const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => void) => {
+const SideBarEmployee = (
+  handleLogout: () => Promise<void>,
+  openDBPopup: () => void
+) => {
   const [hasRights, setHasRights] = useState(false);
 
   useEffect(() => {
-    isManager().then(val => setHasRights(val));
+    isManager().then((val) => setHasRights(val));
   }, []);
 
   return (
@@ -82,6 +90,11 @@ const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => v
         <li>
           <Link href="/employee/customers">
             <p>Customers</p>
+          </Link>
+        </li>
+        <li>
+          <Link href="/employee/customers-list">
+            <p>Customers List</p>
           </Link>
         </li>
         <If condition={hasRights}>
@@ -139,7 +152,7 @@ const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => v
       </div>
     </div>
   );
-}
+};
 
 export default function NavBar() {
   const pathname = usePathname();
@@ -154,26 +167,26 @@ export default function NavBar() {
     setIsDBPopupOpen(false);
   };
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     try {
-      const res = await fetch('/api/employees/logout', { method: 'POST' });
+      const res = await fetch("/api/employees/logout", { method: "POST" });
       if (res.status === 307) {
         window.location.reload();
       }
-    } catch(err) {
+    } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
-    const checkUserType = async () =>{
+    const checkUserType = async () => {
       const userType = await isCustomer();
       setCustomerType(userType);
-    }
+    };
     checkUserType();
   }, []);
 
-  if (pathname === '/login') {
+  if (pathname === "/login") {
     return null;
   }
 
@@ -181,13 +194,9 @@ export default function NavBar() {
     <div>
       <div className="fixed w-full h-24 bg-white text-black flex items-center justify-between px-6 border-b border-color">
         {isCustomerType ? (
-          <>
-            { SideBarCustomer(handleLogout, openDBPopup) }
-          </>
-          ) : (
-          <>
-            { SideBarEmployee(handleLogout, openDBPopup) }
-          </>
+          <>{SideBarCustomer(handleLogout, openDBPopup)}</>
+        ) : (
+          <>{SideBarEmployee(handleLogout, openDBPopup)}</>
         )}
       </div>
     </div>

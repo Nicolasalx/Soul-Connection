@@ -35,7 +35,7 @@ function Coaches() {
         <div className="coach-profile-container">
           <div className="profile-icon-container">
             {record.profileImage ? (
-              <Image
+              <img
                 src="https://wordpress-content.vroomly.com/wp-content/uploads/2023/03/koenigsegg.jpg"
                 alt="Profile"
                 className="profile-icon"
@@ -112,6 +112,7 @@ function Coaches() {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [searchVisible, setSearchVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [nbCoaches, setNbCoaches] = useState<number>(0); // Get Number of Coaches
 
   const rowSelection = {
     selectedRowKeys,
@@ -126,6 +127,13 @@ function Coaches() {
 
   return (
     <>
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-6xl">
+        Coaches List
+      </h1>
+      <h3 className="font-bold text-gray-600 mb-2 ">
+        You have a total {nbCoaches} coaches.
+      </h3>
+
       <div className="header-container">
         <div className="left-header">
           <Select defaultValue="Bulk Action" className="bulk-action-select" style={{ width: 120 }} placeholder="Bulk Action">
@@ -162,8 +170,8 @@ function Coaches() {
 
       <Table 
         className="custom-table-header"
-        columns={columnsNewPage} 
-        dataSource={dataNewPage} 
+        columns={columnsNewPage}
+        dataSource={dataNewPage}
         rowSelection={rowSelection}
       />
     </>
