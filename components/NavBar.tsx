@@ -128,7 +128,7 @@ const BarItems = (
             <Avatar
               showFallback
               src={imageUrl}
-              fallback={<CircularProgress />}
+              fallback={<CircularProgress aria-label="Loading..." />}
             />
           </DropdownTrigger>
           <DropdownMenu aria-label="Profile Actions" variant="flat">
