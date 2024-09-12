@@ -33,9 +33,8 @@ export default function Advices() {
 
   return (
     <>
-      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-6xl">
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl">
         Tips
-        <Divider style={{ borderColor: '#d3d3d3' }} />
       </h1>
 
       <Accordion>

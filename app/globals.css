@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400&display=swap');
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -28,6 +29,20 @@ h1 {
 
 h2 {
   @apply text-xl font-bold;
+}
+
+@font-face {
+  font-family: 'Outfit';
+  src: url('fonts/Outfit/Outfit-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+.global-outfit {
+  font-family: "Outfit", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
 }
 
 @layer utilities {

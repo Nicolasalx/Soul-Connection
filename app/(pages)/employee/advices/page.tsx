@@ -269,7 +269,9 @@ const CoachAdvices: React.FC = () => {
 
   return (
     <div>
-      <Title>Coach Advices</Title>
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-12">
+          Coach Advices
+      </h1>
       <Select
         size="large"
         placeholder="Select a customer"
