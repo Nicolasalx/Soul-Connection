@@ -93,13 +93,13 @@ const BarItems = (
                 key={page.url}
                 aria-label={page.name}
                 className={
-                  pathname.includes(page.url)
+                  ('/' + userInfos?.role + '/' + page.url) === pathname
                     ? "border-b-2 border-[#005bc1] text-[#005bc1]"
                     : ""
                 }
               >
                 <Link href={`/${userInfos?.role}/${page.url}`}>
-                  <p>{page.name}</p>
+                  <p className='text-center'>{page.name}</p>
                 </Link>
               </li>
             );
