@@ -110,7 +110,7 @@ interface DataType {
 
 type ColumnTypes = Exclude<TableProps["columns"], undefined>;
 
-const CoachNotes: React.FC = () => {
+const CustomerNotes: React.FC = () => {
   const [dataSource, setDataSource] = useState<DataType[]>([]);
   const { Title } = Typography;
   const [count, setCount] = useState(2);
@@ -295,7 +295,7 @@ const CoachNotes: React.FC = () => {
         Add a row
       </Button>
       <Modal
-        title="Add a new row"
+        title="Add a new note"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -325,4 +325,4 @@ const CoachNotes: React.FC = () => {
   );
 };
 
-export default CoachNotes;
+export default CustomerNotes;

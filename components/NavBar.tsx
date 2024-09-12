@@ -126,6 +126,7 @@ const BarItems = (
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <Avatar
+              aria-label="Profile"
               showFallback
               src={imageUrl}
               fallback={<CircularProgress aria-label="Loading..." />}
