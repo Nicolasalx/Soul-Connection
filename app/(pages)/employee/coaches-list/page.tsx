@@ -135,7 +135,7 @@ function Coaches() {
 
   return (
     <>
-      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-4xl">
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl">
         Coaches List
       </h1>
       <h3 className="font-bold text-gray-blue mb-2">

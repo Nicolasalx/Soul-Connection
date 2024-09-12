@@ -177,7 +177,7 @@ function Coaches() {
   return (
     <>
       <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl">
-        Coaches List
+        Coaches
       </h1>
       <h2 className="text-gray-400 mb-5" style={{ fontSize: "1rem" }}>
         You have [db Value] of coaches.

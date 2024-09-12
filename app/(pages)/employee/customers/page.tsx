@@ -195,12 +195,11 @@ function ClientProfile() {
 
   return (
     <>
-      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl">
         Customers
-        <Divider style={{ borderColor: "#d3d3d3" }} />
       </h1>
       <div className="flex flex-col md:flex-row gap-4 mb-6">
-        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+        <div className="flex-1 col-span-2 bg-white shadow-lg p-6 rounded-[2px]">
           <Select
             size="large"
             placeholder="Select a customer"
@@ -247,9 +246,8 @@ function ClientProfile() {
         </div>
       </div>
 
-      <Divider style={{ borderColor: "#d3d3d3" }} />
       <div className="flex flex-col gap-4 lg:flex-row mt-4">
-        <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+        <div className="flex-1 col-span-2 bg-white shadow-lg p-6 rounded-[2px]">
           <Table
             title={() => "Meetings"}
             footer={() => ""}
@@ -263,7 +261,7 @@ function ClientProfile() {
         </div>
 
         <If condition={hasRights}>
-          <div className="flex-1 bg-gray-100 border border-gray-300 p-6 rounded-lg">
+          <div className="flex-1 col-span-2 bg-white shadow-lg p-6 rounded-[2px]">
             <Table
               title={() => "Payments"}
               footer={() => ""}

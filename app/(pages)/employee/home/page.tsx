@@ -120,11 +120,16 @@ function HomeDashboard() {
         </div>
 
           <div className="col-span-3 bg-white shadow-lg rounded-lg p-6 w-full">
-            <p className="text-lg font-semibold mb-8 text-gray-700 ">
+            <p className="text-lg font-semibold mb-2 text-gray-700 ">
               Most Customers Countries
             </p>
-            <VerticalBarChartDashboard />{" "}
-            {/* changer la couleur de la barre en fonction du pays jeudi soir lié après liaison avec la db*/}
+            <p className="text-md text-foreground-400 mb-8">
+                During the last 30 days.
+              </p>
+            <VerticalBarChartDashboard
+               color={chartsColors[0]}
+               />
+            {" "}
           </div>
           <div className="col-span-2 bg-white shadow-lg rounded-lg p-6 w-full">
             <div className="mb-4">
