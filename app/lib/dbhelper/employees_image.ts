@@ -45,7 +45,6 @@ export async function createEmployeesImage(id: string, imageBlob: Blob): Promise
       throw new Error('Failed to upload image');
     }
 
-    console.log('Image uploaded successfully');
   } catch (error) {
     console.error('Error creating image:', error);
   }
@@ -62,7 +61,6 @@ export async function deleteEmployeesImage(id: string): Promise<void> {
       throw new Error(errorData.message || 'Failed to delete image');
     }
 
-    console.log('Image deleted successfully');
   } catch (error) {
     console.error('Error deleting image:', error);
   }

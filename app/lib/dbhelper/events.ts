@@ -4,7 +4,6 @@ import { sc_db_api } from "./db_api_instance";
 export async function getEvents(): Promise<Events[]> {
   try {
     const response = await sc_db_api.get('/events');
-    console.log('Fetched events:', response.data);
     return response.data;
   } catch (error) {
     console.error('Failed to fetch events:', error);

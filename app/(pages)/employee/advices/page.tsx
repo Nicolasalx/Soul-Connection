@@ -239,7 +239,7 @@ const CoachAdvices: React.FC = () => {
         setCustomerData(response);
         const formattedOptions = response.map((customer: Customers) => ({
           value: customer.id.toString(),
-          label: customer.name,
+          label: (customer.name + " " + customer.surname),
         }));
         setOptions(formattedOptions);
       } catch (error) {

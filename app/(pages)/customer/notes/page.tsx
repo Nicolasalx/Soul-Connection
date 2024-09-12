@@ -2,8 +2,11 @@
 
 import React, { useContext, useEffect, useRef, useState } from "react";
 import type { GetRef, InputRef, TableProps } from "antd";
-import { Button, Form, Input, Popconfirm, Table, Modal } from "antd";
+import { Button, Form, Input, Table, Modal } from "antd";
 import { Typography } from "antd";
+import Advices from "@/app/back/models/advices";
+import { createNote, getNote, updateNote } from "@/app/lib/dbhelper/notes";
+import { getSelfIdCustomer } from "@/app/lib/user";
 
 type FormInstance<T> = GetRef<typeof Form<T>>;
 
@@ -105,58 +108,29 @@ interface DataType {
 
 type ColumnTypes = Exclude<TableProps["columns"], undefined>;
 
-const Notes: React.FC = () => {
-  const [dataSource, setDataSource] = useState<DataType[]>([
-    {
-      key: "0",
-      name: "Edward King 0",
-      description: "Description 0",
-    },
-    {
-      key: "1",
-      name: "Edward King 1",
-      description: "Description 1",
-    },
-  ]);
-
+const CoachNotes: React.FC = () => {
+  const [dataSource, setDataSource] = useState<DataType[]>([]);
   const { Title } = Typography;
-
   const [count, setCount] = useState(2);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-
-  const handleDelete = (key: React.Key) => {
-    const newData = dataSource.filter((item) => item.key !== key);
-    setDataSource(newData);
-  };
+  const [listNotes, setListNotes] = useState<Advices[]>([]);
 
   const defaultColumns: (ColumnTypes[number] & {
     editable?: boolean;
     dataIndex: string;
   })[] = [
     {
-      title: "name",
-      dataIndex: "name",
-      width: "30%",
+      title: "title",
+      dataIndex: "title",
+      key: "title",
       editable: true,
     },
     {
       title: "description",
       dataIndex: "description",
+      key: "description",
       editable: true,
-    },
-    {
-      title: "operation",
-      dataIndex: "operation",
-      render: (_, record) =>
-        dataSource.length >= 1 ? (
-          <Popconfirm
-            title="Sure to delete?"
-            onConfirm={() => handleDelete(record.key)}
-          >
-            <a>Delete</a>
-          </Popconfirm>
-        ) : null,
     },
   ];
 
@@ -164,15 +138,27 @@ const Notes: React.FC = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
+  const handleOk = async () => {
     form
       .validateFields()
-      .then((values) => {
+      .then(async (values) => {
+        if (await getSelfIdCustomer()) {
+          const newListNotes: Advices[] = listNotes;
+          const newAdvice: Advices = {
+            title: values.name,
+            description: values.description,
+          };
+          newListNotes.push(newAdvice);
+          setListNotes(newListNotes);
+          await updateNote((await getSelfIdCustomer()).toString(), newListNotes);
+        }
+
         const newData: DataType = {
           key: count,
           name: values.name,
           description: values.description,
         };
+
         setDataSource([...dataSource, newData]);
         setCount(count + 1);
         setIsModalVisible(false);
@@ -222,21 +208,42 @@ const Notes: React.FC = () => {
     };
   });
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const selfCustomerId = await getSelfIdCustomer();
+        const advices = await getNote(selfCustomerId.toString());
+
+        if (advices) {
+          setListNotes(advices);
+        } else {
+          const newNotes: Advices[] = [];
+          await createNote(selfCustomerId.toString(), newNotes);
+        }
+      } catch (error) {
+        console.error("Failed to fetch customer data or notes:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <div>
-      <Title>Customer Notes</Title>
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-12">
+        Your notes
+      </h1>
       <Table
         components={components}
         rowClassName={() => "editable-row"}
         bordered
-        dataSource={dataSource}
+        dataSource={listNotes}
         columns={columns as ColumnTypes}
       />
       <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
         Add a row
       </Button>
       <Modal
-        title="Add a new row"
+        title="Add a new note"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -247,7 +254,7 @@ const Notes: React.FC = () => {
           <Form.Item
             name="name"
             label="Name"
-            rules={[{ required: true, message: "Please input the name!" }]}
+            rules={[{ required: true, message: "Please input the name !" }]}
           >
             <Input />
           </Form.Item>
@@ -255,7 +262,7 @@ const Notes: React.FC = () => {
             name="description"
             label="Description"
             rules={[
-              { required: true, message: "Please input the description!" },
+              { required: true, message: "Please input the description !" },
             ]}
           >
             <Input />
@@ -266,4 +273,4 @@ const Notes: React.FC = () => {
   );
 };
 
-export default Notes;
+export default CoachNotes;

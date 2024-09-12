@@ -4,7 +4,6 @@ import { sc_db_api } from "./db_api_instance";
 export async function getEncounters(): Promise<Encounters[]> {
   try {
     const response = await sc_db_api.get('/encounters');
-    console.log('getEncounters response:', response.data)
     return response.data;
   } catch (error) {
     throw new Error('Failed to fetch encounters');
