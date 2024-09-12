@@ -8,6 +8,7 @@ import { getSelfId, isManager } from "@/app/lib/user";
 import { getCoachCustomers, getCustomers } from "@/app/lib/dbhelper/customers";
 import Advices from "@/app/back/models/advices";
 import { createNote, getNote } from "@/app/lib/dbhelper/notes";
+import ContentWrapper from "@/components/ContentWrapper";
 
 type ColumnTypes = Exclude<TableProps["columns"], undefined>;
 
@@ -93,20 +94,22 @@ const CoachNotes: React.FC = () => {
       <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-12">
         Coach Notes
       </h1>
-      <Select
-        size="large"
-        placeholder="Select a customer"
-        onChange={handleChange}
-        style={{ width: "100%" }}
-        options={options}
-        value={selectedCustomer}
-      />
-      <Table
-        rowClassName={() => "read-only-row"}
-        bordered
-        dataSource={listNotes}
-        columns={defaultColumns as ColumnTypes}
-      />
+      <ContentWrapper>
+        <Select
+          size="large"
+          placeholder="Select a customer"
+          onChange={handleChange}
+          style={{ width: "100%" }}
+          options={options}
+          value={selectedCustomer}
+        />
+        <Table
+          rowClassName={() => "read-only-row"}
+          bordered
+          dataSource={listNotes}
+          columns={defaultColumns as ColumnTypes}
+        />
+      </ContentWrapper>
     </div>
   );
 };

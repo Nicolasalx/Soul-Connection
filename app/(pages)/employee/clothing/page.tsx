@@ -8,6 +8,7 @@ import type { SelectProps } from "antd/es/select";
 import { getClothesImage } from "@/app/lib/dbhelper/clothes_image";
 import { getCustomers } from "@/app/lib/dbhelper/customers";
 import Image from "next/image";
+import ContentWrapper from "@/components/ContentWrapper";
 
 type Direction = "Left" | "Right";
 
@@ -232,115 +233,117 @@ const Clothing: React.FC = () => {
       <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-12">
         Clothes
       </h1>
-      <Select
-        allowClear
-        className="mb-5 w-full"
-        placeholder="Select a customer"
-        options={customerOptions}
-        onChange={handleChange}
-      />
+      <ContentWrapper>
+        <Select
+          allowClear
+          className="mb-5 w-full"
+          placeholder="Select a customer"
+          options={customerOptions}
+          onChange={handleChange}
+        />
 
-      {selectedCustomer ? (
-        <div className="flex flex-col items-center max-h-[calc(100vh - 60px)] overflow-y-auto w-full">
-          <div className="flex items-center justify-center mb-2">
-            {currentHatUrl ? (
-              <>
-                <LeftOutlined
-                  className="text-4xl cursor-pointer"
-                  onClick={() => handleArrowClick("Left", "hat")}
-                />
-                <Image
-                  src={currentHatUrl}
-                  alt="Hat Image"
-                  width={108}
-                  height={192}
-                  className="mx-4 rounded"
-                />
-                <RightOutlined
-                  className="text-4xl cursor-pointer"
-                  onClick={() => handleArrowClick("Right", "hat")}
-                />
-              </>
-            ) : (
-              <Empty description="No hat available" />
-            )}
-          </div>
+        {selectedCustomer ? (
+          <div className="flex flex-col items-center max-h-[calc(100vh - 60px)] overflow-y-auto w-full">
+            <div className="flex items-center justify-center mb-2">
+              {currentHatUrl ? (
+                <>
+                  <LeftOutlined
+                    className="text-4xl cursor-pointer"
+                    onClick={() => handleArrowClick("Left", "hat")}
+                  />
+                  <Image
+                    src={currentHatUrl}
+                    alt="Hat Image"
+                    width={108}
+                    height={192}
+                    className="mx-4 rounded"
+                  />
+                  <RightOutlined
+                    className="text-4xl cursor-pointer"
+                    onClick={() => handleArrowClick("Right", "hat")}
+                  />
+                </>
+              ) : (
+                <Empty description="No hat available" />
+              )}
+            </div>
 
-          <div className="flex items-center justify-center mb-2">
-            {currentTopUrl ? (
-              <>
-                <LeftOutlined
-                  className="text-4xl cursor-pointer"
-                  onClick={() => handleArrowClick("Left", "top")}
-                />
-                <Image
-                  src={currentTopUrl}
-                  alt="Top Image"
-                  width={108}
-                  height={192}
-                  className="mx-4 rounded"
-                />
-                <RightOutlined
-                  className="text-4xl cursor-pointer"
-                  onClick={() => handleArrowClick("Right", "top")}
-                />
-              </>
-            ) : (
-              <Empty description="No top available" />
-            )}
-          </div>
+            <div className="flex items-center justify-center mb-2">
+              {currentTopUrl ? (
+                <>
+                  <LeftOutlined
+                    className="text-4xl cursor-pointer"
+                    onClick={() => handleArrowClick("Left", "top")}
+                  />
+                  <Image
+                    src={currentTopUrl}
+                    alt="Top Image"
+                    width={108}
+                    height={192}
+                    className="mx-4 rounded"
+                  />
+                  <RightOutlined
+                    className="text-4xl cursor-pointer"
+                    onClick={() => handleArrowClick("Right", "top")}
+                  />
+                </>
+              ) : (
+                <Empty description="No top available" />
+              )}
+            </div>
 
-          <div className="flex items-center justify-center mb-2">
-            {currentBottomUrl ? (
-              <>
-                <LeftOutlined
-                  className="text-4xl cursor-pointer"
-                  onClick={() => handleArrowClick("Left", "bottom")}
-                />
-                <Image
-                  src={currentBottomUrl}
-                  alt="Bottom Image"
-                  width={108}
-                  height={192}
-                  className="mx-4 rounded"
-                />
-                <RightOutlined
-                  className="text-4xl cursor-pointer"
-                  onClick={() => handleArrowClick("Right", "bottom")}
-                />
-              </>
-            ) : (
-              <Empty description="No bottom available" />
-            )}
-          </div>
+            <div className="flex items-center justify-center mb-2">
+              {currentBottomUrl ? (
+                <>
+                  <LeftOutlined
+                    className="text-4xl cursor-pointer"
+                    onClick={() => handleArrowClick("Left", "bottom")}
+                  />
+                  <Image
+                    src={currentBottomUrl}
+                    alt="Bottom Image"
+                    width={108}
+                    height={192}
+                    className="mx-4 rounded"
+                  />
+                  <RightOutlined
+                    className="text-4xl cursor-pointer"
+                    onClick={() => handleArrowClick("Right", "bottom")}
+                  />
+                </>
+              ) : (
+                <Empty description="No bottom available" />
+              )}
+            </div>
 
-          <div className="flex items-center justify-center mb-2">
-            {currentShoesUrl ? (
-              <>
-                <LeftOutlined
-                  className="text-4xl cursor-pointer"
-                  onClick={() => handleArrowClick("Left", "shoes")}
-                />
-                <Image
-                  src={currentShoesUrl}
-                  alt="Shoes Image"
-                  width={108}
-                  height={192}
-                  className="mx-4 rounded"
-                />
-                <RightOutlined
-                  className="text-4xl cursor-pointer"
-                  onClick={() => handleArrowClick("Right", "shoes")}
-                />
-              </>
-            ) : (
-              <Empty description="No shoes available" />
-            )}
+            <div className="flex items-center justify-center mb-2">
+              {currentShoesUrl ? (
+                <>
+                  <LeftOutlined
+                    className="text-4xl cursor-pointer"
+                    onClick={() => handleArrowClick("Left", "shoes")}
+                  />
+                  <Image
+                    src={currentShoesUrl}
+                    alt="Shoes Image"
+                    width={108}
+                    height={192}
+                    className="mx-4 rounded"
+                  />
+                  <RightOutlined
+                    className="text-4xl cursor-pointer"
+                    onClick={() => handleArrowClick("Right", "shoes")}
+                  />
+                </>
+              ) : (
+                <Empty description="No shoes available" />
+              )}
+            </div>
           </div>
-        </div>
-      ) : (
-        <p>No customer selected</p>
-      )}
+        ) : (
+          <p>No customer selected</p>
+        )}
+      </ContentWrapper>
     </>
   );
 };

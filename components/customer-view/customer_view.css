@@ -1,0 +1,95 @@
+/* Styles pour le conteneur principal */
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+/* Styles pour le panneau gauche */
+.left-pane {
+  flex: 1;
+  margin-right: 20px;
+}
+
+/* Styles pour le panneau droit */
+.right-pane {
+  flex: 2;
+}
+
+/* Styles pour les titres de tableau */
+.table-title {
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #183662; /* Couleur du texte du titre */
+}
+
+/* Styles pour les icônes */
+.icon {
+  font-size: 20px;
+  margin: 0 10px;
+  color: #183662;
+}
+
+/* Styles pour la division entre les sections */
+.divider {
+  border: 1px solid #d9d9d9;
+  margin: 20px 0;
+}
+
+/* Styles pour les informations dans le panneau gauche */
+.info-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.info-item {
+  text-align: center;
+}
+
+.info-number {
+  font-size: 24px;
+  color: #183662;
+}
+
+.info-item p {
+  margin: 0;
+  color: #607d8b;
+  font-weight: bold;
+}
+
+/* Styles pour les détails courts dans le panneau gauche */
+.details-container {
+  margin: 20px 0;
+}
+
+.details-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.details-label {
+  font-weight: bold;
+  color: #607d8b;
+}
+
+.details-value {
+  color: #183662;
+}
+
+/* Styles pour la bordure autour des tableaux */
+.customers-details-table .ant-table {
+  border: 1px solid #d9d9d9; /* Bordure autour du tableau */
+}
+
+.customers-details-table .ant-table-thead > tr > th,
+.customers-details-table .ant-table-tbody > tr > td {
+  border: 1px solid #d9d9d9; /* Bordure pour les cellules du tableau */
+}
+
+.customers-details-table .ant-table-thead > tr > th {
+  border-bottom: 2px solid #d9d9d9; /* Bordure inférieure pour les en-têtes */
+}

@@ -13,6 +13,7 @@ import {
   updateAdvice,
 } from "@/app/lib/dbhelper/advices";
 import Advices from "@/app/back/models/advices";
+import ContentWrapper from "@/components/ContentWrapper";
 
 type FormInstance<T> = GetRef<typeof Form<T>>;
 
@@ -239,7 +240,7 @@ const CoachAdvices: React.FC = () => {
         setCustomerData(response);
         const formattedOptions = response.map((customer: Customers) => ({
           value: customer.id.toString(),
-          label: (customer.name + " " + customer.surname),
+          label: customer.name + " " + customer.surname,
         }));
         setOptions(formattedOptions);
       } catch (error) {
@@ -280,51 +281,53 @@ const CoachAdvices: React.FC = () => {
       <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-12">
         Coach Advices
       </h1>
-      <Select
-        size="large"
-        placeholder="Select a customer"
-        onChange={handleChange}
-        style={{ width: "100%" }}
-        options={options}
-        value={selectedCustomer}
-      />
-      <Table
-        components={components}
-        rowClassName={() => "editable-row"}
-        bordered
-        dataSource={listAdvices}
-        columns={columns as ColumnTypes}
-      />
-      <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
-        Add a row
-      </Button>
-      <Modal
-        title="Add a new row"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okText="Add"
-        cancelText="Cancel"
-      >
-        <Form form={form} layout="vertical" name="form_in_modal">
-          <Form.Item
-            name="name"
-            label="Name"
-            rules={[{ required: true, message: "Please input the name!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="description"
-            label="Description"
-            rules={[
-              { required: true, message: "Please input the description!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
+      <ContentWrapper>
+        <Select
+          size="large"
+          placeholder="Select a customer"
+          onChange={handleChange}
+          style={{ width: "100%" }}
+          options={options}
+          value={selectedCustomer}
+        />
+        <Table
+          components={components}
+          rowClassName={() => "editable-row"}
+          bordered
+          dataSource={listAdvices}
+          columns={columns as ColumnTypes}
+        />
+        <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
+          Add a row
+        </Button>
+        <Modal
+          title="Add a new row"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          okText="Add"
+          cancelText="Cancel"
+        >
+          <Form form={form} layout="vertical" name="form_in_modal">
+            <Form.Item
+              name="name"
+              label="Name"
+              rules={[{ required: true, message: "Please input the name!" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="description"
+              label="Description"
+              rules={[
+                { required: true, message: "Please input the description!" },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          </Form>
+        </Modal>
+      </ContentWrapper>
     </div>
   );
 };

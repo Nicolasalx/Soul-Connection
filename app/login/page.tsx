@@ -8,7 +8,7 @@ import { FormEvent, useState } from 'react'
 export default function Login() {
   const [isLoginLoading, setIsLoginLoading] = useState(false)
   const [isRegisteredLoading, setIsRegisteredLoading] = useState(false)
-  const [isEmployee, setIsEmployee] = useState(true) // employee by default
+  const [isEmployee, setIsEmployee] = useState(true)
   const [loginError, setLoginError] = useState<string | null>(null)
   const [registerError, setRegisterError] = useState<string | null>(null)
 
