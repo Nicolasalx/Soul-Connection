@@ -48,15 +48,15 @@ const SideBarCustomer = (handleLogout: () => Promise<void>, openDBPopup: () => v
           </Link>
         </li>
       </ul>
-      <div className="flex justify-end space-x-3">
-        <Link href="/employee/chat">
-          <FontAwesomeIcon 
+      <div className="flex justify-end cursor-pointer space-x-3">
+        <Link href="/customer/chat">
+          <FontAwesomeIcon
             icon={faMessage}
             style={{color: "#5c8db2"}}
             size="2x"
           />
         </Link>
-        <ReactCountryFlag 
+        <ReactCountryFlag
           className="emojiFlag"
           countryCode="FR"
           style={{
@@ -66,7 +66,7 @@ const SideBarCustomer = (handleLogout: () => Promise<void>, openDBPopup: () => v
           aria-label="France" />
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
-            <FontAwesomeIcon 
+            <FontAwesomeIcon
               icon={faCircleUser}
               style={{color: "#5c8db2"}}
               size="2x"
@@ -98,9 +98,9 @@ const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => v
   }, []);
 
   return (
-    <div className="w-full h-24 bg-white px-4 flex items-center border-b border-color outfit-font">
+    <div className="w-full h-24 bg-white px-4 flex gap-6 items-center border-b border-color outfit-font">
       Soul Connection
-      <ul className="flex flex-grow gap-x-6 text-black text-l items-center justify-center">
+      <ul className="flex flex-grow gap-x-6 text-black text-l items-center  overflow-x-auto h-20">
         <li className={pathname === "/employee/home" ? "border-b-2 border-blue-500" : ""}>
           <Link href="/employee/home">
             <p>Dashboard</p>
@@ -156,15 +156,15 @@ const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => v
           </Link>
         </li>
       </ul>
-      <div className="flex justify-end space-x-3">
+      <div className="flex justify-end cursor-pointer space-x-3">
         <Link href="/employee/chat">
-          <FontAwesomeIcon 
+          <FontAwesomeIcon
             icon={faMessage}
             style={{color: "#5c8db2"}}
             size="2x"
           />
         </Link>
-        <ReactCountryFlag 
+        <ReactCountryFlag
           className="emojiFlag"
           countryCode="FR"
           style={{
@@ -174,7 +174,7 @@ const SideBarEmployee = (handleLogout: () => Promise<void>, openDBPopup: () => v
           aria-label="France" />
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
-            <FontAwesomeIcon 
+            <FontAwesomeIcon
               icon={faCircleUser}
               style={{color: "#5c8db2"}}
               size="2x"
@@ -234,18 +234,16 @@ export default function NavBar() {
   }
 
   return (
-    <div>
-      <div className="fixed w-full h-24 bg-white text-black flex items-center justify-between px-6 border-b border-color">
-        {isCustomerType ? (
-          <>
-            { SideBarCustomer(handleLogout, openDBPopup) }
-          </>
-          ) : (
-          <>
-            { SideBarEmployee(handleLogout, openDBPopup) }
-          </>
-        )}
-      </div>
+    <div className="fixed top-0 z-50 w-full h-24 bg-white text-black flex items-center justify-between px-6 border-b border-color">
+      {isCustomerType ? (
+        <>
+          { SideBarCustomer(handleLogout, openDBPopup) }
+        </>
+        ) : (
+        <>
+          { SideBarEmployee(handleLogout, openDBPopup) }
+        </>
+      )}
     </div>
   );
 }

@@ -26,7 +26,7 @@
 //       if (!acc[encounter.customer_id]) {
 //         acc[encounter.customer_id] = { total: 0, count: 0 };
 //       }
-//       acc[encounter.customer_id].total += encounter.rating; 
+//       acc[encounter.customer_id].total += encounter.rating;
 //       acc[encounter.customer_id].count += 1;
 //       return acc;
 //     }, {} as Record<string, { total: number; count: number }>);
@@ -267,11 +267,11 @@
 //           } catch (error) {
 //             console.error("error: ", error);
 //           }
-          
+
 //           const customerPaymentsData = await mergeCustomerPayments();
 //           setMergeCustomerPaymentsData(customerPaymentsData);
 //         };
-        
+
 //         makeStatistics();
 //       } else {
 //         try {
@@ -355,7 +355,7 @@
 //               observation="Top 5 Coaches by Customer Count"
 //             />
 //           ) : (
-//             <VerticalBarChart 
+//             <VerticalBarChart
 //               data={averageRatingsByCustomer}
 //               title="Average encounters rating by each client"
 //               yAxisKey="coach"
@@ -381,9 +381,9 @@
 //           )}
 //         </div>
 //         <div className="w-1/3 h-100">
-//             <ScrollingList 
+//             <ScrollingList
 //             data={hasRights ? scrollingListManagerData : scrollingListCoachesData}
-//             /> 
+//             />
 //         </div>
 //       </div>
 //       <div className="mt-2">
@@ -417,6 +417,7 @@ import { getEncounters } from '../../../lib/dbhelper/encounters';
 import VerticalBarChartDashboard from "@/components/VerticalBarChartDashboard";
 import AreaChartDashboard from "@/components/AreaChartDashboard";
 import { DonutChart } from "@/components/DonutChart";
+import If from "@/components/If";
 
 function HomeDashboard() {
   const [hasRights, setHasRights] = useState(false);
@@ -429,7 +430,7 @@ function HomeDashboard() {
       if (managerRights) {
         const makeStatistics = async () => {
           const coachsStatistics = await fillCoachStatistic();
-         
+
         makeStatistics();
       }
     };
@@ -475,11 +476,13 @@ function HomeDashboard() {
         </div>
       </div>
 
-      <div className="mt-4 text-center">
-        <p className="text-sm text-gray-500">
-          Pour plus de détails, visitez la page <a href="/statistics" className="text-blue-500 underline">Statistics</a>.
-        </p>
-      </div>
+      <If condition={hasRights}>
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-500">
+            For more details, visit the <a href="/employee/statistics" className="text-blue-500 underline">Statistics</a> page.
+          </p>
+        </div>
+      </If>
     </>
   );
 };
