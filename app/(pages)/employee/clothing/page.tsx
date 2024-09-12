@@ -57,10 +57,7 @@ const Clothing: React.FC = () => {
       setTops([]);
       setBottoms([]);
       setShoes([]);
-      setCurrentHatIndex(0);
-      setCurrentTopIndex(0);
-      setCurrentBottomIndex(0);
-      setCurrentShoesIndex(0);
+      resetIndexes();
     }
   };
 
@@ -94,6 +91,15 @@ const Clothing: React.FC = () => {
     setBottoms(bottomList);
     setShoes(shoesList);
 
+    setImages(hatList, topList, bottomList, shoesList);
+  };
+
+  const setImages = async (
+    hatList: any[],
+    topList: any[],
+    bottomList: any[],
+    shoesList: any[]
+  ) => {
     try {
       if (hatList.length > 0) {
         const hatUrl = await getClothesImage(hatList[0]?.id);
@@ -139,6 +145,13 @@ const Clothing: React.FC = () => {
     }
   };
 
+  const resetIndexes = () => {
+    setCurrentHatIndex(0);
+    setCurrentTopIndex(0);
+    setCurrentBottomIndex(0);
+    setCurrentShoesIndex(0);
+  };
+
   useEffect(() => {
     fetchCustomersData();
   }, []);
@@ -150,9 +163,8 @@ const Clothing: React.FC = () => {
     let newIndex: number;
     switch (category) {
       case "hat":
-        newIndex =
-          direction === "Left" ? currentHatIndex - 1 : currentHatIndex + 1;
-        setCurrentHatIndex(Math.max(0, Math.min(hats.length - 1, newIndex)));
+        newIndex = getNextIndex(currentHatIndex, hats.length, direction);
+        setCurrentHatIndex(newIndex);
 
         try {
           const urlHat = await getClothesImage(hats[newIndex]?.id);
@@ -163,9 +175,8 @@ const Clothing: React.FC = () => {
         break;
 
       case "top":
-        newIndex =
-          direction === "Left" ? currentTopIndex - 1 : currentTopIndex + 1;
-        setCurrentTopIndex(Math.max(0, Math.min(tops.length - 1, newIndex)));
+        newIndex = getNextIndex(currentTopIndex, tops.length, direction);
+        setCurrentTopIndex(newIndex);
 
         try {
           const urlTop = await getClothesImage(tops[newIndex]?.id);
@@ -176,13 +187,8 @@ const Clothing: React.FC = () => {
         break;
 
       case "bottom":
-        newIndex =
-          direction === "Left"
-            ? currentBottomIndex - 1
-            : currentBottomIndex + 1;
-        setCurrentBottomIndex(
-          Math.max(0, Math.min(bottoms.length - 1, newIndex))
-        );
+        newIndex = getNextIndex(currentBottomIndex, bottoms.length, direction);
+        setCurrentBottomIndex(newIndex);
 
         try {
           const urlBottom = await getClothesImage(bottoms[newIndex]?.id);
@@ -193,9 +199,8 @@ const Clothing: React.FC = () => {
         break;
 
       case "shoes":
-        newIndex =
-          direction === "Left" ? currentShoesIndex - 1 : currentShoesIndex + 1;
-        setCurrentShoesIndex(Math.max(0, Math.min(shoes.length - 1, newIndex)));
+        newIndex = getNextIndex(currentShoesIndex, shoes.length, direction);
+        setCurrentShoesIndex(newIndex);
 
         try {
           const urlShoes = await getClothesImage(shoes[newIndex]?.id);
@@ -207,6 +212,18 @@ const Clothing: React.FC = () => {
 
       default:
         break;
+    }
+  };
+
+  const getNextIndex = (
+    currentIndex: number,
+    length: number,
+    direction: Direction
+  ): number => {
+    if (direction === "Left") {
+      return Math.max(0, currentIndex - 1);
+    } else {
+      return Math.min(length - 1, currentIndex + 1);
     }
   };
 
@@ -235,8 +252,8 @@ const Clothing: React.FC = () => {
                 <Image
                   src={currentHatUrl}
                   alt="Hat Image"
-                  width={150}
-                  height={150}
+                  width={108}
+                  height={192}
                   className="mx-4 rounded"
                 />
                 <RightOutlined
@@ -259,8 +276,8 @@ const Clothing: React.FC = () => {
                 <Image
                   src={currentTopUrl}
                   alt="Top Image"
-                  width={150}
-                  height={150}
+                  width={108}
+                  height={192}
                   className="mx-4 rounded"
                 />
                 <RightOutlined
@@ -283,8 +300,8 @@ const Clothing: React.FC = () => {
                 <Image
                   src={currentBottomUrl}
                   alt="Bottom Image"
-                  width={150}
-                  height={150}
+                  width={108}
+                  height={192}
                   className="mx-4 rounded"
                 />
                 <RightOutlined
@@ -307,8 +324,8 @@ const Clothing: React.FC = () => {
                 <Image
                   src={currentShoesUrl}
                   alt="Shoes Image"
-                  width={150}
-                  height={150}
+                  width={108}
+                  height={192}
                   className="mx-4 rounded"
                 />
                 <RightOutlined
