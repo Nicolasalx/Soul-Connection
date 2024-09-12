@@ -35,7 +35,7 @@ const AreaChartDashboard = () => {
         const encounters = await getEncounters();
         const totalMeetings = encounters.length;
 
-        const meetingPercentage = (totalMeetings / totalCustomers) * 6.12;
+        const meetingPercentage = (totalMeetings / totalCustomers) * 6.12; // to change if time
         setMeetingPercentage(meetingPercentage);
 
         const coaches = await getCoachs();
