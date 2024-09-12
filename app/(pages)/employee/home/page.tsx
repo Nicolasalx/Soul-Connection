@@ -406,17 +406,10 @@
 
 import React, { useEffect, useState } from "react";
 import { fillCoachStatistic } from "../../../lib/dbhelper/statistics_data";
-import { getSelfId, isManager } from "../../../lib/user";
-import { getEvents } from "../../../lib/dbhelper/events";
-import { getEmployees } from "../../../lib/dbhelper/employees";
-import {
-  getCustomers,
-  getCustomerPayments,
-} from "../../../lib/dbhelper/customers";
-import { getEncounters } from "../../../lib/dbhelper/encounters";
+import { isManager } from "../../../lib/user";
+
 import VerticalBarChartDashboard from "@/components/VerticalBarChartDashboard";
 import AreaChartDashboard from "@/components/AreaChartDashboard";
-import { DonutChart } from "@/components/DonutChart";
 import If from "@/components/If";
 
 function HomeDashboard() {
