@@ -38,11 +38,3 @@ jobs:
               exit 0
             fi
           }
-
-    - name: Push to mirror repository
-      if: success()
-      run: |
-        git remote add mirror git@github.com:Nicolasalx/Soul-Connection.git
-        git push mirror main
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
