@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import type { GetRef, InputRef, TableProps } from 'antd';
-import { Button, Form, Input, Popconfirm, Table, Modal } from 'antd';
-import { Typography } from 'antd';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import type { GetRef, InputRef, TableProps } from "antd";
+import { Button, Form, Input, Popconfirm, Table, Modal } from "antd";
+import { Typography } from "antd";
 
 type FormInstance<T> = GetRef<typeof Form<T>>;
 
@@ -68,7 +68,7 @@ const EditableCell: React.FC<React.PropsWithChildren<EditableCellProps>> = ({
       toggleEdit();
       handleSave({ ...record, ...values });
     } catch (errInfo) {
-      console.log('Save failed:', errInfo);
+      console.log("Save failed:", errInfo);
     }
   };
 
@@ -103,19 +103,19 @@ interface DataType {
   description: string;
 }
 
-type ColumnTypes = Exclude<TableProps['columns'], undefined>;
+type ColumnTypes = Exclude<TableProps["columns"], undefined>;
 
 const Notes: React.FC = () => {
   const [dataSource, setDataSource] = useState<DataType[]>([
     {
-      key: '0',
-      name: 'Edward King 0',
-      description: 'Description 0',
+      key: "0",
+      name: "Edward King 0",
+      description: "Description 0",
     },
     {
-      key: '1',
-      name: 'Edward King 1',
-      description: 'Description 1',
+      key: "1",
+      name: "Edward King 1",
+      description: "Description 1",
     },
   ]);
 
@@ -124,30 +124,36 @@ const Notes: React.FC = () => {
   const [count, setCount] = useState(2);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-  
+
   const handleDelete = (key: React.Key) => {
     const newData = dataSource.filter((item) => item.key !== key);
     setDataSource(newData);
   };
 
-  const defaultColumns: (ColumnTypes[number] & { editable?: boolean; dataIndex: string })[] = [
+  const defaultColumns: (ColumnTypes[number] & {
+    editable?: boolean;
+    dataIndex: string;
+  })[] = [
     {
-      title: 'name',
-      dataIndex: 'name',
-      width: '30%',
+      title: "name",
+      dataIndex: "name",
+      width: "30%",
       editable: true,
     },
     {
-      title: 'description',
-      dataIndex: 'description',
+      title: "description",
+      dataIndex: "description",
       editable: true,
     },
     {
-      title: 'operation',
-      dataIndex: 'operation',
+      title: "operation",
+      dataIndex: "operation",
       render: (_, record) =>
         dataSource.length >= 1 ? (
-          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={() => handleDelete(record.key)}
+          >
             <a>Delete</a>
           </Popconfirm>
         ) : null,
@@ -161,7 +167,7 @@ const Notes: React.FC = () => {
   const handleOk = () => {
     form
       .validateFields()
-      .then(values => {
+      .then((values) => {
         const newData: DataType = {
           key: count,
           name: values.name,
@@ -172,8 +178,8 @@ const Notes: React.FC = () => {
         setIsModalVisible(false);
         form.resetFields();
       })
-      .catch(info => {
-        console.log('Validate Failed:', info);
+      .catch((info) => {
+        console.log("Validate Failed:", info);
       });
   };
 
@@ -221,7 +227,7 @@ const Notes: React.FC = () => {
       <Title>Customer Notes</Title>
       <Table
         components={components}
-        rowClassName={() => 'editable-row'}
+        rowClassName={() => "editable-row"}
         bordered
         dataSource={dataSource}
         columns={columns as ColumnTypes}
@@ -241,14 +247,16 @@ const Notes: React.FC = () => {
           <Form.Item
             name="name"
             label="Name"
-            rules={[{ required: true, message: 'Please input the name!' }]}
+            rules={[{ required: true, message: "Please input the name!" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="description"
             label="Description"
-            rules={[{ required: true, message: 'Please input the description!' }]}
+            rules={[
+              { required: true, message: "Please input the description!" },
+            ]}
           >
             <Input />
           </Form.Item>

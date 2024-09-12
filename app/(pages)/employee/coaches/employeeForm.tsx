@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import type { FormProps } from 'antd';
-import { Form, Input, DatePicker, message } from 'antd';
-import React from 'react';
-import { createEmployee } from '../../../lib/dbhelper/employees';
+import type { FormProps } from "antd";
+import { Form, Input, DatePicker, message } from "antd";
+import React from "react";
+import { createEmployee } from "../../../lib/dbhelper/employees";
 import Employees from "@/app/back/models/employees";
-import dayjs from 'dayjs';
-import bcrypt from 'bcryptjs';
-import { Button } from '@nextui-org/react';
+import dayjs from "dayjs";
+import bcrypt from "bcryptjs";
+import { Button } from "@nextui-org/react";
 
 type FieldType = {
   email: string;
@@ -22,17 +22,19 @@ type FieldType = {
 const EmployeeForm: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
-  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
-    const key = 'updatable';
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    const key = "updatable";
 
     messageApi.open({
       key,
-      type: 'loading',
-      content: 'Submitting...',
+      type: "loading",
+      content: "Submitting...",
     });
 
     const uuid = Math.floor(Math.random() * 10 ** 15);
-    const formattedBirthDate = values.birthDate ? dayjs(values.birthDate).format('YYYY-MM-DD') : '';
+    const formattedBirthDate = values.birthDate
+      ? dayjs(values.birthDate).format("YYYY-MM-DD")
+      : "";
 
     const hashedPassword = await bcrypt.hash(values.password, 10);
 
@@ -52,27 +54,29 @@ const EmployeeForm: React.FC = () => {
       createEmployee(employee);
       messageApi.open({
         key,
-        type: 'success',
-        content: 'Employee created successfully!',
+        type: "success",
+        content: "Employee created successfully!",
         duration: 2,
       });
     } catch (error) {
       messageApi.open({
         key,
-        type: 'error',
-        content: 'Failed to create employee. Please try again.',
+        type: "error",
+        content: "Failed to create employee. Please try again.",
         duration: 2,
       });
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+    errorInfo
+  ) => {
     messageApi.open({
-      type: 'error',
-      content: 'Please fill in all required fields correctly.',
+      type: "error",
+      content: "Please fill in all required fields correctly.",
       duration: 2,
     });
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
   return (
@@ -92,8 +96,8 @@ const EmployeeForm: React.FC = () => {
           label="E-mail"
           name="email"
           rules={[
-            { required: true, message: 'Please input your e-mail' },
-            { type: 'email', message: 'Please enter a valid email' },
+            { required: true, message: "Please input your e-mail" },
+            { type: "email", message: "Please enter a valid email" },
           ]}
         >
           <Input />
@@ -102,7 +106,7 @@ const EmployeeForm: React.FC = () => {
         <Form.Item<FieldType>
           label="Password"
           name="password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[{ required: true, message: "Please input your password!" }]}
         >
           <Input.Password />
         </Form.Item>
@@ -110,7 +114,7 @@ const EmployeeForm: React.FC = () => {
         <Form.Item<FieldType>
           label="Name"
           name="name"
-          rules={[{ required: true, message: 'Please input your name' }]}
+          rules={[{ required: true, message: "Please input your name" }]}
         >
           <Input />
         </Form.Item>
@@ -118,7 +122,7 @@ const EmployeeForm: React.FC = () => {
         <Form.Item<FieldType>
           label="Surname"
           name="surname"
-          rules={[{ required: true, message: 'Please input your surname' }]}
+          rules={[{ required: true, message: "Please input your surname" }]}
         >
           <Input />
         </Form.Item>
@@ -126,7 +130,7 @@ const EmployeeForm: React.FC = () => {
         <Form.Item
           label="Birth Date"
           name="birthDate"
-          rules={[{ required: true, message: 'Please input your birth date' }]}
+          rules={[{ required: true, message: "Please input your birth date" }]}
         >
           <DatePicker />
         </Form.Item>
@@ -134,7 +138,7 @@ const EmployeeForm: React.FC = () => {
         <Form.Item<FieldType>
           label="Gender"
           name="gender"
-          rules={[{ required: true, message: 'Please input your gender' }]}
+          rules={[{ required: true, message: "Please input your gender" }]}
         >
           <Input />
         </Form.Item>
@@ -142,7 +146,7 @@ const EmployeeForm: React.FC = () => {
         <Form.Item<FieldType>
           label="Work"
           name="work"
-          rules={[{ required: true, message: 'Please input your work' }]}
+          rules={[{ required: true, message: "Please input your work" }]}
         >
           <Input />
         </Form.Item>

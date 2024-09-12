@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
-import { createAdvice, getAdvice } from '@/app/lib/dbhelper/advices';
-import { getSelfIdCustomer } from '@/app/lib/user';
-import Advices from '@/app/back/models/advices';
+import React, { useEffect, useState } from "react";
+import { Table } from "antd";
+import { createAdvice, getAdvice } from "@/app/lib/dbhelper/advices";
+import { getSelfIdCustomer } from "@/app/lib/user";
+import Advices from "@/app/back/models/advices";
 
-export default function AdvicesPage()
-{
+export default function AdvicesPage() {
   const [advices, setAdvices] = useState<Advices[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -28,7 +27,7 @@ export default function AdvicesPage()
         setAdvices(newAdvices);
       }
     } catch (error) {
-      console.error('Error fetching advices:', error);
+      console.error("Error fetching advices:", error);
     } finally {
       setLoading(false);
     }
@@ -36,14 +35,14 @@ export default function AdvicesPage()
 
   const columns = [
     {
-      title: 'Title',
-      dataIndex: 'title',
-      key: 'title',
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
     },
     {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
     },
   ];
 
