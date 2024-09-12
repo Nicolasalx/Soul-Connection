@@ -195,9 +195,8 @@ const Clothing: React.FC = () => {
 
   return (
     <>
-      <h1 className="font-bold text-gray-600 text-5xl md:text-6xl">
-        Clothing
-        <Divider style={{ borderColor: '#d3d3d3' }} />
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-12">
+          Clothes
       </h1>
       <Select
         allowClear

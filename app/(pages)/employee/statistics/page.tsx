@@ -111,15 +111,16 @@ function Statistics() {
 
   return (
     <>
-      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl">
         Statistics
-        <Divider style={{ borderColor: '#d3d3d3' }} />
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="col-span-1">
+  
+      <div className="grid grid-cols-3 gap-6 mb-8">
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <p className="text-lg font-semibold text-gray-700 mb-4">Number of customers by coach</p>
           <PiieChart
             data={nbCustomersByCoach}
-            title="Number of customers by coach"
+            title=""
             description=""
             dataKey="value"
             nameKey="coach"
@@ -127,39 +128,46 @@ function Statistics() {
             observation="Top 5 Coaches by Customer Count"
           />
         </div>
-
-        <div className="col-span-1">
+  
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <p className="text-lg font-semibold text-gray-700 mb-4">Earnings by coach</p>
           <DotChart
             data={nbGainByCoach}
-            title="Earnings by coach"
+            title=""
             description=""
             xAxisKey="coach"
             lineKey="value"
             observation="Earnings of Top 5 Coaches"
           />
         </div>
-
-        <div className="col-span-1">
+  
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <p className="text-lg font-semibold text-gray-700 mb-4">Number of encounters by coach</p>
           <VerticalBarChart
             data={nbEncountersByCoach}
-            title="Number of encounters by coach"
+            title=""
             yAxisKey="coach"
             barKey="value"
           />
         </div>
-
-        <div className="col-span-1">
+      </div>
+  
+      <div className="grid grid-cols-3 gap-6 mb-8">
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <p className="text-lg font-semibold text-gray-700 mb-4">Number of events by coach</p>
           <BarrChart
             data={nbEventsByCoach}
-            title="Number of events by coach"
+            title=""
             yAxisKey="coach"
             barKey="value"
           />
         </div>
-        <div className="col-span-1">
+  
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <p className="text-lg font-semibold text-gray-700 mb-4">Average rating by coach</p>
           <PiieChart
             data={averageRatingByCoach}
-            title="Average rating by coach"
+            title=""
             description=""
             dataKey="value"
             nameKey="coach"
@@ -167,12 +175,20 @@ function Statistics() {
             observation="Top 5 Coaches by Average Rate"
           />
         </div>
-        <div className="col-span-1">
+  
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <p className="text-lg font-semibold text-gray-700 mb-4">Astrological Sign Distribution</p>
           <RadarChart
             data={astrologicalData}
-            title="Astrological Sign Distribution"
+            title=""
           />
         </div>
+      </div>
+  
+      <div className="mt-4 text-center">
+        <p className="text-sm text-gray-500">
+          Pour plus de détails, visitez la page <a href="/statistics" className="text-blue-500 underline">Statistics</a>.
+        </p>
       </div>
     </>
   );

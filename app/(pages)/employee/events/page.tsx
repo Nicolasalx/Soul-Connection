@@ -22,9 +22,8 @@ export default function EventsPage() {
 
   return (
     <>
-      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-6xl">
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-6">
         Events
-        <Divider style={{ borderColor: '#d3d3d3' }} />
       </h1>
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-2 md:h-[464px]">
         <div className="bg-white-700 h-[305px] md:h-full">

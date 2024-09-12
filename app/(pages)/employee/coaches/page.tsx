@@ -7,7 +7,8 @@ import { assignCoachToCustomer, getCustomers, unassignCoachToCustomer } from '..
 import { ObjectId } from 'mongodb';
 import { isManager } from '../../../lib/user';
 import EmployeeForm from './employeeForm';
-import { Button } from '@nextui-org/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSquarePlus } from '@fortawesome/free-solid-svg-icons'
 
 var mongoose = require('mongoose');
 
@@ -152,30 +153,39 @@ function Coaches() {
 
   return (
     <>
-      <h1 className="font-bold text-gray-600 mb-10 text-5xl md:text-6xl">
-        Coaches
-        <Divider style={{ borderColor: '#d3d3d3' }} />
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl">
+        Coaches List
       </h1>
-      <Button color='primary' onClick={showModal} className="mb-6 w-full">
-        Add Employee
-      </Button>
+      <h2 className="text-gray-400 mb-5" style={{ fontSize: "1rem" }}>
+        You have [db Value] of coaches.
+      </h2>
 
-      <Table
-        columns={columns}
-        dataSource={data}
-        size="large"
-        rowKey="id"
-        pagination={{ pageSize: 6 }}
-        scroll={{ x: '100%' }}
-      />
-      <Modal
-        title="Add Employee"
-        open={isModalOpen}
-        okButtonProps={{hidden: true}}
-        onCancel={() => setIsModalOpen(false)}
-      >
+      <div className="flex justify-end mb-6">
+        <FontAwesomeIcon 
+        icon={faSquarePlus} 
+        style={{color: "#3f72ca",}}
+        onClick={showModal}
+        size="3x"
+        />
+      </div>
+      <div>
+        <Table
+          columns={columns}
+          dataSource={data}
+          size="large"
+          rowKey="id"
+          pagination={{ pageSize: 6 }}
+          scroll={{ x: '100%' }}
+        />
+        <Modal
+          title="Add Employee"
+          open={isModalOpen}
+          okButtonProps={{hidden: true}}
+          onCancel={() => setIsModalOpen(false)}
+        >
         <EmployeeForm />
       </Modal>
+    </div>
     </>
   );
 }
