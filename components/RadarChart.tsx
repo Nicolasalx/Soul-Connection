@@ -18,7 +18,7 @@ const CustomRadarChart: React.FC<RadarChartProps> = ({ data, title }) => {
   return (
     <div className="bg-white border border-gray-300 p-6 rounded-lg">
       <h2 className="font-bold text-gray-600 mb-4 text-2xl">{title}</h2>
-      <RadarChart outerRadius={90} width={400} height={400} data={data}>
+      <RadarChart outerRadius={50} data={data} width={300} height={300}>
         <PolarGrid />
         <PolarAngleAxis dataKey="name" />
         <PolarRadiusAxis />
