@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import type { TableColumnsType } from 'antd';
 import { EllipsisOutlined, EyeOutlined, DeleteOutlined, SearchOutlined, FilterOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import './coaches-list.css';
+import Image from 'next/image';
 
 function Coaches() {
   interface DataType {
@@ -133,37 +134,38 @@ function Coaches() {
         You have a total {nbCoaches} coaches.
       </h3>
 
-      <div className="header-container">
-        <div className="left-header">
-          <Select defaultValue="Bulk Action" className="bulk-action-select" style={{ width: 120 }} placeholder="Bulk Action">
-            <Select.Option value="1">1</Select.Option>
-            <Select.Option value="2">2</Select.Option>
-            <Select.Option value="3">3</Select.Option>
-          </Select>
-          <Button className="apply-button" type="default" style={{ marginLeft: 8 }}>
-            Apply
-          </Button>
-        </div>
-
-        <div className="right-header">
-          <div className="search-container">
-            <SearchOutlined className="search-icon" onClick={handleSearchClick} />
-            {searchVisible && (
-              <Input 
-                placeholder="Search by name" 
-                className="search-input" 
-                onChange={(e) => setSearchText(e.target.value)}
-                value={searchText}
-              />
-            )}
+      <div className="bordered-header-container">
+        <div className="header-container">
+          <div className="left-header">
+            <Select defaultValue="Bulk Action" className="bulk-action-select" style={{ width: 120 }} placeholder="Bulk Action">
+              <Select.Option value="1">1</Select.Option>
+              <Select.Option value="2">2</Select.Option>
+              <Select.Option value="3">3</Select.Option>
+            </Select>
+            <Button className="apply-button" type="default" style={{ marginLeft: 8 }}>
+              Apply
+            </Button>
           </div>
 
-          <Divider type="vertical" className="header-divider" />
+          <div className="right-header">
+            <div className="search-container">
+              <SearchOutlined className="search-icon" onClick={handleSearchClick} />
+              {searchVisible && (
+                <Input 
+                  placeholder="Search by name" 
+                  className="search-input" 
+                  onChange={(e) => setSearchText(e.target.value)}
+                  value={searchText}
+                />
+              )}
+            </div>
 
-          <FilterOutlined className="filter-icon" />
-          <SettingOutlined className="settings-icon" />
+            <Divider type="vertical" className="header-divider" />
+
+            <FilterOutlined className="filter-icon" />
+            <SettingOutlined className="settings-icon" />
+          </div>
         </div>
-      </div>
 
       <Divider style={{ margin: 0 }} />
 
@@ -173,6 +175,7 @@ function Coaches() {
         dataSource={dataNewPage}
         rowSelection={rowSelection}
       />
+      </div>
     </>
   );
 }

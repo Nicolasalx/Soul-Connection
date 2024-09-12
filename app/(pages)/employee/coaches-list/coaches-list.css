@@ -104,3 +104,10 @@
   .search-container .search-input {
     display: inline-block;
   }
+
+  .bordered-header-container {
+    border: 1px solid #dcdcdc; /* Couleur de la bordure */
+    border-radius: 4px; /* Coins arrondis (optionnel) */
+    padding: 16px; /* Espace intérieur (optionnel) */
+    margin-bottom: 16px; /* Espace en bas pour séparer de la table */
+  }
