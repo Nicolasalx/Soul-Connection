@@ -92,7 +92,7 @@ function HomeDashboard() {
         Welcome!
       </h2>
       <div className="flex flex-col justify-center lg:grid lg:grid-cols-5 lg:justify-items-stretch gap-6 m-8">
-          <div className="col-span-3 bg-white shadow-lg rounded-lg p-6 w-full">
+          <div className="col-span-3 bg-white rounded-[2px] border-2 border-color p-6 w-full">
             <p className="text-lg font-semibold text-foreground">
               Customers Overview
             </p>
@@ -101,7 +101,7 @@ function HomeDashboard() {
             </p>
             <AreaChartDashboard />
           </div>
-          <div className="col-span-2 bg-white shadow-lg rounded-lg p-6 w-full">
+          <div className="col-span-2 bg-white rounded-[2px] border-2 border-color p-6 w-full">
             <div className="mb-8">
               <p className="text-lg font-semibold text-foreground">
                 Events
@@ -119,7 +119,7 @@ function HomeDashboard() {
             />
         </div>
 
-          <div className="col-span-3 bg-white shadow-lg rounded-lg p-6 w-full">
+          <div className="col-span-3 bg-white rounded-[2px] border-2 border-color p-6 w-full">
             <p className="text-lg font-semibold mb-2 text-gray-700 ">
               Most Customers Countries
             </p>
@@ -131,7 +131,7 @@ function HomeDashboard() {
                />
             {" "}
           </div>
-          <div className="col-span-2 bg-white shadow-lg rounded-lg p-6 w-full">
+          <div className="col-span-2 bg-white rounded-[2px] border-2 border-color p-6 w-full">
             <div className="mb-4">
               <p className="text-lg font-semibold mb-4 text-gray-700">
                 Meetings top sources

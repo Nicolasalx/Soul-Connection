@@ -6,7 +6,7 @@ import { valueType } from "antd/es/statistic/utils";
 
 interface NumberStatProps {
   title: string;
-  value: number;
+  value: number | string;
 }
 
 function NumberStat({ title, value }: NumberStatProps) {

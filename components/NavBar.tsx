@@ -106,7 +106,7 @@ const BarItems = (
           }
         })}
       </ul>
-      <div className="flex justify-end cursor-pointer space-x-3 items-center">
+      <div className="flex justify-end cursor-pointer space-x-8 items-center">
         <Link href={`/${userInfos?.role}/chat`}>
           <FontAwesomeIcon
             icon={faMessage}

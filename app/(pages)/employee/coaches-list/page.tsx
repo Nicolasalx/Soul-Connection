@@ -208,7 +208,7 @@ function Coaches() {
 
     isManager().then((val) => setHasRights(val));
     fetchAllCustomers().then(fetchCoachesData);
-  }, []);
+  }, [customerNames]);
 
   const rowSelection = {
     selectedRowKeys,

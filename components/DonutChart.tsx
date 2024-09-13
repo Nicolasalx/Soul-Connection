@@ -12,7 +12,9 @@ type DonutChartProps = { data: DataEntry[], title: string, description: string, 
   nameKey: keyof DataEntry, config: Record<string, { color: string }>, observation: string};
 
 export function DonutChart({ data, title, description, dataKey, nameKey, config, observation }: DonutChartProps) {
-
+  const totalClients = React.useMemo(() => {
+    return data.reduce((acc, curr) => acc + (curr[dataKey] as number), 0);
+  }, [data, dataKey]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -29,10 +31,6 @@ export function DonutChart({ data, title, description, dataKey, nameKey, config,
       </div>
     );
   }
-
-  const totalClients = React.useMemo(() => {
-    return data.reduce((acc, curr) => acc + (curr[dataKey] as number), 0);
-  }, [data, dataKey]);
 
   const totalCoaches = data.length;
 

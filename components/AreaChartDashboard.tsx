@@ -7,10 +7,13 @@ import { getEncounters } from "@/app/lib/dbhelper/encounters";
 import { getCoachs } from "@/app/lib/dbhelper/employees";
 
 const data = [
-  { month: "Jan", customers: 100, meetings: 20, clientsPerCoach: 5 },
-  { month: "Feb", customers: 120, meetings: 30, clientsPerCoach: 6 },
-  { month: "Mar", customers: 150, meetings: 40, clientsPerCoach: 7 },
-  { month: "Apr", customers: 180, meetings: 50, clientsPerCoach: 8 },
+  { month: "Jan", customers: 30, meetings: 20, clientsPerCoach: 5 },
+  { month: "Feb", customers: 56, meetings: 30, clientsPerCoach: 6 },
+  { month: "Mar", customers: 74, meetings: 40, clientsPerCoach: 7 },
+  { month: "Apr", customers: 72, meetings: 50, clientsPerCoach: 8 },
+  { month: "May", customers: 81, meetings: 50, clientsPerCoach: 8 },
+  { month: "Jun", customers: 88, meetings: 50, clientsPerCoach: 8 },
+  { month: "Jul", customers: 101, meetings: 50, clientsPerCoach: 8 },
 ];
 
 const AreaChartDashboard = () => {
@@ -59,7 +62,7 @@ const AreaChartDashboard = () => {
     <div className="container mx-auto p-4">
       <div className="stats flex justify-around mb-4">
         <NumberStat title="Customers" value={totalCustomers} />
-        <NumberStat title="Doing Meetings" value={meetingPercentage} />
+        <NumberStat title="Doing Meetings" value={meetingPercentage.toFixed(0) + '%'} />
         <NumberStat title="Customers by Coach" value={averageClientsPerCoach} />
       </div>
 
@@ -72,8 +75,9 @@ const AreaChartDashboard = () => {
           <Area
             type="monotone"
             dataKey="customers"
-            stroke="#8884d8"
-            fill="#8884d8"
+            strokeWidth={2}
+            stroke="#6a7efe"
+            fill="#eceeff"
           />
         </AreaChart>
       </ResponsiveContainer>
