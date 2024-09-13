@@ -16,6 +16,7 @@ import heart from "../../../../public/heart.svg";
 import stars from "../../../../public/stars.jpg";
 import { astroComps } from "./compatibilities";
 import Customers from "@/app/back/models/customers";
+import ContentWrapper from "@/components/ContentWrapper";
 
 class Client {
   id: number;
@@ -118,112 +119,118 @@ export default function AstroCompatibility() {
       <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-12">
         Astrology Compatibility
       </h1>
-      <div>
-        <form
-          className="flex flex-col items-center w-full h-full"
-          onSubmit={handleSubmit}
-        >
-          <div className="flex flex-row flex-nowrap justify-around w-full gap-4">
-            <div className="flex flex-col">
-              <Autocomplete
-                variant="bordered"
-                label="Client A"
-                labelPlacement="outside"
-                placeholder="Select client A"
-                className="max-w"
-                isRequired
-                onSelectionChange={(id) => setValue1(id as number)}
-              >
-                {clients.map((client) => (
-                  <AutocompleteItem
-                    key={client.id}
-                    value={client.id}
-                    textValue={`${client.name} ${client.surname}`}
-                  >
-                    {client.name} {client.surname}
-                  </AutocompleteItem>
-                ))}
-              </Autocomplete>
-              {submitted && value1 === null && (
-                <div className="text-red-600">Please enter a client name.</div>
-              )}
-              <Input
-                className="mt-4 text-black"
-                variant="bordered"
-                placeholder={clientInfos1?.astrological_sign}
-                readOnly
-              />
-            </div>
-            <Image src={arrows} alt="Double sided arrow" />
-            <div className="flex flex-col">
-              <Autocomplete
-                variant="bordered"
-                label="Client B"
-                labelPlacement="outside"
-                placeholder="Select client B"
-                className="max-w"
-                isRequired
-                onSelectionChange={(id) => setValue2(id as number)}
-              >
-                {clients.map((client) => (
-                  <AutocompleteItem
-                    key={client.id}
-                    value={client.id}
-                    textValue={`${client.name} ${client.surname}`}
-                  >
-                    {client.name} {client.surname}
-                  </AutocompleteItem>
-                ))}
-              </Autocomplete>
-              {submitted && value2 === null && (
-                <div className="text-red-600">Please enter a client name.</div>
-              )}
-              <Input
-                className="mt-4 text-black"
-                variant="bordered"
-                placeholder={clientInfos2?.astrological_sign}
-                readOnly
-              />
-            </div>
-          </div>
-          <Tooltip
-            content="Calculate"
-            className="bg-slate-600 text-white shadow-lg"
+      <ContentWrapper>
+        <div>
+          <form
+            className="flex flex-col items-center w-full h-full"
+            onSubmit={handleSubmit}
           >
-            <Button
-              className="flex flex-col justify-center m-4 w-32 md:w-44 h-32 md:h-44 rounded-full shadow-lg"
-              style={{ backgroundImage: `url(${stars.src})` }}
-              type="submit"
-            >
-              <div className="flex justify-center text-white">
-                <If condition={!isLoading}>
-                  {validated && (
-                    <CircularProgress
-                      classNames={{
-                        svg: "w-24 md:w-36 h-24 md:h-36",
-                        value: "text-2xl",
-                      }}
-                      aria-label="Result"
-                      value={compatibility}
-                      showValueLabel={true}
-                      color="success"
-                    />
-                  )}
-                  {!validated && <h1>Calculate</h1>}
-                </If>
-                <If condition={isLoading}>
-                  <CircularProgress
-                    classNames={{ svg: "w-24 md:w-36 h-24 md:h-36" }}
-                    aria-label="Loading..."
-                    color="secondary"
-                  />
-                </If>
+            <div className="flex flex-row flex-nowrap justify-around w-full gap-4">
+              <div className="flex flex-col">
+                <Autocomplete
+                  variant="bordered"
+                  label="Client A"
+                  labelPlacement="outside"
+                  placeholder="Select client A"
+                  className="max-w"
+                  isRequired
+                  onSelectionChange={(id) => setValue1(id as number)}
+                >
+                  {clients.map((client) => (
+                    <AutocompleteItem
+                      key={client.id}
+                      value={client.id}
+                      textValue={`${client.name} ${client.surname}`}
+                    >
+                      {client.name} {client.surname}
+                    </AutocompleteItem>
+                  ))}
+                </Autocomplete>
+                {submitted && value1 === null && (
+                  <div className="text-red-600">
+                    Please enter a client name.
+                  </div>
+                )}
+                <Input
+                  className="mt-4 text-black"
+                  variant="bordered"
+                  placeholder={clientInfos1?.astrological_sign}
+                  readOnly
+                />
               </div>
-            </Button>
-          </Tooltip>
-          <Image src={heart} width={200} height={200} alt="Heart shape" />
-        </form>
-      </div>
+              <Image src={arrows} alt="Double sided arrow" />
+              <div className="flex flex-col">
+                <Autocomplete
+                  variant="bordered"
+                  label="Client B"
+                  labelPlacement="outside"
+                  placeholder="Select client B"
+                  className="max-w"
+                  isRequired
+                  onSelectionChange={(id) => setValue2(id as number)}
+                >
+                  {clients.map((client) => (
+                    <AutocompleteItem
+                      key={client.id}
+                      value={client.id}
+                      textValue={`${client.name} ${client.surname}`}
+                    >
+                      {client.name} {client.surname}
+                    </AutocompleteItem>
+                  ))}
+                </Autocomplete>
+                {submitted && value2 === null && (
+                  <div className="text-red-600">
+                    Please enter a client name.
+                  </div>
+                )}
+                <Input
+                  className="mt-4 text-black"
+                  variant="bordered"
+                  placeholder={clientInfos2?.astrological_sign}
+                  readOnly
+                />
+              </div>
+            </div>
+            <Tooltip
+              content="Calculate"
+              className="bg-slate-600 text-white shadow-lg"
+            >
+              <Button
+                className="flex flex-col justify-center m-4 w-32 md:w-44 h-32 md:h-44 rounded-full shadow-lg"
+                style={{ backgroundImage: `url(${stars.src})` }}
+                type="submit"
+              >
+                <div className="flex justify-center text-white">
+                  <If condition={!isLoading}>
+                    {validated && (
+                      <CircularProgress
+                        classNames={{
+                          svg: "w-24 md:w-36 h-24 md:h-36",
+                          value: "text-2xl",
+                        }}
+                        aria-label="Result"
+                        value={compatibility}
+                        showValueLabel={true}
+                        color="success"
+                      />
+                    )}
+                    {!validated && <h1>Calculate</h1>}
+                  </If>
+                  <If condition={isLoading}>
+                    <CircularProgress
+                      classNames={{ svg: "w-24 md:w-36 h-24 md:h-36" }}
+                      aria-label="Loading..."
+                      color="secondary"
+                    />
+                  </If>
+                </div>
+              </Button>
+            </Tooltip>
+            <Image src={heart} width={200} height={200} alt="Heart shape" />
+          </form>
+        </div>
+      </ContentWrapper>
     </>
   );
 }

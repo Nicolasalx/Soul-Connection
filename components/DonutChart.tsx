@@ -34,7 +34,7 @@ export function DonutChart({ data, title, description, dataKey, nameKey, config,
     return data.reduce((acc, curr) => acc + (curr[dataKey] as number), 0);
   }, [data, dataKey]);
 
-  const totalCoaches = data.length; // coaches nb
+  const totalCoaches = data.length;
 
   return (
     <Card className="flex flex-col">

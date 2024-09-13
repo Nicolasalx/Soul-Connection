@@ -5,6 +5,7 @@ import { Pagination } from "antd";
 import { getTips } from "../../../lib/dbhelper/tips";
 import Tips from "@/app/back/models/tips";
 import { Accordion, AccordionItem } from "@nextui-org/react";
+import ContentWrapper from "@/components/ContentWrapper";
 
 export default function Advices() {
   const [allTips, setAllTips] = useState<Tips[]>([]);
@@ -34,31 +35,33 @@ export default function Advices() {
   return (
     <>
       <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl">
-        Tips
+        Tips for Coaches
       </h1>
 
-      <Accordion>
-        {currentTips.map((tip) => (
-          <AccordionItem
-            key={tip.id}
-            aria-label={`Accordion ${tip.id}`}
-            subtitle="Press to expand"
-            title={tip.title}
-          >
-            {tip.tip}
-          </AccordionItem>
-        ))}
-      </Accordion>
+      <ContentWrapper>
+        <Accordion>
+          {currentTips.map((tip) => (
+            <AccordionItem
+              key={tip.id}
+              aria-label={`Accordion ${tip.id}`}
+              subtitle="Press to expand"
+              title={tip.title}
+            >
+              {tip.tip}
+            </AccordionItem>
+          ))}
+        </Accordion>
 
-      {allTips.length > tipsPerPage && (
-        <Pagination
-          current={currentPage}
-          total={allTips.length}
-          pageSize={tipsPerPage}
-          onChange={handlePageChange}
-          style={{ marginTop: "20px", textAlign: "center" }}
-        />
-      )}
+        {allTips.length > tipsPerPage && (
+          <Pagination
+            current={currentPage}
+            total={allTips.length}
+            pageSize={tipsPerPage}
+            onChange={handlePageChange}
+            style={{ marginTop: "20px", textAlign: "center" }}
+          />
+        )}
+      </ContentWrapper>
     </>
   );
 }

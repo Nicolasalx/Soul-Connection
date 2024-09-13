@@ -5,6 +5,7 @@ import Customers from "@/app/back/models/customers";
 import { createConv, getConv, updateConv } from "@/app/lib/dbhelper/conv";
 import { getCoachCustomers, getCustomers } from "@/app/lib/dbhelper/customers";
 import { getSelfId, isManager } from "@/app/lib/user";
+import ContentWrapper from "@/components/ContentWrapper";
 import React, { useState, useEffect, useRef } from "react";
 
 const ChatPage = () => {
@@ -88,89 +89,96 @@ const ChatPage = () => {
   }, [messages]);
 
   return (
-    <div style={{ display: "flex", padding: "20px" }}>
-      <div
-        style={{
-          width: "20%",
-          borderRight: "1px solid #ccc",
-          paddingRight: "10px",
-          height: "500px",
-          overflowY: "scroll",
-        }}
-      >
-        <h3>Customers</h3>
-        <ul style={{ listStyleType: "none", padding: 0 }}>
-          {customers.map((customer) => (
-            <li
-              key={customer.id}
-              onClick={() => setSelectedCustomer(customer)}
-              style={{
-                cursor: "pointer",
-                padding: "10px",
-                backgroundColor:
-                  selectedCustomer?.id === customer.id
-                    ? "#f0f0f0"
-                    : "transparent",
-                marginBottom: "5px",
-              }}
-            >
-              {customer.name + " " + customer.surname}
-            </li>
-          ))}
-        </ul>
-      </div>
+    <>
+      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-12">
+        Chat
+      </h1>
+      <ContentWrapper>
+        <div style={{ display: "flex", padding: "20px" }}>
+          <div
+            style={{
+              width: "20%",
+              borderRight: "1px solid #ccc",
+              paddingRight: "10px",
+              height: "500px",
+              overflowY: "scroll",
+            }}
+          >
+            <h3>Customers</h3>
+            <ul style={{ listStyleType: "none", padding: 0 }}>
+              {customers.map((customer) => (
+                <li
+                  key={customer.id}
+                  onClick={() => setSelectedCustomer(customer)}
+                  style={{
+                    cursor: "pointer",
+                    padding: "10px",
+                    backgroundColor:
+                      selectedCustomer?.id === customer.id
+                        ? "#f0f0f0"
+                        : "transparent",
+                    marginBottom: "5px",
+                  }}
+                >
+                  {customer.name + " " + customer.surname}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-      <div style={{ width: "80%", paddingLeft: "20px" }}>
-        <h1>
-          {selectedCustomer
-            ? selectedCustomer.name + " " + selectedCustomer.surname
-            : "Select a customer"}
-        </h1>
-        <div
-          style={{
-            height: "500px",
-            overflowY: "scroll",
-            border: "1px solid #ccc",
-            marginBottom: "20px",
-          }}
-        >
-          {messages.map((msg, index) => (
+          <div style={{ width: "80%", paddingLeft: "20px" }}>
+            <h1>
+              {selectedCustomer
+                ? selectedCustomer.name + " " + selectedCustomer.surname
+                : "Select a customer"}
+            </h1>
             <div
-              key={index}
-              ref={index === messages.length - 1 ? lastMessageRef : null}
               style={{
-                textAlign: msg.client_sender ? "left" : "right",
-                marginBottom: "10px",
-                padding: "10px",
-                backgroundColor: msg.client_sender ? "#e0f7fa" : "#f1f8e9",
-                borderRadius: "8px",
-                maxWidth: "60%",
-                marginLeft: msg.client_sender ? "0" : "auto",
+                height: "500px",
+                overflowY: "scroll",
+                border: "1px solid #ccc",
+                marginBottom: "20px",
               }}
             >
-              <p>{msg.msg}</p>
-              <small>{new Date(msg.date).toLocaleString()}</small>
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  ref={index === messages.length - 1 ? lastMessageRef : null}
+                  style={{
+                    textAlign: msg.client_sender ? "left" : "right",
+                    marginBottom: "10px",
+                    padding: "10px",
+                    backgroundColor: msg.client_sender ? "#e0f7fa" : "#f1f8e9",
+                    borderRadius: "8px",
+                    maxWidth: "60%",
+                    marginLeft: msg.client_sender ? "0" : "auto",
+                  }}
+                >
+                  <p>{msg.msg}</p>
+                  <small>{new Date(msg.date).toLocaleString()}</small>
+                </div>
+              ))}
             </div>
-          ))}
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type your message..."
+              onKeyDown={handleKeyPress}
+              style={{ width: "80%", padding: "10px", marginRight: "10px" }}
+              disabled={!selectedCustomer}
+            />
+            <button
+              onClick={handleSendMessage}
+              style={{ padding: "10px" }}
+              disabled={!selectedCustomer}
+            >
+              Send
+            </button>
+          </div>
         </div>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your message..."
-          onKeyDown={handleKeyPress}
-          style={{ width: "80%", padding: "10px", marginRight: "10px" }}
-          disabled={!selectedCustomer}
-        />
-        <button
-          onClick={handleSendMessage}
-          style={{ padding: "10px" }}
-          disabled={!selectedCustomer}
-        >
-          Send
-        </button>
-      </div>
-    </div>
+      </ContentWrapper>
+    </>
   );
 };
 

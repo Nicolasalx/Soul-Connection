@@ -28,16 +28,16 @@ const customerPages = [
 ];
 const employeePages = [
   { url: "home", name: "Dashboard" },
-  { url: "coaches", name: "Coaches" },
-  { url: "customers", name: "Customers" },
+  { url: "coaches-list", name: "Coaches List" },
+  { url: "customers-list", name: "Customers List"},
   { url: "statistics", name: "Statistics" },
   { url: "tips", name: "Tips" },
   { url: "events", name: "Events" },
   { url: "astro-compatibility", name: "Astrology" },
   { url: "clothing", name: "Clothing" },
+  { url: "chat", name: "Chat" },
   { url: "advices", name: "Advices" },
   { url: "notes", name: "Notes" },
-  { url: "coaches-list", name: "Coaches List" },
 ];
 const employeeReservedPages = ["statistics", "coaches"];
 
