@@ -28,8 +28,8 @@ const customerPages = [
 ];
 const employeePages = [
   { url: "home", name: "Dashboard" },
-  { url: "coaches-list", name: "Coaches List" },
-  { url: "customers-list", name: "Customers List"},
+  { url: "coaches-list", name: "Coaches" },
+  { url: "customers-list", name: "Customers"},
   { url: "statistics", name: "Statistics" },
   { url: "tips", name: "Tips" },
   { url: "events", name: "Events" },
@@ -39,7 +39,7 @@ const employeePages = [
   { url: "advices", name: "Advices" },
   { url: "notes", name: "Notes" },
 ];
-const employeeReservedPages = ["statistics", "coaches"];
+const employeeReservedPages = ["statistics", "coaches-list"];
 
 type UserInfos = {
   name: string;
