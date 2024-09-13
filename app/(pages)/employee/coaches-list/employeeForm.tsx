@@ -3,7 +3,7 @@
 import type { FormProps } from "antd";
 import { Form, Input, DatePicker, message } from "antd";
 import React from "react";
-import { createEmployee } from "../../../lib/dbhelper/employees";
+import { createEmployee, getEmployees } from "../../../lib/dbhelper/employees";
 import Employees from "@/app/back/models/employees";
 import dayjs from "dayjs";
 import bcrypt from "bcryptjs";
@@ -31,7 +31,7 @@ const EmployeeForm: React.FC = () => {
       content: "Submitting...",
     });
 
-    const uuid = Math.floor(Math.random() * 10 ** 15);
+    const uuid = (await getEmployees()).reduce((prev, curr) => prev.id > curr.id ? prev : curr).id + 1;
     const formattedBirthDate = values.birthDate
       ? dayjs(values.birthDate).format("YYYY-MM-DD")
       : "";
