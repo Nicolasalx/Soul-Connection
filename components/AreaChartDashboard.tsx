@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  ResponsiveContainer,
-} from "recharts";
+import { AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
+import { ClipLoader } from 'react-spinners';
 import NumberStat from "./NumberStat";
 import { getCustomers } from "@/app/lib/dbhelper/customers";
 import { getEncounters } from "@/app/lib/dbhelper/encounters";
@@ -24,10 +17,13 @@ const AreaChartDashboard = () => {
   const [totalCustomers, setTotalCustomers] = useState(0);
   const [meetingPercentage, setMeetingPercentage] = useState(0);
   const [averageClientsPerCoach, setAverageClientsPerCoach] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashBoardData = async () => {
       try {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+
         const customers = await getCustomers();
         const totalCustomers = customers.length;
         setTotalCustomers(totalCustomers);
@@ -35,19 +31,29 @@ const AreaChartDashboard = () => {
         const encounters = await getEncounters();
         const totalMeetings = encounters.length;
 
-        const meetingPercentage = (totalMeetings / totalCustomers) * 6.12; // to change if time
+        const meetingPercentage = (totalMeetings / totalCustomers) * 6.12;
         setMeetingPercentage(meetingPercentage);
 
         const coaches = await getCoachs();
         const averageClientsPerCoach = totalCustomers / coaches.length;
         setAverageClientsPerCoach(averageClientsPerCoach);
       } catch (error) {
-        console.error("Failed to fetch dashboard data:", error);
+        console.error("Dashboard Chart Loading Failure", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchDashBoardData();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#000000" size={50} />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -60,7 +66,7 @@ const AreaChartDashboard = () => {
       <ResponsiveContainer width="100%" height={400}>
         <AreaChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="month" /> {/* or date */}
+          <XAxis dataKey="month" />
           <YAxis />
           <Tooltip />
           <Area

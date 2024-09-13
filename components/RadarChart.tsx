@@ -1,13 +1,6 @@
-import React from "react";
-import {
-  Radar,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Tooltip,
-  Legend,
-} from "recharts";
+import React, { useEffect, useState } from "react";
+import { ClipLoader } from 'react-spinners';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip, Legend } from "recharts";
 
 type RadarChartProps = {
   data: { name: string; value: number }[];
@@ -15,6 +8,23 @@ type RadarChartProps = {
 };
 
 const CustomRadarChart: React.FC<RadarChartProps> = ({ data, title }) => {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#000000" size={50} />
+      </div>
+    );
+  }
+  
   return (
     <div className="bg-white border border-gray-300 p-6 rounded-lg">
       <h2 className="font-bold text-gray-600 mb-4 text-2xl">{title}</h2>

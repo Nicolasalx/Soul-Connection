@@ -9,6 +9,8 @@ import Events from "@/app/back/models/events";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
 import Image from "next/image";
 import location from "../public/location.svg";
+import React, { useEffect, useState } from "react";
+import { ClipLoader } from 'react-spinners';
 
 interface MapProps {
   posix: LatLngExpression | LatLngTuple;
@@ -21,6 +23,24 @@ const defaults = {
 };
 
 const Map = (props: MapProps) => {
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#000000" size={50} />
+      </div>
+    );
+  }
+  
   const { zoom = defaults.zoom, posix, events } = props;
 
   return (

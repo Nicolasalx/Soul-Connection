@@ -2,41 +2,30 @@
 
 import { TrendingUp } from "lucide-react";
 import { Pie, PieChart, Cell } from "recharts";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import React, { useEffect, useState } from "react";
+import { ClipLoader } from 'react-spinners';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+export function PiieChart({ data, title, description, dataKey, nameKey, config, observation }: 
+  { data: any, title: string, description: string, dataKey: string, nameKey: string, config: any, observation: string }) {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
 
-export const description = "A simple pie chart";
+    return () => clearTimeout(timer);
+  }, []);
 
-export function PiieChart({
-  data,
-  title,
-  description,
-  dataKey,
-  nameKey,
-  config,
-  observation,
-}: {
-  data: any;
-  title: string;
-  description: string;
-  dataKey: string;
-  nameKey: string;
-  config: any;
-  observation: string;
-}) {
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#000000" size={50} />
+      </div>
+    );
+  }
+
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">

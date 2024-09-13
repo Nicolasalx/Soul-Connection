@@ -1,5 +1,6 @@
-import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
+import React, { useEffect, useState } from "react";
+import { ClipLoader } from 'react-spinners';
 // import NumberStat from "./NumberStat";
 
 const data = [
@@ -10,6 +11,23 @@ const data = [
 ];
 
 const VerticalBarChartDashboard = ({ color }: { color: string }) => {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#000000" size={50} />
+      </div>
+    );
+  }
+  
   //const totalEvents = 12; // Valeur en dur simulant la DB, voir mockup pour ce que dois affiché le graphique,
   //const eventsPerMonths = 8; // Valeur en dur simulant la DB, si pas possible d'avoir ce graph, alternative proche, pas grave
   //const eventsPerWeek = 4; // Valeur en dur simulant la DB

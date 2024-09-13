@@ -1,24 +1,11 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+import { ClipLoader } from 'react-spinners';
 import { TrendingUp } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-
-export const description = "A simple area chart";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 const chartConfig = {
   desktop: {
@@ -27,19 +14,26 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function AreaaChart({
-  data,
-  title,
-  description,
-  dataKey,
-  xAxisKey,
-}: {
-  data: any;
-  title: string;
-  description: string;
-  dataKey: string;
-  xAxisKey: string;
-}) {
+export function AreaaChart({ data, title, description, dataKey, xAxisKey }: { data: any, title: string,
+  description: string, dataKey: string, xAxisKey: string }) {
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#000000" size={50} />
+      </div>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>

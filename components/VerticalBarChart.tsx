@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { ClipLoader } from 'react-spinners';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 interface VerticalBarChartProps {
@@ -8,12 +9,25 @@ interface VerticalBarChartProps {
   barKey?: string;
 }
 
-const VerticalBarChart: React.FC<VerticalBarChartProps> = ({
-  data,
-  title,
-  yAxisKey = "coach",
-  barKey = "value",
-}) => {
+const VerticalBarChart: React.FC<VerticalBarChartProps> = ({ data, title, yAxisKey = "coach", barKey = "value" }) => {
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#000000" size={50} />
+      </div>
+    );
+  }
+  
   if (!data || data.length === 0) {
     return <div>No data available</div>;
   }

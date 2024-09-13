@@ -4,11 +4,7 @@ interface ScrollingListProps {
   data: Record<string, any>[];
 }
 
-interface InfoStyle {
-  color: string;
-  fontSize: string;
-  fontWeight?: string;
-}
+interface InfoStyle { color: string, fontSize: string, fontWeight?: string }
 
 const infoStyles: Record<string, InfoStyle> = {
   name: { color: "black", fontSize: "1rem", fontWeight: "bold" },

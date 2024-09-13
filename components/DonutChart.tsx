@@ -1,42 +1,35 @@
 "use client";
 
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { Pie, PieChart, Cell, Label } from "recharts";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { ClipLoader } from 'react-spinners';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 type DataEntry = { coach: string; value: number };
 
-type DonutChartProps = {
-  data: DataEntry[];
-  title: string;
-  description: string;
-  dataKey: keyof DataEntry;
-  nameKey: keyof DataEntry;
-  config: Record<string, { color: string }>;
-  observation: string;
-};
+type DonutChartProps = { data: DataEntry[], title: string, description: string, dataKey: keyof DataEntry,
+  nameKey: keyof DataEntry, config: Record<string, { color: string }>, observation: string};
 
-export function DonutChart({
-  data,
-  title,
-  description,
-  dataKey,
-  nameKey,
-  config,
-  observation,
-}: DonutChartProps) {
+export function DonutChart({ data, title, description, dataKey, nameKey, config, observation }: DonutChartProps) {
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color="#000000" size={50} />
+      </div>
+    );
+  }
+
   const totalClients = React.useMemo(() => {
     return data.reduce((acc, curr) => acc + (curr[dataKey] as number), 0);
   }, [data, dataKey]);
