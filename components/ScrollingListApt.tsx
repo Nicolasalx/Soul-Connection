@@ -33,7 +33,7 @@ const prefixes: Record<string, string> = {
 
 const ScrollingListApt: React.FC<ScrollingListProps> = ({ data }) => {
   return (
-    <div className="w-full h-full overflow-y-auto bg-white border rounded-lg p-2">
+    <div className="w-full h-full overflow-y-auto bg-white border border-color rounded-[2px] p-6">
       <ul>
         {data.map((item, index) => {
           const orderedKeys = ["name", "date", "rating", "report", "source"];
@@ -43,7 +43,7 @@ const ScrollingListApt: React.FC<ScrollingListProps> = ({ data }) => {
             .map((key) => {
               const prefix = prefixes[key] || "";
               const style = infoStyles[key] || {
-                color: "black",
+                color: "text-foreground-600",
                 fontSize: "1rem",
               };
               return (

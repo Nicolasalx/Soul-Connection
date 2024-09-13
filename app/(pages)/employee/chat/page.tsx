@@ -90,7 +90,7 @@ const ChatPage = () => {
 
   return (
     <>
-      <h1 className="font-bold text-gray-600 mb-2 text-5xl md:text-3xl mb-12">
+      <h1 className="font-bold text-gray-600 text-5xl md:text-3xl mb-12">
         Chat
       </h1>
       <ContentWrapper>

@@ -34,7 +34,7 @@ function EncountersPage() {
             const formattedEncounters = customerEncounters.map(
               (encounter: Encounters) => ({
                 key: encounter.id.toString(),
-                date: encounter.date,
+                date: new Date(encounter.date).toLocaleString(),
                 rating: encounter.rating,
                 report: encounter.comment,
                 source: encounter.source,
@@ -53,7 +53,7 @@ function EncountersPage() {
           const formattedEncounters = customerEncounters.map(
             (encounter: Encounters) => ({
               key: encounter.id.toString(),
-              date: encounter.date,
+              date: new Date(encounter.date).toLocaleString(),
               rating: encounter.rating,
               report: encounter.comment,
               source: encounter.source,
@@ -71,16 +71,11 @@ function EncountersPage() {
 
   return (
     <>
-      <h1 className="font-bold text-gray-600 mb-10 mt-10 text-5xl md:text-5xl">
+      <h1 className="font-bold mb-2 text-5xl md:text-3xl mb-12">
         All Encounters
       </h1>
-      <h2 className="text-gray-400 mb-5 text-xl" style={{ fontSize: "2rem" }}>
-        View
-      </h2>
-      <Divider style={{ borderColor: "#d3d3d3" }} />
-
       <div className="flex space-x-4 mb-6">
-        <div className="h-100">
+        <div className="w-full">
           <ScrollingListApt
             data={hasRights ? encountersDetails : encountersDetails}
           />
